@@ -1,5 +1,4 @@
 import { http } from "@/utils/http";
-import qs from "qs";
 
 export type UserResult = {
   success: boolean;
@@ -31,24 +30,12 @@ export type RefreshTokenResult = {
 
 /** 登录 */
 export const getLogin = (data?: object) => {
-  const input = {
-    client_id: "stock",
-    response_type: "token offline_access",
-    username: data["username"],
-    password: data["password"],
-    scope: "api offline_access",
-    grant_type: "password",
-    client_secret: "stock_analysis"
-  };
-  const { AUTH_SERVER } = import.meta.env;
-  console.log(AUTH_SERVER);
-  return http.request<UserResult>("post", "/connect/token", {
-    baseURL: "https://localhost:44320",
-    data: qs.stringify(input),
-    headers: {
-      "content-type": "application/x-www-form-urlencoded"
-    }
+  console.log("import", import.meta);
+  const a = import.meta.env.VITE_AUTH_SERVER;
+  const resp = http.request<UserResult>("post", a + "/api/account/user/login", {
+    data
   });
+  return resp;
 };
 
 /** 刷新token */
