@@ -57,7 +57,7 @@ initStorage();
 const { dataTheme, dataThemeChange } = useDataThemeChange();
 dataThemeChange();
 const { title, getDropdownItemStyle, getDropdownItemClass } = useNav();
-const { locale, translationCh, translationEn } = useTranslationLang();
+const { locale, translationCh } = useTranslationLang();
 
 const ruleForm = reactive({
   // username: "admin",
@@ -144,16 +144,16 @@ watch(imgCode, value => {
               />
               简体中文
             </el-dropdown-item>
-            <el-dropdown-item
-              :style="getDropdownItemStyle(locale, 'en')"
-              :class="['dark:!text-white', getDropdownItemClass(locale, 'en')]"
-              @click="translationEn"
-            >
-              <span class="check-en" v-show="locale === 'en'">
-                <IconifyIconOffline :icon="Check" />
-              </span>
-              English
-            </el-dropdown-item>
+            <!--            <el-dropdown-item-->
+            <!--              :style="getDropdownItemStyle(locale, 'en')"-->
+            <!--              :class="['dark:!text-white', getDropdownItemClass(locale, 'en')]"-->
+            <!--              @click="translationEn"-->
+            <!--            >-->
+            <!--              <span class="check-en" v-show="locale === 'en'">-->
+            <!--                <IconifyIconOffline :icon="Check" />-->
+            <!--              </span>-->
+            <!--              English-->
+            <!--            </el-dropdown-item>-->
           </el-dropdown-menu>
         </template>
       </el-dropdown>
@@ -280,7 +280,7 @@ watch(imgCode, value => {
                   :title="t(item.title)"
                 >
                   <IconifyIconOnline
-                    :icon="`ri:${item.icon}-fill`"
+                    :icon="`${item.icon}`"
                     width="20"
                     class="cursor-pointer text-gray-500 hover:text-blue-400"
                   />

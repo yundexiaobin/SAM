@@ -117,6 +117,7 @@ login:
   qRCodeLogin: QRCode Login
   register: Register
   weChatLogin: WeChat Login
+  samLogin: SAM Login
   alipayLogin: Alipay Login
   qqLogin: QQ Login
   weiboLogin: Weibo Login
