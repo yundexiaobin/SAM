@@ -1,31 +1,27 @@
 <script setup lang="ts">
 import {
+  computed,
+  onBeforeUnmount,
+  onMounted,
+  reactive,
   ref,
   toRaw,
-  reactive,
-  watch,
-  computed,
-  onMounted,
-  onBeforeUnmount
+  watch
 } from "vue";
 import { useI18n } from "vue-i18n";
 import Motion from "./utils/motion";
 import { useRouter } from "vue-router";
 import { message } from "@/utils/message";
 import { loginRules } from "./utils/rule";
-import phone from "./components/phone.vue";
 import TypeIt from "@/components/ReTypeit";
-import qrCode from "./components/qrCode.vue";
-import regist from "./components/regist.vue";
-import update from "./components/update.vue";
 import { initRouter } from "@/router/utils";
 import { useNav } from "@/layout/hooks/useNav";
 import type { FormInstance } from "element-plus";
-import { $t, transformI18n } from "@/plugins/i18n";
+import { transformI18n } from "@/plugins/i18n";
 import { operates, thirdParty } from "./utils/enums";
 import { useLayout } from "@/layout/hooks/useLayout";
 import { useUserStoreHook } from "@/store/modules/user";
-import { bg, avatar, illustration } from "./utils/static";
+import { bg, illustration } from "./utils/static";
 import { ReImageVerify } from "@/components/ReImageVerify";
 import { useRenderIcon } from "@/components/ReIcon/src/hooks";
 import { useTranslationLang } from "@/layout/hooks/useTranslationLang";
@@ -33,7 +29,6 @@ import { useDataThemeChange } from "@/layout/hooks/useDataThemeChange";
 
 import dayIcon from "@/assets/svg/day.svg?component";
 import darkIcon from "@/assets/svg/dark.svg?component";
-import globalization from "@/assets/svg/globalization.svg?component";
 import Lock from "@iconify-icons/ri/lock-fill";
 import Check from "@iconify-icons/ep/check";
 import User from "@iconify-icons/ri/user-3-fill";
@@ -75,7 +70,8 @@ const onLogin = async (formEl: FormInstance | undefined) => {
       useUserStoreHook()
         .loginByUsername({
           username: ruleForm.username,
-          password: ruleForm.password
+          password: ruleForm.password,
+          rememberMe: checked.value
         })
         .then(res => {
           if (res.success) {
@@ -85,7 +81,15 @@ const onLogin = async (formEl: FormInstance | undefined) => {
               message("登录成功", { type: "success" });
             });
           }
+        })
+        .catch(r => {
+          if (r.response != null && r.response?.data?.error?.message != null) {
+            console.warn(r.response.data.error.message);
+          }
+          console.error(r);
         });
+      loading.value = false;
+      return fields;
     } else {
       loading.value = false;
       return fields;

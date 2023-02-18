@@ -54,7 +54,6 @@ export function setToken(data: DataInfo<Date>) {
       roles
     });
   }
-
   if (data.username && data.roles) {
     const { username, roles } = data;
     setSessionKey(username, roles);
@@ -65,6 +64,15 @@ export function setToken(data: DataInfo<Date>) {
       storageSession().getItem<DataInfo<number>>(sessionKey)?.roles ?? [];
     setSessionKey(username, roles);
   }
+}
+
+export function setRoles(username: string, roles: Array<string>) {
+  const sRoles = storageSession().getItem<DataInfo<number>>(sessionKey) ?? {
+    roles: []
+  };
+  useUserStoreHook().SET_ROLES(roles);
+  sRoles.roles = roles;
+  storageSession().setItem(sessionKey, sRoles);
 }
 
 /** 删除`token`以及key值为`user-info`的session信息 */
