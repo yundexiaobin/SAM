@@ -84,9 +84,8 @@ const onLogin = async (formEl: FormInstance | undefined) => {
         })
         .catch(r => {
           if (r.response != null && r.response?.data?.error?.message != null) {
-            console.warn(r.response.data.error.message);
+            message(r.response.data.error.message, { type: "error" });
           }
-          console.error(r);
         });
       loading.value = false;
       return fields;
