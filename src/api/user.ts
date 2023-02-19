@@ -43,7 +43,7 @@ export type RefreshTokenResult = {
 
 /** 登录 */
 export const getLogin = (data?: object) => {
-  const a = import.meta.env.VITE_AUTH_SERVER;
+  const a = import.meta.env.VITE_API_BASE_URL;
   const resp = http.request<UserResult>("post", a + "/api/identity/authorize", {
     data
   });
@@ -52,7 +52,7 @@ export const getLogin = (data?: object) => {
 
 /** 获取资料 */
 export const getProfile = (data: UserResult) => {
-  const a = import.meta.env.VITE_AUTH_SERVER;
+  const a = import.meta.env.VITE_API_BASE_URL;
   return http.request<ProfileResult>("get", a + "/api/account/my-profile", {
     data: data,
     headers: {
@@ -65,7 +65,7 @@ export const getProfile = (data: UserResult) => {
 export const refreshTokenApi = (data?: object) => {
   return http.request<RefreshTokenResult>(
     "post",
-    import.meta.env.VITE_AUTH_SERVER + "/api/identity/refreshToken",
+    import.meta.env.VITE_API_BASE_URL + "/api/identity/refreshToken",
     { data }
   );
 };
