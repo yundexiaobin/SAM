@@ -8,9 +8,9 @@ const operates = [
   // {
   //   title: $t("login.qRCodeLogin")
   // },
-  {
-    title: $t("login.register")
-  }
+  // {
+  //   title: $t("login.register")
+  // }
 ];
 
 const thirdParty = [

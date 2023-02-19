@@ -232,9 +232,9 @@ watch(imgCode, value => {
             <Motion :delay="250">
               <el-form-item>
                 <div class="w-full h-[20px] flex justify-between items-center">
-                  <el-checkbox v-model="checked">
-                    {{ t("login.remember") }}
-                  </el-checkbox>
+                  <!--                  <el-checkbox v-model="checked">-->
+                  <!--                    {{ t("login.remember") }}-->
+                  <!--                  </el-checkbox>-->
                   <el-button
                     link
                     type="primary"
@@ -257,7 +257,7 @@ watch(imgCode, value => {
 
             <Motion :delay="300">
               <el-form-item>
-                <div class="w-full h-[20px] flex justify-between items-center">
+                <div class="w-full h-[15px] flex justify-between items-center">
                   <el-button
                     v-for="(item, index) in operates"
                     :key="index"
