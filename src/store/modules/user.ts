@@ -80,7 +80,7 @@ export const useUserStore = defineStore({
       return new Promise<RefreshTokenResult>((resolve, reject) => {
         refreshTokenApi(data)
           .then(data => {
-            if (data) {
+            if (data.success) {
               setToken(data.data);
               resolve(data);
             }
