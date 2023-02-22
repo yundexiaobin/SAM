@@ -74,7 +74,7 @@ const onLogin = async (formEl: FormInstance | undefined) => {
           rememberMe: checked.value
         })
         .then(res => {
-          if (res.success) {
+          if (res.succeeded) {
             // 获取后端路由
             initRouter().then(() => {
               router.push("/");
@@ -83,9 +83,7 @@ const onLogin = async (formEl: FormInstance | undefined) => {
           }
         })
         .catch(r => {
-          if (r.response != null && r.response?.data?.error?.message != null) {
-            message(r.response.data.error.message, { type: "error" });
-          }
+          message(r, { type: "error" });
         });
       loading.value = false;
       return fields;

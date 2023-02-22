@@ -8,6 +8,7 @@ import { getLogin, getProfile, refreshTokenApi } from "@/api/user";
 import { UserResult, RefreshTokenResult } from "@/api/user";
 import { useMultiTagsStoreHook } from "@/store/modules/multiTags";
 import { type DataInfo, setToken, removeToken, sessionKey } from "@/utils/auth";
+import { ApiResponse } from "@/utils/apiresponse";
 
 export const useUserStore = defineStore({
   id: "pure-user",
@@ -41,24 +42,28 @@ export const useUserStore = defineStore({
     },
     /** 登入 */
     async loginByUsername(data) {
-      return new Promise<UserResult>((resolve, reject) => {
+      return new Promise<ApiResponse<UserResult>>((resolve, reject) => {
         getLogin(data)
           .then(data => {
-            if (data) {
+            if (data.succeeded) {
               return new Promise(() => {
                 getProfile(data)
                   .then(r => {
-                    if (r) {
+                    if (r.succeeded) {
                       data.data.username = r.data.userName;
                       data.data.roles = r.data.extraProperties.Roles;
                       setToken(data.data);
+                      resolve(data);
+                    } else {
+                      reject(r.errors);
                     }
-                    resolve(data);
                   })
                   .catch(error => {
                     reject(error);
                   });
               });
+            } else {
+              reject(data.errors);
             }
           })
           .catch(error => {
@@ -80,9 +85,9 @@ export const useUserStore = defineStore({
       return new Promise<RefreshTokenResult>((resolve, reject) => {
         refreshTokenApi(data)
           .then(data => {
-            if (data) {
+            if (data.succeeded) {
               setToken(data.data);
-              resolve(data);
+              resolve(data.data);
             }
           })
           .catch(error => {
