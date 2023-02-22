@@ -66,15 +66,6 @@ export function setToken(data: DataInfo<Date>) {
   }
 }
 
-export function setRoles(username: string, roles: Array<string>) {
-  const sRoles = storageSession().getItem<DataInfo<number>>(sessionKey) ?? {
-    roles: []
-  };
-  useUserStoreHook().SET_ROLES(roles);
-  sRoles.roles = roles;
-  storageSession().setItem(sessionKey, sRoles);
-}
-
 /** 删除`token`以及key值为`user-info`的session信息 */
 export function removeToken() {
   Cookies.remove(TokenKey);
