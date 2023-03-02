@@ -1,15 +1,16 @@
 <script setup lang="ts">
 import dayjs from "dayjs";
-import axios from "axios";
+import { http } from "@/utils/http";
 import MdEditor from "md-editor-v3";
 import Bar from "./components/Bar.vue";
 import Pie from "./components/Pie.vue";
-import Line from "./components/Line.vue";
 import TypeIt from "@/components/ReTypeit";
 import { ref, computed, markRaw } from "vue";
-import Github from "./components/Github.vue";
 import { randomColor } from "@pureadmin/utils";
 import { useRenderFlicker } from "@/components/ReFlicker";
+import { ApiResponse } from "@/utils/apiresponse";
+import HoldStock from "@/views/welcome/components/HoldStock.vue";
+import SurgedLimitLine from "@/views/welcome/components/SurgedLimitLine.vue";
 
 defineOptions({
   name: "Welcome"
@@ -20,25 +21,41 @@ const loading = ref<boolean>(true);
 const titleClass = computed(() => {
   return ["text-base", "font-medium"];
 });
-
 setTimeout(() => {
   loading.value = !loading.value;
 }, 800);
+export type PerceptionResult = {
+  /** 用户名 */
+  itemCount: number;
+  /** 当前登陆用户的角色 */
+  items: Array<PerceptionItem>;
+};
+export type PerceptionItem = {
+  /** 用户名 */
+  content: number;
+  /** 当前登陆用户的角色 */
+  createdAt: string;
+};
 
-axios
-  .get("https://api.github.com/repos/pure-admin/vue-pure-admin/releases")
+http
+  .request<ApiResponse<PerceptionResult>>(
+    "get",
+    import.meta.env.VITE_API_BASE_URL + "/api/stock/perception"
+  )
   .then(res => {
-    list.value = res.data.map(v => {
-      return {
-        content: v.body,
-        timestamp: dayjs(v.published_at).format("YYYY/MM/DD hh:mm:ss A"),
-        icon: markRaw(
-          useRenderFlicker({
-            background: randomColor({ type: "hex" }) as string
-          })
-        )
-      };
-    });
+    if (res.succeeded) {
+      list.value = res.data.items.map(v => {
+        return {
+          content: v.content,
+          timestamp: dayjs(v.createdAt).format("YYYY/MM/DD hh:mm:ss A"),
+          icon: markRaw(
+            useRenderFlicker({
+              background: randomColor({ type: "hex" }) as string
+            })
+          )
+        };
+      });
+    }
   });
 </script>
 
@@ -67,14 +84,10 @@ axios
       >
         <el-card shadow="never" style="height: 347px">
           <template #header>
-            <a
-              :class="titleClass"
-              href="https://github.com/pure-admin/vue-pure-admin/releases"
-              target="_black"
-            >
+            <a :class="titleClass" href="#" target="_black">
               <TypeIt
                 :className="'type-it2'"
-                :values="['PureAdmin 版本日志']"
+                :values="['交易心得']"
                 :cursor="false"
                 :speed="80"
               />
@@ -129,7 +142,7 @@ axios
             >
               <TypeIt
                 :className="'type-it1'"
-                :values="['GitHub信息']"
+                :values="['持仓信息']"
                 :cursor="false"
                 :speed="120"
               />
@@ -137,7 +150,9 @@ axios
           </template>
           <el-skeleton animated :rows="7" :loading="loading">
             <template #default>
-              <Github />
+              <el-scrollbar height="324px">
+                <HoldStock />
+              </el-scrollbar>
             </template>
           </el-skeleton>
         </el-card>
@@ -172,7 +187,7 @@ axios
             >
               <TypeIt
                 :className="'type-it4'"
-                :values="['GitHub折线图信息']"
+                :values="['涨停折线图信息']"
                 :cursor="false"
                 :speed="120"
               />
@@ -180,7 +195,7 @@ axios
           </template>
           <el-skeleton animated :rows="7" :loading="loading">
             <template #default>
-              <Line />
+              <SurgedLimitLine />
             </template>
           </el-skeleton>
         </el-card>

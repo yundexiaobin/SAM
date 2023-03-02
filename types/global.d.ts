@@ -66,6 +66,7 @@ declare global {
     VITE_COMPRESSION: ViteCompression;
     VITE_AUTH_SERVER: string;
     VITE_API_BASE_URL: string;
+    VITE_SAM_BASE_URL: string;
   }
 
   /**
