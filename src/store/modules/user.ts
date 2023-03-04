@@ -4,11 +4,10 @@ import { userType } from "./types";
 import { routerArrays } from "@/layout/types";
 import { router, resetRouter } from "@/router";
 import { storageSession } from "@pureadmin/utils";
-import { getLogin, getProfile, refreshTokenApi } from "@/api/user";
-import { UserResult, RefreshTokenResult } from "@/api/user";
 import { useMultiTagsStoreHook } from "@/store/modules/multiTags";
 import { type DataInfo, setToken, removeToken, sessionKey } from "@/utils/auth";
-import { ApiResponse } from "@/utils/apiresponse";
+import { http } from "@/utils/http";
+import { LoginOutput } from "@/api-services/data-contracts";
 
 export const useUserStore = defineStore({
   id: "pure-user",
@@ -42,32 +41,30 @@ export const useUserStore = defineStore({
     },
     /** 登入 */
     async loginByUsername(data) {
-      return new Promise<ApiResponse<UserResult>>((resolve, reject) => {
-        getLogin(data)
-          .then(data => {
-            if (data.succeeded) {
-              return new Promise(() => {
-                getProfile(data)
-                  .then(r => {
-                    if (r.succeeded) {
-                      data.data.username = r.data.userName;
-                      data.data.roles = r.data.extraProperties.Roles;
-                      setToken(data.data);
-                      resolve(data);
-                    } else {
-                      reject(r.errors);
-                    }
-                  })
-                  .catch(error => {
-                    reject(error);
-                  });
+      return new Promise<LoginOutput>((resolve, reject) => {
+        http.api
+          .apiSysAuthLoginPost({
+            account: data.username,
+            password: data.password
+          })
+          .then(rs => {
+            console.info(rs);
+            if (rs.status === 200 && rs.data.code === 200) {
+              const outputDto = rs.data.result;
+              setToken({
+                accessToken: outputDto.accessToken,
+                refreshToken: outputDto.refreshToken,
+                expires: outputDto.expires,
+                username: outputDto.username,
+                roles: outputDto.roles
               });
+              resolve(outputDto);
             } else {
-              reject(data.errors);
+              reject(rs.data.message);
             }
           })
-          .catch(error => {
-            reject(error);
+          .catch(reason => {
+            reject(reason);
           });
       });
     },
@@ -82,18 +79,25 @@ export const useUserStore = defineStore({
     },
     /** 刷新`token` */
     async handRefreshToken(data) {
-      return new Promise<RefreshTokenResult>((resolve, reject) => {
-        refreshTokenApi(data)
-          .then(data => {
-            if (data.succeeded) {
-              setToken(data.data);
-              resolve(data.data);
-            }
-          })
-          .catch(error => {
-            reject(error);
-          });
-      });
+      let token = "";
+      await http.api
+        .apiSysAuthRefreshAccessTokenPost({
+          refreshToken: data.refreshToken
+        })
+        .then(result => {
+          if (result.status === 200 && result.data.code === 200) {
+            const outputDto = result.data.result;
+            setToken({
+              accessToken: outputDto.accessToken,
+              refreshToken: outputDto.refreshToken,
+              expires: outputDto.expires,
+              username: null,
+              roles: null
+            });
+            token = outputDto.accessToken;
+          }
+        });
+      return token;
     }
   }
 });

@@ -2,11 +2,9 @@ import Cookies from "js-cookie";
 import { storageSession } from "@pureadmin/utils";
 import { useUserStoreHook } from "@/store/modules/user";
 
-export interface DataInfo<T> {
+export interface TokenInfo {
   /** token */
   accessToken: string;
-  /** `accessToken`的过期时间（时间戳） */
-  expires: T;
   /** 用于调用刷新accessToken的接口时所需的token */
   refreshToken: string;
   /** 用户名 */
@@ -19,7 +17,7 @@ export const sessionKey = "user-info";
 export const TokenKey = "authorized-token";
 
 /** 获取`token` */
-export function getToken(): DataInfo<number> {
+export function getToken(): TokenInfo {
   // 此处与`TokenKey`相同，此写法解决初始化时`Cookies`中不存在`TokenKey`报错
   return Cookies.get(TokenKey)
     ? JSON.parse(Cookies.get(TokenKey))
@@ -32,24 +30,20 @@ export function getToken(): DataInfo<number> {
  * 将`accessToken`、`expires`这两条信息放在key值为authorized-token的cookie里（过期自动销毁）
  * 将`username`、`roles`、`refreshToken`、`expires`这四条信息放在key值为`user-info`的sessionStorage里（浏览器关闭自动销毁）
  */
-export function setToken(data: DataInfo<Date>) {
-  let expires = 0;
+export function setToken(data: TokenInfo) {
   const { accessToken, refreshToken } = data;
-  expires = new Date(data.expires).getTime(); // 如果后端直接设置时间戳，将此处代码改为expires = data.expires，然后把上面的DataInfo<Date>改成DataInfo<number>即可
-  const cookieString = JSON.stringify({ accessToken, expires });
+  const cookieString = JSON.stringify({ accessToken, refreshToken });
 
-  expires > 0
-    ? Cookies.set(TokenKey, cookieString, {
-        expires: (expires - Date.now()) / 86400000
-      })
-    : Cookies.set(TokenKey, cookieString);
+  Cookies.set(TokenKey, cookieString, {
+    secure: true,
+    sameSite: "lax"
+  });
 
   function setSessionKey(username: string, roles: Array<string>) {
     useUserStoreHook().SET_USERNAME(username);
     useUserStoreHook().SET_ROLES(roles);
     storageSession().setItem(sessionKey, {
       refreshToken,
-      expires,
       username,
       roles
     });
@@ -59,15 +53,14 @@ export function setToken(data: DataInfo<Date>) {
     setSessionKey(username, roles);
   } else {
     const username =
-      storageSession().getItem<DataInfo<number>>(sessionKey)?.username ?? "";
-    const roles =
-      storageSession().getItem<DataInfo<number>>(sessionKey)?.roles ?? [];
+      storageSession().getItem<TokenInfo>(sessionKey)?.username ?? "";
+    const roles = storageSession().getItem<TokenInfo>(sessionKey)?.roles ?? [];
     setSessionKey(username, roles);
   }
 }
 
 export function setRoles(username: string, roles: Array<string>) {
-  const sRoles = storageSession().getItem<DataInfo<number>>(sessionKey) ?? {
+  const sRoles = storageSession().getItem<TokenInfo>(sessionKey) ?? {
     roles: []
   };
   useUserStoreHook().SET_ROLES(roles);

@@ -11,8 +11,8 @@ import {
 } from "./types.d";
 import { stringify } from "qs";
 import NProgress from "../progress";
-import { getToken, formatToken } from "@/utils/auth";
-import { useUserStoreHook } from "@/store/modules/user";
+import { getToken, formatToken, setToken } from "@/utils/auth";
+import { Api } from "@/api-services/Api";
 
 // 相关配置请参考：www.axios-js.com/zh-cn/docs/#axios-request-config-1
 const defaultConfig: AxiosRequestConfig = {
@@ -29,17 +29,32 @@ const defaultConfig: AxiosRequestConfig = {
   }
 };
 
+const apiAxiosConfig: AxiosRequestConfig = {
+  // 请求超时时间
+  timeout: 10000,
+  headers: {
+    Accept: "application/json, text/plain, */*",
+    "Content-Type": "application/json",
+    "X-Requested-With": "XMLHttpRequest"
+  },
+  baseURL: import.meta.env.VITE_API_BASE_URL,
+  // 数组格式参数序列化（https://github.com/axios/axios/issues/5142）
+  paramsSerializer: {
+    serialize: stringify as unknown as CustomParamsSerializer
+  }
+};
+
 class PureHttp {
   constructor() {
-    this.httpInterceptorsRequest();
-    this.httpInterceptorsResponse();
+    this.httpInterceptorsRequest(PureHttp.axiosInstance);
+    this.httpInterceptorsResponse(PureHttp.axiosInstance);
+
+    this.AxiosInterceptorsRequest(this.api.instance);
+    this.AxiosInterceptorsResponse(this.api.instance);
   }
 
   /** token过期后，暂存待执行的请求 */
   private static requests = [];
-
-  /** 防止重复刷新token */
-  private static isRefreshing = false;
 
   /** 初始化配置对象 */
   private static initConfig: PureHttpRequestConfig = {};
@@ -47,19 +62,66 @@ class PureHttp {
   /** 保存当前Axios实例对象 */
   private static axiosInstance: AxiosInstance = Axios.create(defaultConfig);
 
-  /** 重连原始请求 */
-  private static retryOriginalRequest(config: PureHttpRequestConfig) {
-    return new Promise(resolve => {
-      PureHttp.requests.push((token: string) => {
-        config.headers["Authorization"] = formatToken(token);
-        resolve(config);
-      });
+  public api: Api = new Api({
+    ...apiAxiosConfig
+  });
+
+  /** 请求拦截 */
+  private AxiosInterceptorsRequest(instance: AxiosInstance): void {
+    instance.interceptors.request.use(async (config: PureHttpRequestConfig) => {
+      // 开启进度条动画
+      NProgress.start();
+      // 优先判断post/get等方法是否传入回掉，否则执行初始化设置等回掉
+      if (typeof config.beforeRequestCallback === "function") {
+        config.beforeRequestCallback(config);
+        return config;
+      }
+
+      if (PureHttp.initConfig.beforeRequestCallback) {
+        PureHttp.initConfig.beforeRequestCallback(config);
+        return config;
+      }
+
+      /** 请求白名单，放置一些不需要token的接口（通过设置请求白名单，防止token过期后再请求造成的死循环问题） */
+      const whiteList = ["/login"];
+      if (whiteList.some(v => config.url.indexOf(v) > -1)) {
+        return config;
+      }
+      const data = getToken();
+      if (data) {
+        config.headers["Authorization"] = formatToken(data.accessToken);
+        config.headers["X-Authorization"] = formatToken(data.refreshToken);
+      }
+      return config;
+    });
+  }
+
+  private AxiosInterceptorsResponse(instance: AxiosInstance): void {
+    instance.interceptors.response.use((response: PureHttpResponse) => {
+      const $config = response.config;
+      // 关闭进度条动画
+      NProgress.done();
+      // 优先判断post/get等方法是否传入回掉，否则执行初始化设置等回掉
+      if (typeof $config.beforeResponseCallback === "function") {
+        $config.beforeResponseCallback(response);
+        return response;
+      }
+      if (PureHttp.initConfig.beforeResponseCallback) {
+        PureHttp.initConfig.beforeResponseCallback(response);
+        return response;
+      }
+      const newToken = response.headers["Authorization"];
+      const newRefreshToken = response.headers["X-Authorization"];
+      if (newToken && newRefreshToken) {
+        setToken({ accessToken: newToken, refreshToken: newRefreshToken });
+      }
+      return response;
     });
   }
 
   /** 请求拦截 */
-  private httpInterceptorsRequest(): void {
-    PureHttp.axiosInstance.interceptors.request.use(
+  private httpInterceptorsRequest(instance: AxiosInstance): void {
+    instance.interceptors.request.use(
       async (config: PureHttpRequestConfig) => {
         // 开启进度条动画
         NProgress.start();
@@ -72,42 +134,7 @@ class PureHttp {
           PureHttp.initConfig.beforeRequestCallback(config);
           return config;
         }
-        /** 请求白名单，放置一些不需要token的接口（通过设置请求白名单，防止token过期后再请求造成的死循环问题） */
-        const whiteList = ["/refreshToken", "/login"];
-        return whiteList.some(v => config.url.indexOf(v) > -1)
-          ? config
-          : new Promise(resolve => {
-              const data = getToken();
-              if (data) {
-                const now = new Date().getTime();
-                const expired = parseInt(data.expires) - now <= 0;
-                if (expired) {
-                  if (!PureHttp.isRefreshing) {
-                    PureHttp.isRefreshing = true;
-                    // token过期刷新
-                    useUserStoreHook()
-                      .handRefreshToken({ refreshToken: data.refreshToken })
-                      .then(res => {
-                        const token = res.accessToken;
-                        config.headers["Authorization"] = formatToken(token);
-                        PureHttp.requests.forEach(cb => cb(token));
-                        PureHttp.requests = [];
-                      })
-                      .finally(() => {
-                        PureHttp.isRefreshing = false;
-                      });
-                  }
-                  resolve(PureHttp.retryOriginalRequest(config));
-                } else {
-                  config.headers["Authorization"] = formatToken(
-                    data.accessToken
-                  );
-                  resolve(config);
-                }
-              } else {
-                resolve(config);
-              }
-            });
+        return config;
       },
       error => {
         return Promise.reject(error);
@@ -116,8 +143,7 @@ class PureHttp {
   }
 
   /** 响应拦截 */
-  private httpInterceptorsResponse(): void {
-    const instance = PureHttp.axiosInstance;
+  private httpInterceptorsResponse(instance: AxiosInstance): void {
     instance.interceptors.response.use(
       (response: PureHttpResponse) => {
         const $config = response.config;
