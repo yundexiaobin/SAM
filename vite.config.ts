@@ -9,12 +9,14 @@ import { UserConfigExport, ConfigEnv, loadEnv } from "vite";
 /** 当前执行node命令时文件夹的地址（工作目录） */
 const root: string = process.cwd();
 
+/**  npx swagger-typescript-api --templates ./src/api-templates -p https://localhost:5001/swagger/All%20Groups/swagger.json  -o ./src/api-services -n samApi.ts */
 /** 路径查找 */
 const pathResolve = (dir: string): string => {
   return resolve(__dirname, ".", dir);
 };
 
 if (process.env.NODE_ENV === "development") {
+  // eslint-disable-next-line @typescript-eslint/no-var-requires
   const { generateApi } = require("swagger-typescript-api");
   generateApi({
     name: "SamApi.ts",
