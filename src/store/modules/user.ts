@@ -5,7 +5,12 @@ import { routerArrays } from "@/layout/types";
 import { router, resetRouter } from "@/router";
 import { storageSession } from "@pureadmin/utils";
 import { useMultiTagsStoreHook } from "@/store/modules/multiTags";
-import { type DataInfo, setToken, removeToken, sessionKey } from "@/utils/auth";
+import {
+  type TokenInfo,
+  setToken,
+  removeToken,
+  sessionKey
+} from "@/utils/auth";
 import { http } from "@/utils/http";
 import { LoginOutput } from "@/api-services/data-contracts";
 
@@ -13,10 +18,9 @@ export const useUserStore = defineStore({
   id: "pure-user",
   state: (): userType => ({
     // 用户名
-    username:
-      storageSession().getItem<DataInfo<number>>(sessionKey)?.username ?? "",
+    username: storageSession().getItem<TokenInfo>(sessionKey)?.username ?? "",
     // 页面级别权限
-    roles: storageSession().getItem<DataInfo<number>>(sessionKey)?.roles ?? [],
+    roles: storageSession().getItem<TokenInfo>(sessionKey)?.roles ?? [],
     // 前端生成的验证码（按实际需求替换）
     verifyCode: "",
     // 判断登录页面显示哪个组件（0：登录（默认）、1：手机登录、2：二维码登录、3：注册、4：忘记密码）
@@ -54,7 +58,6 @@ export const useUserStore = defineStore({
               setToken({
                 accessToken: outputDto.accessToken,
                 refreshToken: outputDto.refreshToken,
-                expires: outputDto.expires,
                 username: outputDto.username,
                 roles: outputDto.roles
               });
@@ -90,7 +93,6 @@ export const useUserStore = defineStore({
             setToken({
               accessToken: outputDto.accessToken,
               refreshToken: outputDto.refreshToken,
-              expires: outputDto.expires,
               username: null,
               roles: null
             });

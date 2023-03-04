@@ -2,7 +2,7 @@ import "@/utils/sso";
 import { getConfig } from "@/config";
 import NProgress from "@/utils/progress";
 import { transformI18n } from "@/plugins/i18n";
-import { sessionKey, type DataInfo } from "@/utils/auth";
+import { sessionKey, TokenInfo } from "@/utils/auth";
 import { useMultiTagsStoreHook } from "@/store/modules/multiTags";
 import { usePermissionStoreHook } from "@/store/modules/permission";
 import {
@@ -105,7 +105,7 @@ router.beforeEach((to: toRouteType, _from, next) => {
       handleAliveRoute(newMatched);
     }
   }
-  const userInfo = storageSession().getItem<DataInfo<number>>(sessionKey);
+  const userInfo = storageSession().getItem<TokenInfo>(sessionKey);
   NProgress.start();
   const externalLink = isUrl(to?.name as string);
   if (!externalLink) {

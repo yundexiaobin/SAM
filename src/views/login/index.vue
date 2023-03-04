@@ -73,14 +73,11 @@ const onLogin = async (formEl: FormInstance | undefined) => {
           password: ruleForm.password,
           rememberMe: checked.value
         })
-        .then(d => {
-          console.info(d);
-          console.info("loginsuccess");
+        .then(() => {
           // 获取后端路由
           initRouter()
             .then(() => {
               router.push("/");
-              console.info("initRouter");
               message("登录成功", { type: "success" });
             })
             .catch(reason => console.error(reason));
