@@ -57,7 +57,6 @@ import {
   AdminResultLoginOutput,
   AdminResultLoginUserOutput,
   AdminResultObject,
-  AdminResultRefreshTokenDto,
   AdminResultSqlSugarPagedListJobOutput,
   AdminResultSqlSugarPagedListSysCodeGen,
   AdminResultSqlSugarPagedListSysConfig,
@@ -120,7 +119,6 @@ import {
   MessageInput,
   NoticeInput,
   NoticeTypeEnum,
-  RefreshTokenInput,
   ResetPwdUserInput,
   RoleInput,
   RoleMenuInput,
@@ -217,29 +215,6 @@ export class Api<
       path: `/api/sysAuth/refreshToken/${accessToken}`,
       method: "GET",
       secure: true,
-      format: "json",
-      ...params
-    });
-  /**
-   * No description
-   *
-   * @tags sysAuth
-   * @name ApiSysAuthRefreshAccessTokenPost
-   * @summary 刷新AccessToken
-   * @request POST:/api/sysAuth/refreshAccessToken
-   * @secure
-   * @response `200` `AdminResultRefreshTokenDto` Success
-   */
-  apiSysAuthRefreshAccessTokenPost = (
-    data: RefreshTokenInput,
-    params: RequestParams = {}
-  ) =>
-    this.request<AdminResultRefreshTokenDto, any>({
-      path: `/api/sysAuth/refreshAccessToken`,
-      method: "POST",
-      body: data,
-      secure: true,
-      type: ContentType.Json,
       format: "json",
       ...params
     });

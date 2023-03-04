@@ -1863,27 +1863,6 @@ export interface AdminResultObject {
 }
 
 /** 全局返回结果 */
-export interface AdminResultRefreshTokenDto {
-  /**
-   * 状态码
-   * @format int32
-   */
-  code?: number;
-  /** 类型success、warning、error */
-  type?: string | null;
-  /** 错误信息 */
-  message?: string | null;
-  result?: RefreshTokenDto;
-  /** 附加数据 */
-  extras?: any;
-  /**
-   * 时间
-   * @format date-time
-   */
-  time?: string;
-}
-
-/** 全局返回结果 */
 export interface AdminResultSqlSugarPagedListJobOutput {
   /**
    * 状态码
@@ -2994,8 +2973,6 @@ export interface LoginOutput {
   /** 刷新Token */
   refreshToken?: string | null;
   username?: string | null;
-  /** @format int64 */
-  expires?: number;
   roles?: string[] | null;
 }
 
@@ -3150,17 +3127,6 @@ export enum PlatformTypeEnum {
   Value4 = 4,
   Value5 = 5,
   Value6 = 6
-}
-
-export interface RefreshTokenDto {
-  accessToken?: string | null;
-  refreshToken?: string | null;
-  /** @format int64 */
-  expires?: number;
-}
-
-export interface RefreshTokenInput {
-  refreshToken?: string | null;
 }
 
 export interface ResetPwdUserInput {

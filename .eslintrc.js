@@ -73,6 +73,7 @@ module.exports = {
     }
   ],
   rules: {
+    "@typescript-eslint/no-var-requires": "off",
     "vue/no-v-html": "off",
     "vue/require-default-prop": "off",
     "vue/require-explicit-emits": "off",
@@ -117,4 +118,4 @@ module.exports = {
       }
     ]
   }
-}
+};
