@@ -52,7 +52,6 @@ export const useUserStore = defineStore({
             password: data.password
           })
           .then(rs => {
-            console.info(rs);
             if (rs.status === 200 && rs.data.code === 200) {
               const outputDto = rs.data.result;
               setToken({

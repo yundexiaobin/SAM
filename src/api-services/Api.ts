@@ -42,6 +42,7 @@ import {
   AdminResultListObject,
   AdminResultListRoleOutput,
   AdminResultListString,
+  AdminResultListSurgedDeclineInfoDto,
   AdminResultListSysConfig,
   AdminResultListSysDictData,
   AdminResultListSysDictType,
@@ -57,6 +58,9 @@ import {
   AdminResultLoginOutput,
   AdminResultLoginUserOutput,
   AdminResultObject,
+  AdminResultPageQueryResultStockDto,
+  AdminResultPageQueryResultStockOptionalDto,
+  AdminResultPageQueryResultStockPerceptionDto,
   AdminResultSqlSugarPagedListJobOutput,
   AdminResultSqlSugarPagedListSysCodeGen,
   AdminResultSqlSugarPagedListSysConfig,
@@ -125,6 +129,7 @@ import {
   RoleOrgInput,
   SignatureInput,
   StatusEnum,
+  StockPerceptionRequestDto,
   SysCodeGen,
   SysOnlineUser,
   SysUser,
@@ -4474,6 +4479,186 @@ export class Api<
       path: `/api/public/wallpaper`,
       method: "GET",
       secure: true,
+      ...params
+    });
+  /**
+   * No description
+   *
+   * @tags sync
+   * @name ApiSyncSyncStructurePost
+   * @request POST:/api/sync/syncStructure
+   * @secure
+   * @response `200` `AdminResultString` Success
+   */
+  apiSyncSyncStructurePost = (params: RequestParams = {}) =>
+    this.request<AdminResultString, any>({
+      path: `/api/sync/syncStructure`,
+      method: "POST",
+      secure: true,
+      format: "json",
+      ...params
+    });
+  /**
+   * No description
+   *
+   * @tags sync
+   * @name ApiSyncSyncTradeDayPost
+   * @request POST:/api/sync/syncTradeDay
+   * @secure
+   * @response `200` `AdminResultString` Success
+   */
+  apiSyncSyncTradeDayPost = (params: RequestParams = {}) =>
+    this.request<AdminResultString, any>({
+      path: `/api/sync/syncTradeDay`,
+      method: "POST",
+      secure: true,
+      format: "json",
+      ...params
+    });
+  /**
+   * No description
+   *
+   * @tags sync
+   * @name ApiSyncSyncStockItemPost
+   * @request POST:/api/sync/syncStockItem
+   * @secure
+   * @response `200` `AdminResultString` Success
+   */
+  apiSyncSyncStockItemPost = (params: RequestParams = {}) =>
+    this.request<AdminResultString, any>({
+      path: `/api/sync/syncStockItem`,
+      method: "POST",
+      secure: true,
+      format: "json",
+      ...params
+    });
+  /**
+   * No description
+   *
+   * @tags sync
+   * @name ApiSyncSyncStockDailyPost
+   * @request POST:/api/sync/syncStockDaily
+   * @secure
+   * @response `200` `AdminResultString` Success
+   */
+  apiSyncSyncStockDailyPost = (params: RequestParams = {}) =>
+    this.request<AdminResultString, any>({
+      path: `/api/sync/syncStockDaily`,
+      method: "POST",
+      secure: true,
+      format: "json",
+      ...params
+    });
+  /**
+   * No description
+   *
+   * @tags stock
+   * @name ApiStockSurgedLimitStockGet
+   * @request GET:/api/stock/surgedLimitStock
+   * @secure
+   * @response `200` `AdminResultPageQueryResultStockDto` Success
+   */
+  apiStockSurgedLimitStockGet = (
+    query?: {
+      /** @format date-time */
+      TradeDay?: string;
+      /** @format int32 */
+      HistoryDay?: number;
+      /** @format int32 */
+      PageNumber?: number;
+      /** @format int32 */
+      PageSize?: number;
+    },
+    params: RequestParams = {}
+  ) =>
+    this.request<AdminResultPageQueryResultStockDto, any>({
+      path: `/api/stock/surgedLimitStock`,
+      method: "GET",
+      query: query,
+      secure: true,
+      format: "json",
+      ...params
+    });
+  /**
+   * No description
+   *
+   * @tags stock
+   * @name ApiStockSurgedDeclineInfoGet
+   * @request GET:/api/stock/surgedDeclineInfo
+   * @secure
+   * @response `200` `AdminResultListSurgedDeclineInfoDto` Success
+   */
+  apiStockSurgedDeclineInfoGet = (params: RequestParams = {}) =>
+    this.request<AdminResultListSurgedDeclineInfoDto, any>({
+      path: `/api/stock/surgedDeclineInfo`,
+      method: "GET",
+      secure: true,
+      format: "json",
+      ...params
+    });
+  /**
+   * No description
+   *
+   * @tags stock
+   * @name ApiStockOptionalGet
+   * @request GET:/api/stock/optional
+   * @secure
+   * @response `200` `AdminResultPageQueryResultStockOptionalDto` Success
+   */
+  apiStockOptionalGet = (params: RequestParams = {}) =>
+    this.request<AdminResultPageQueryResultStockOptionalDto, any>({
+      path: `/api/stock/optional`,
+      method: "GET",
+      secure: true,
+      format: "json",
+      ...params
+    });
+  /**
+   * No description
+   *
+   * @tags stock
+   * @name ApiStockWritePerceptionPost
+   * @request POST:/api/stock/writePerception
+   * @secure
+   * @response `200` `AdminResultBoolean` Success
+   */
+  apiStockWritePerceptionPost = (
+    data: StockPerceptionRequestDto,
+    params: RequestParams = {}
+  ) =>
+    this.request<AdminResultBoolean, any>({
+      path: `/api/stock/writePerception`,
+      method: "POST",
+      body: data,
+      secure: true,
+      type: ContentType.Json,
+      format: "json",
+      ...params
+    });
+  /**
+   * No description
+   *
+   * @tags stock
+   * @name ApiStockPerceptionGet
+   * @request GET:/api/stock/perception
+   * @secure
+   * @response `200` `AdminResultPageQueryResultStockPerceptionDto` Success
+   */
+  apiStockPerceptionGet = (
+    query?: {
+      /** @format int32 */
+      PageNumber?: number;
+      /** @format int32 */
+      PageSize?: number;
+    },
+    params: RequestParams = {}
+  ) =>
+    this.request<AdminResultPageQueryResultStockPerceptionDto, any>({
+      path: `/api/stock/perception`,
+      method: "GET",
+      query: query,
+      secure: true,
+      format: "json",
       ...params
     });
 }

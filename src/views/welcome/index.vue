@@ -8,7 +8,6 @@ import TypeIt from "@/components/ReTypeit";
 import { ref, computed, markRaw } from "vue";
 import { randomColor } from "@pureadmin/utils";
 import { useRenderFlicker } from "@/components/ReFlicker";
-import { ApiResponse } from "@/utils/apiresponse";
 import HoldStock from "@/views/welcome/components/HoldStock.vue";
 import SurgedLimitLine from "@/views/welcome/components/SurgedLimitLine.vue";
 
@@ -37,26 +36,22 @@ export type PerceptionItem = {
   createdAt: string;
 };
 
-http
-  .request<ApiResponse<PerceptionResult>>(
-    "get",
-    import.meta.env.VITE_API_BASE_URL + "/api/stock/perception"
-  )
-  .then(res => {
-    if (res.succeeded) {
-      list.value = res.data.items.map(v => {
-        return {
-          content: v.content,
-          timestamp: dayjs(v.createdAt).format("YYYY/MM/DD hh:mm:ss A"),
-          icon: markRaw(
-            useRenderFlicker({
-              background: randomColor({ type: "hex" }) as string
-            })
-          )
-        };
-      });
-    }
-  });
+http.api.apiStockPerceptionGet({}).then(res => {
+  if (res.status === 200 && res.data.code === 200) {
+    const items = res.data.result.items;
+    list.value = items.map(v => {
+      return {
+        content: v.content,
+        timestamp: dayjs(v.writeTime).format("YYYY/MM/DD hh:mm:ss A"),
+        icon: markRaw(
+          useRenderFlicker({
+            background: randomColor({ type: "hex" }) as string
+          })
+        )
+      };
+    });
+  }
+});
 </script>
 
 <template>

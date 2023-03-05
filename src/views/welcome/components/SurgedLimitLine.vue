@@ -9,7 +9,6 @@ import {
   type EchartOptions
 } from "@pureadmin/utils";
 import { http } from "@/utils/http";
-import { ApiResponse } from "@/utils/apiresponse";
 import { message } from "@/utils/message";
 
 const { isDark } = useDark();
@@ -34,145 +33,141 @@ const { setOptions, getInstance, resize } = useECharts(
   { theme }
 );
 
-http
-  .request<ApiResponse<Array<SurgedDeclineInfoDto>>>(
-    "get",
-    import.meta.env.VITE_API_BASE_URL + "/api/stock/surged-decline-info"
-  )
-  .then(res => {
-    if (res.succeeded) {
-      res.data.map(v => {
-        surgedData.push(v.surgedCount);
-        declineData.push(v.declineCount);
-        dayData.push(v.day);
-        setOptions(
-          {
-            tooltip: {
-              trigger: "axis",
-              axisPointer: {
-                type: "shadow"
-              }
-            },
-            grid: {
-              bottom: "20px",
-              right: "10px"
-            },
-            legend: {
-              //@ts-expect-error
-              right: true,
-              data: ["涨停", "跌停"]
-            },
-            calculable: true,
-            xAxis: [
-              {
-                triggerEvent: true,
-                type: "category",
-                splitLine: {
-                  show: false
-                },
-                axisTick: {
-                  show: false
-                },
-                data: dayData
-              }
-            ],
-            yAxis: [
-              {
-                triggerEvent: true,
-                type: "value",
-                splitLine: {
-                  show: false
-                },
-                axisLine: {
-                  show: true
-                }
-              }
-            ],
-            dataZoom: [
-              {
-                type: "slider",
-                show: false,
-                realtime: true,
-                startValue: 0,
-                endValue: 24
-              }
-            ],
-            series: [
-              {
-                name: "涨停",
-                type: "line",
-                symbolSize: 10,
-                symbol: "circle",
-                color: "#f10909",
-                markPoint: {
-                  label: {
-                    color: "#fff"
-                  },
-                  data: [
-                    {
-                      type: "max",
-                      name: "最大值"
-                    },
-                    {
-                      type: "min",
-                      name: "最小值"
-                    }
-                  ]
-                },
-                data: surgedData
+http.api.apiStockSurgedDeclineInfoGet().then(res => {
+  if (res.status === 200 && res.data.code === 200) {
+    const items = res.data.result;
+    items.map(v => {
+      surgedData.push(v.surgedCount);
+      declineData.push(v.declineCount);
+      dayData.push(v.day);
+      setOptions(
+        {
+          tooltip: {
+            trigger: "axis",
+            axisPointer: {
+              type: "shadow"
+            }
+          },
+          grid: {
+            bottom: "20px",
+            right: "10px"
+          },
+          legend: {
+            //@ts-expect-error
+            right: true,
+            data: ["涨停", "跌停"]
+          },
+          calculable: true,
+          xAxis: [
+            {
+              triggerEvent: true,
+              type: "category",
+              splitLine: {
+                show: false
               },
-              {
-                name: "跌停",
-                type: "line",
-                symbolSize: 10,
-                symbol: "circle",
-                color: "#06f35c",
-                markPoint: {
-                  label: {
-                    color: "#fff"
-                  },
-                  data: [
-                    {
-                      type: "max",
-                      name: "最大值"
-                    },
-                    {
-                      type: "min",
-                      name: "最小值"
-                    }
-                  ]
-                },
-                data: declineData
+              axisTick: {
+                show: false
+              },
+              data: dayData
+            }
+          ],
+          yAxis: [
+            {
+              triggerEvent: true,
+              type: "value",
+              splitLine: {
+                show: false
+              },
+              axisLine: {
+                show: true
               }
-            ],
-            addTooltip: true
-          },
-          {
-            name: "click",
-            callback: params => {
-              console.log("click", params);
             }
-          },
-          {
-            name: "contextmenu",
-            callback: params => {
-              console.log("contextmenu", params);
+          ],
+          dataZoom: [
+            {
+              type: "slider",
+              show: false,
+              realtime: true,
+              startValue: 0,
+              endValue: 24
             }
-          },
-          // 点击空白处
-          {
-            type: "zrender",
-            name: "click",
-            callback: params => {
-              console.log("点击空白处", params);
+          ],
+          series: [
+            {
+              name: "涨停",
+              type: "line",
+              symbolSize: 10,
+              symbol: "circle",
+              color: "#f10909",
+              markPoint: {
+                label: {
+                  color: "#fff"
+                },
+                data: [
+                  {
+                    type: "max",
+                    name: "最大值"
+                  },
+                  {
+                    type: "min",
+                    name: "最小值"
+                  }
+                ]
+              },
+              data: surgedData
+            },
+            {
+              name: "跌停",
+              type: "line",
+              symbolSize: 10,
+              symbol: "circle",
+              color: "#06f35c",
+              markPoint: {
+                label: {
+                  color: "#fff"
+                },
+                data: [
+                  {
+                    type: "max",
+                    name: "最大值"
+                  },
+                  {
+                    type: "min",
+                    name: "最小值"
+                  }
+                ]
+              },
+              data: declineData
             }
+          ],
+          addTooltip: true
+        },
+        {
+          name: "click",
+          callback: params => {
+            console.log("click", params);
           }
-        );
-      });
-    } else {
-      message(res.errors, { type: "error" });
-    }
-  });
+        },
+        {
+          name: "contextmenu",
+          callback: params => {
+            console.log("contextmenu", params);
+          }
+        },
+        // 点击空白处
+        {
+          type: "zrender",
+          name: "click",
+          callback: params => {
+            console.log("点击空白处", params);
+          }
+        }
+      );
+    });
+  } else {
+    message(res.errors, { type: "error" });
+  }
+});
 
 let a = 1;
 useIntervalFn(() => {

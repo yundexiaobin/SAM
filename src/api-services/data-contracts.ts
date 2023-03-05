@@ -1533,6 +1533,28 @@ export interface AdminResultListString {
 }
 
 /** 全局返回结果 */
+export interface AdminResultListSurgedDeclineInfoDto {
+  /**
+   * 状态码
+   * @format int32
+   */
+  code?: number;
+  /** 类型success、warning、error */
+  type?: string | null;
+  /** 错误信息 */
+  message?: string | null;
+  /** 数据 */
+  result?: SurgedDeclineInfoDto[] | null;
+  /** 附加数据 */
+  extras?: any;
+  /**
+   * 时间
+   * @format date-time
+   */
+  time?: string;
+}
+
+/** 全局返回结果 */
 export interface AdminResultListSysConfig {
   /**
    * 状态码
@@ -1853,6 +1875,69 @@ export interface AdminResultObject {
   message?: string | null;
   /** 数据 */
   result?: any;
+  /** 附加数据 */
+  extras?: any;
+  /**
+   * 时间
+   * @format date-time
+   */
+  time?: string;
+}
+
+/** 全局返回结果 */
+export interface AdminResultPageQueryResultStockDto {
+  /**
+   * 状态码
+   * @format int32
+   */
+  code?: number;
+  /** 类型success、warning、error */
+  type?: string | null;
+  /** 错误信息 */
+  message?: string | null;
+  result?: PageQueryResultStockDto;
+  /** 附加数据 */
+  extras?: any;
+  /**
+   * 时间
+   * @format date-time
+   */
+  time?: string;
+}
+
+/** 全局返回结果 */
+export interface AdminResultPageQueryResultStockOptionalDto {
+  /**
+   * 状态码
+   * @format int32
+   */
+  code?: number;
+  /** 类型success、warning、error */
+  type?: string | null;
+  /** 错误信息 */
+  message?: string | null;
+  result?: PageQueryResultStockOptionalDto;
+  /** 附加数据 */
+  extras?: any;
+  /**
+   * 时间
+   * @format date-time
+   */
+  time?: string;
+}
+
+/** 全局返回结果 */
+export interface AdminResultPageQueryResultStockPerceptionDto {
+  /**
+   * 状态码
+   * @format int32
+   */
+  code?: number;
+  /** 类型success、warning、error */
+  type?: string | null;
+  /** 错误信息 */
+  message?: string | null;
+  result?: PageQueryResultStockPerceptionDto;
   /** 附加数据 */
   extras?: any;
   /**
@@ -2596,6 +2681,31 @@ export enum CultureLevelEnum {
   Value7 = 7
 }
 
+export interface DailyDto {
+  /** @format double */
+  open?: number;
+  /** @format double */
+  high?: number;
+  /** @format double */
+  low?: number;
+  /** @format double */
+  close?: number;
+  /** @format double */
+  yesterdayClose?: number;
+  /** @format double */
+  surgedLimit?: number;
+  /** @format double */
+  declineLimit?: number;
+  /** @format double */
+  change?: number;
+  /** @format double */
+  pctChg?: number;
+  /** @format double */
+  vol?: number;
+  /** @format double */
+  amount?: number;
+}
+
 /**
  * 角色数据范围枚举<br />&nbsp;全部数据 All = 1<br />&nbsp;本部门及以下数据 DeptChild = 2<br />&nbsp;本部门数据 Dept = 3<br />&nbsp;仅本人数据 Self = 4<br />&nbsp;自定义数据 Define = 5<br />
  * @format int32
@@ -3114,6 +3224,24 @@ export enum NoticeTypeEnum {
 export enum NoticeUserStatusEnum {
   Value0 = 0,
   Value1 = 1
+}
+
+export interface PageQueryResultStockDto {
+  items?: StockDto[] | null;
+  /** @format int64 */
+  itemCount?: number;
+}
+
+export interface PageQueryResultStockOptionalDto {
+  items?: StockOptionalDto[] | null;
+  /** @format int64 */
+  itemCount?: number;
+}
+
+export interface PageQueryResultStockPerceptionDto {
+  items?: StockPerceptionDto[] | null;
+  /** @format int64 */
+  itemCount?: number;
 }
 
 /**
@@ -3709,6 +3837,59 @@ export interface SqlSugarPagedListTenantOutput {
 export enum StatusEnum {
   Value1 = 1,
   Value2 = 2
+}
+
+export interface StockDto {
+  tsCode?: string | null;
+  name?: string | null;
+  todayDaily?: DailyDto;
+}
+
+export interface StockOptionalDto {
+  tsCode?: string | null;
+  name?: string | null;
+  todayDaily?: DailyDto;
+  /** @format int32 */
+  mark?: number;
+  logs?: StockOptionalLogDto[] | null;
+}
+
+export interface StockOptionalLogDto {
+  /** @format date-time */
+  tradeDay?: string;
+  /** <br />&nbsp; StockHot = 0<br />&nbsp; Avg20 = 1<br />&nbsp;止跌 StopDown = 2<br /> */
+  type?: StockOptionalLogType;
+  /** @format int32 */
+  mark?: number;
+}
+
+/**
+ * <br />&nbsp; StockHot = 0<br />&nbsp; Avg20 = 1<br />&nbsp;止跌 StopDown = 2<br />
+ * @format int32
+ */
+export enum StockOptionalLogType {
+  Value0 = 0,
+  Value1 = 1,
+  Value2 = 2
+}
+
+export interface StockPerceptionDto {
+  content?: string | null;
+  /** @format date-time */
+  writeTime?: string;
+}
+
+export interface StockPerceptionRequestDto {
+  /** @minLength 1 */
+  content: string;
+}
+
+export interface SurgedDeclineInfoDto {
+  day?: string | null;
+  /** @format int32 */
+  surgedCount?: number;
+  /** @format int32 */
+  declineCount?: number;
 }
 
 /** 代码生成表 */
