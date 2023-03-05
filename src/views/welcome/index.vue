@@ -2,7 +2,7 @@
 import dayjs from "dayjs";
 import { http } from "@/utils/http";
 import MdEditor from "md-editor-v3";
-import Bar from "./components/Bar.vue";
+// import Bar from "./components/Bar.vue";
 import Pie from "./components/Pie.vue";
 import TypeIt from "@/components/ReTypeit";
 import { ref, computed, markRaw } from "vue";
@@ -60,9 +60,9 @@ http.api.apiStockPerceptionGet({}).then(res => {
       <el-col
         :xs="24"
         :sm="24"
-        :md="12"
-        :lg="12"
-        :xl="12"
+        :md="24"
+        :lg="24"
+        :xl="24"
         class="mb-[18px]"
         v-motion
         :initial="{
@@ -77,7 +77,7 @@ http.api.apiStockPerceptionGet({}).then(res => {
           }
         }"
       >
-        <el-card shadow="never" style="height: 347px">
+        <el-card shadow="never" style="min-height: 347px">
           <template #header>
             <a :class="titleClass" href="#" target="_black">
               <TypeIt
@@ -90,7 +90,7 @@ http.api.apiStockPerceptionGet({}).then(res => {
           </template>
           <el-skeleton animated :rows="7" :loading="loading">
             <template #default>
-              <el-scrollbar height="324px">
+              <el-scrollbar height="300px">
                 <el-timeline v-show="list?.length > 0">
                   <el-timeline-item
                     v-for="(item, index) in list"
@@ -114,51 +114,6 @@ http.api.apiStockPerceptionGet({}).then(res => {
         :md="12"
         :lg="12"
         :xl="12"
-        class="mb-[18px]"
-        v-motion
-        :initial="{
-          opacity: 0,
-          y: 100
-        }"
-        :enter="{
-          opacity: 1,
-          y: 0,
-          transition: {
-            delay: 200
-          }
-        }"
-      >
-        <el-card shadow="never" style="height: 347px">
-          <template #header>
-            <a
-              :class="titleClass"
-              href="https://github.com/xiaoxian521"
-              target="_black"
-            >
-              <TypeIt
-                :className="'type-it1'"
-                :values="['持仓信息']"
-                :cursor="false"
-                :speed="120"
-              />
-            </a>
-          </template>
-          <el-skeleton animated :rows="7" :loading="loading">
-            <template #default>
-              <el-scrollbar height="324px">
-                <HoldStock />
-              </el-scrollbar>
-            </template>
-          </el-skeleton>
-        </el-card>
-      </el-col>
-
-      <el-col
-        :xs="24"
-        :sm="24"
-        :md="12"
-        :lg="8"
-        :xl="8"
         class="mb-[18px]"
         v-motion
         :initial="{
@@ -200,8 +155,8 @@ http.api.apiStockPerceptionGet({}).then(res => {
         :xs="24"
         :sm="24"
         :md="12"
-        :lg="8"
-        :xl="8"
+        :lg="12"
+        :xl="12"
         class="mb-[18px]"
         v-motion
         :initial="{
@@ -225,7 +180,7 @@ http.api.apiStockPerceptionGet({}).then(res => {
             >
               <TypeIt
                 :className="'type-it3'"
-                :values="['GitHub饼图信息']"
+                :values="['热门板块分布']"
                 :cursor="false"
                 :speed="120"
               />
@@ -238,13 +193,55 @@ http.api.apiStockPerceptionGet({}).then(res => {
           </el-skeleton>
         </el-card>
       </el-col>
+      <!--      <el-col-->
+      <!--        :xs="24"-->
+      <!--        :sm="24"-->
+      <!--        :md="12"-->
+      <!--        :lg="12"-->
+      <!--        :xl="12"-->
+      <!--        class="mb-[18px]"-->
+      <!--        v-motion-->
+      <!--        :initial="{-->
+      <!--          opacity: 0,-->
+      <!--          y: 100-->
+      <!--        }"-->
+      <!--        :enter="{-->
+      <!--          opacity: 1,-->
+      <!--          y: 0,-->
+      <!--          transition: {-->
+      <!--            delay: 400-->
+      <!--          }-->
+      <!--        }"-->
+      <!--      >-->
+      <!--        <el-card shadow="never">-->
+      <!--          <template #header>-->
+      <!--            <a-->
+      <!--              :class="titleClass"-->
+      <!--              href="https://github.com/pure-admin/vue-pure-admin"-->
+      <!--              target="_black"-->
+      <!--            >-->
+      <!--              <TypeIt-->
+      <!--                :className="'type-it5'"-->
+      <!--                :values="['关注股收益变化']"-->
+      <!--                :cursor="false"-->
+      <!--                :speed="120"-->
+      <!--              />-->
+      <!--            </a>-->
+      <!--          </template>-->
+      <!--          <el-skeleton animated :rows="7" :loading="loading">-->
+      <!--            <template #default>-->
+      <!--              <Bar />-->
+      <!--            </template>-->
+      <!--          </el-skeleton>-->
+      <!--        </el-card>-->
+      <!--      </el-col>-->
 
       <el-col
         :xs="24"
         :sm="24"
         :md="24"
-        :lg="8"
-        :xl="8"
+        :lg="24"
+        :xl="24"
         class="mb-[18px]"
         v-motion
         :initial="{
@@ -255,7 +252,7 @@ http.api.apiStockPerceptionGet({}).then(res => {
           opacity: 1,
           y: 0,
           transition: {
-            delay: 400
+            delay: 200
           }
         }"
       >
@@ -263,12 +260,12 @@ http.api.apiStockPerceptionGet({}).then(res => {
           <template #header>
             <a
               :class="titleClass"
-              href="https://github.com/pure-admin/vue-pure-admin"
+              href="https://github.com/xiaoxian521"
               target="_black"
             >
               <TypeIt
-                :className="'type-it5'"
-                :values="['GitHub柱状图信息']"
+                :className="'type-it1'"
+                :values="['今日关注']"
                 :cursor="false"
                 :speed="120"
               />
@@ -276,7 +273,7 @@ http.api.apiStockPerceptionGet({}).then(res => {
           </template>
           <el-skeleton animated :rows="7" :loading="loading">
             <template #default>
-              <Bar />
+              <HoldStock />
             </template>
           </el-skeleton>
         </el-card>
@@ -292,5 +289,10 @@ http.api.apiStockPerceptionGet({}).then(res => {
 
 .main-content {
   margin: 20px 20px 0 20px !important;
+}
+
+.timeline-scrollbar {
+  height: 324px;
+  overflow: visible;
 }
 </style>

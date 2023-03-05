@@ -78,27 +78,6 @@ export const useUserStore = defineStore({
       useMultiTagsStoreHook().handleTags("equal", [...routerArrays]);
       resetRouter();
       router.push("/login");
-    },
-    /** 刷新`token` */
-    async handRefreshToken(data) {
-      let token = "";
-      await http.api
-        .apiSysAuthRefreshAccessTokenPost({
-          refreshToken: data.refreshToken
-        })
-        .then(result => {
-          if (result.status === 200 && result.data.code === 200) {
-            const outputDto = result.data.result;
-            setToken({
-              accessToken: outputDto.accessToken,
-              refreshToken: outputDto.refreshToken,
-              username: null,
-              roles: null
-            });
-            token = outputDto.accessToken;
-          }
-        });
-      return token;
     }
   }
 });

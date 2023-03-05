@@ -55,6 +55,7 @@ import {
   AdminResultListSysRegion,
   AdminResultListSysUserExtOrg,
   AdminResultListTableOutput,
+  AdminResultListTodayAttentionDto,
   AdminResultLoginOutput,
   AdminResultLoginUserOutput,
   AdminResultObject,
@@ -123,6 +124,7 @@ import {
   MessageInput,
   NoticeInput,
   NoticeTypeEnum,
+  OptionalRequestDto,
   ResetPwdUserInput,
   RoleInput,
   RoleMenuInput,
@@ -4605,11 +4607,16 @@ export class Api<
    * @secure
    * @response `200` `AdminResultPageQueryResultStockOptionalDto` Success
    */
-  apiStockOptionalGet = (params: RequestParams = {}) =>
+  apiStockOptionalGet = (
+    data: OptionalRequestDto,
+    params: RequestParams = {}
+  ) =>
     this.request<AdminResultPageQueryResultStockOptionalDto, any>({
       path: `/api/stock/optional`,
       method: "GET",
+      body: data,
       secure: true,
+      type: ContentType.Json,
       format: "json",
       ...params
     });
@@ -4655,6 +4662,32 @@ export class Api<
   ) =>
     this.request<AdminResultPageQueryResultStockPerceptionDto, any>({
       path: `/api/stock/perception`,
+      method: "GET",
+      query: query,
+      secure: true,
+      format: "json",
+      ...params
+    });
+  /**
+   * No description
+   *
+   * @tags stock
+   * @name ApiStockTodayAttentionGet
+   * @request GET:/api/stock/todayAttention
+   * @secure
+   * @response `200` `AdminResultListTodayAttentionDto` Success
+   */
+  apiStockTodayAttentionGet = (
+    query?: {
+      /** @format int32 */
+      PageNumber?: number;
+      /** @format int32 */
+      PageSize?: number;
+    },
+    params: RequestParams = {}
+  ) =>
+    this.request<AdminResultListTodayAttentionDto, any>({
+      path: `/api/stock/todayAttention`,
       method: "GET",
       query: query,
       secure: true,

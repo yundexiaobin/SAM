@@ -1819,6 +1819,28 @@ export interface AdminResultListTableOutput {
 }
 
 /** 全局返回结果 */
+export interface AdminResultListTodayAttentionDto {
+  /**
+   * 状态码
+   * @format int32
+   */
+  code?: number;
+  /** 类型success、warning、error */
+  type?: string | null;
+  /** 错误信息 */
+  message?: string | null;
+  /** 数据 */
+  result?: TodayAttentionDto[] | null;
+  /** 附加数据 */
+  extras?: any;
+  /**
+   * 时间
+   * @format date-time
+   */
+  time?: string;
+}
+
+/** 全局返回结果 */
 export interface AdminResultLoginOutput {
   /**
    * 状态码
@@ -3226,6 +3248,13 @@ export enum NoticeUserStatusEnum {
   Value1 = 1
 }
 
+export interface OptionalRequestDto {
+  /** @format int32 */
+  pageNumber?: number;
+  /** @format int32 */
+  pageSize?: number | null;
+}
+
 export interface PageQueryResultStockDto {
   items?: StockDto[] | null;
   /** @format int64 */
@@ -3857,20 +3886,9 @@ export interface StockOptionalDto {
 export interface StockOptionalLogDto {
   /** @format date-time */
   tradeDay?: string;
-  /** <br />&nbsp; StockHot = 0<br />&nbsp; Avg20 = 1<br />&nbsp;止跌 StopDown = 2<br /> */
-  type?: StockOptionalLogType;
+  type?: string | null;
   /** @format int32 */
   mark?: number;
-}
-
-/**
- * <br />&nbsp; StockHot = 0<br />&nbsp; Avg20 = 1<br />&nbsp;止跌 StopDown = 2<br />
- * @format int32
- */
-export enum StockOptionalLogType {
-  Value0 = 0,
-  Value1 = 1,
-  Value2 = 2
 }
 
 export interface StockPerceptionDto {
@@ -5944,6 +5962,29 @@ export interface TenantUserInput {
    * @format int64
    */
   userId?: number;
+}
+
+export interface TodayAttentionDto {
+  name?: string | null;
+  tsCode?: string | null;
+  /** @format double */
+  open?: number;
+  /** @format double */
+  high?: number;
+  /** @format double */
+  low?: number;
+  /** @format double */
+  close?: number;
+  /** @format double */
+  pctChg?: number;
+  /** @format int32 */
+  mark?: number;
+  industry?: string | null;
+  concept?: string | null;
+  /** @format double */
+  boxLow?: number;
+  /** @format double */
+  boxHigh?: number;
 }
 
 /**

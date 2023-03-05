@@ -80,7 +80,14 @@ const onLogin = async (formEl: FormInstance | undefined) => {
               router.push("/");
               message("登录成功", { type: "success" });
             })
-            .catch(reason => console.error(reason));
+            .catch(reason => {
+              console.error(reason);
+              message(reason, { type: "error" });
+            });
+        })
+        .catch(reason => {
+          console.error(reason);
+          message(reason, { type: "error" });
         });
       loading.value = false;
       return fields;
