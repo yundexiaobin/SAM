@@ -4555,6 +4555,23 @@ export class Api<
   /**
    * No description
    *
+   * @tags sync
+   * @name ApiSyncStockOptionalAsyncPost
+   * @request POST:/api/sync/stockOptionalAsync
+   * @secure
+   * @response `200` `AdminResultString` Success
+   */
+  apiSyncStockOptionalAsyncPost = (params: RequestParams = {}) =>
+    this.request<AdminResultString, any>({
+      path: `/api/sync/stockOptionalAsync`,
+      method: "POST",
+      secure: true,
+      format: "json",
+      ...params
+    });
+  /**
+   * No description
+   *
    * @tags stock
    * @name ApiStockSurgedLimitStockGet
    * @request GET:/api/stock/surgedLimitStock
