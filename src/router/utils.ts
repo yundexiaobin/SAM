@@ -15,12 +15,12 @@ import {
   cloneDeep,
   isAllEmpty,
   intersection,
-  storageSession,
-  isIncludeAllChildren
+  isIncludeAllChildren,
+  storageLocal
 } from "@pureadmin/utils";
 import { getConfig } from "@/config";
 import { buildHierarchyTree } from "@/utils/tree";
-import { sessionKey, TokenInfo } from "@/utils/auth";
+import { TokenInfo, TokenKey } from "@/utils/auth";
 import { usePermissionStoreHook } from "@/store/modules/permission";
 const IFrame = () => import("@/layout/frameView.vue");
 // https://cn.vitejs.dev/guide/features.html#glob-import
@@ -31,12 +31,16 @@ import { getAsyncRoutes } from "@/api/routes";
 
 function handRank(routeInfo: any) {
   const { name, path, parentId, meta } = routeInfo;
-  return isAllEmpty(parentId)
-    ? isAllEmpty(meta?.rank) ||
+  if (
+    !(
+      isAllEmpty(meta?.rank) ||
       (meta?.rank === 0 && name !== "Home" && path !== "/")
-      ? true
-      : false
-    : false;
+    )
+  ) {
+    return isAllEmpty(parentId) ? false : false;
+  } else {
+    return isAllEmpty(parentId);
+  }
 }
 
 /** 按照路由中meta下的rank等级升序来排序路由 */
@@ -76,15 +80,12 @@ function filterChildrenTree(data: RouteComponent[]) {
 function isOneOfArray(a: Array<string>, b: Array<string>) {
   return Array.isArray(a) && Array.isArray(b)
     ? intersection(a, b).length > 0
-      ? true
-      : false
     : true;
 }
 
 /** 从sessionStorage里取出当前登陆用户的角色roles，过滤无权限的菜单 */
 function filterNoPermissionTree(data: RouteComponent[]) {
-  const currentRoles =
-    storageSession().getItem<TokenInfo>(sessionKey)?.roles ?? [];
+  const currentRoles = storageLocal().getItem<TokenInfo>(TokenKey)?.roles ?? [];
   const newTree = cloneDeep(data).filter((v: any) =>
     isOneOfArray(v.meta?.roles, currentRoles)
   );
@@ -196,7 +197,7 @@ function initRouter() {
   if (getConfig()?.CachingAsyncRoutes) {
     // 开启动态路由缓存本地sessionStorage
     const key = "async-routes";
-    const asyncRouteList = storageSession().getItem(key) as any;
+    const asyncRouteList = storageLocal().getItem(key) as any;
     if (asyncRouteList && asyncRouteList?.length > 0) {
       return new Promise(resolve => {
         handleAsyncRoutes(asyncRouteList);
@@ -206,7 +207,7 @@ function initRouter() {
       return new Promise(resolve => {
         getAsyncRoutes().then(({ data }) => {
           handleAsyncRoutes(cloneDeep(data));
-          storageSession().setItem(key, data);
+          storageLocal().setItem(key, data);
           resolve(router);
         });
       });
@@ -363,7 +364,7 @@ function hasAuth(value: string | Array<string>): boolean {
   const isAuths = isString(value)
     ? metaAuths.includes(value)
     : isIncludeAllChildren(value, metaAuths);
-  return isAuths ? true : false;
+  return isAuths;
 }
 
 export {

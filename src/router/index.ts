@@ -2,7 +2,7 @@ import "@/utils/sso";
 import { getConfig } from "@/config";
 import NProgress from "@/utils/progress";
 import { transformI18n } from "@/plugins/i18n";
-import { sessionKey, TokenInfo } from "@/utils/auth";
+import { TokenInfo, TokenKey } from "@/utils/auth";
 import { useMultiTagsStoreHook } from "@/store/modules/multiTags";
 import { usePermissionStoreHook } from "@/store/modules/permission";
 import {
@@ -22,7 +22,7 @@ import {
   formatFlatteningRoutes
 } from "./utils";
 import { buildHierarchyTree } from "@/utils/tree";
-import { isUrl, openLink, storageSession } from "@pureadmin/utils";
+import { isUrl, openLink, storageLocal } from "@pureadmin/utils";
 
 import remainingRouter from "./modules/remaining";
 
@@ -105,7 +105,7 @@ router.beforeEach((to: toRouteType, _from, next) => {
       handleAliveRoute(newMatched);
     }
   }
-  const userInfo = storageSession().getItem<TokenInfo>(sessionKey);
+  const userInfo = storageLocal().getItem<TokenInfo>(TokenKey);
   NProgress.start();
   const externalLink = isUrl(to?.name as string);
   if (!externalLink) {

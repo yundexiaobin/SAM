@@ -1155,6 +1155,27 @@ export interface AdminResultBoolean {
 }
 
 /** 全局返回结果 */
+export interface AdminResultCaptchaDto {
+  /**
+   * 状态码
+   * @format int32
+   */
+  code?: number;
+  /** 类型success、warning、error */
+  type?: string | null;
+  /** 错误信息 */
+  message?: string | null;
+  result?: CaptchaDto;
+  /** 附加数据 */
+  extras?: any;
+  /**
+   * 时间
+   * @format date-time
+   */
+  time?: string;
+}
+
+/** 全局返回结果 */
 export interface AdminResultFileOutput {
   /**
    * 状态码
@@ -2538,6 +2559,12 @@ export interface AdminResultWechatPayOutput {
    * @format date-time
    */
   time?: string;
+}
+
+export interface CaptchaDto {
+  /** @format int64 */
+  id?: number;
+  img?: string | null;
 }
 
 /**

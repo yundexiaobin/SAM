@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { initRouter } from "@/router/utils";
-import { storageSession } from "@pureadmin/utils";
+import { storageLocal } from "@pureadmin/utils";
 import { type CSSProperties, ref, computed } from "vue";
 import { useUserStoreHook } from "@/store/modules/user";
 import { usePermissionStoreHook } from "@/store/modules/permission";
@@ -24,6 +24,10 @@ const options = [
     label: "管理员角色"
   },
   {
+    value: "superAdmin",
+    label: "超级管理员角色"
+  },
+  {
     value: "common",
     label: "普通角色"
   }
@@ -33,7 +37,7 @@ function onChange() {
   useUserStoreHook()
     .loginByUsername({ username: username.value, password: "admin123" })
     .then(() => {
-      storageSession().removeItem("async-routes");
+      storageLocal().removeItem("async-routes");
       usePermissionStoreHook().clearAllCachePage();
       initRouter();
     });

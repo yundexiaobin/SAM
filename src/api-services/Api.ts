@@ -25,6 +25,7 @@ import {
   AddTenantInput,
   AddUserInput,
   AdminResultBoolean,
+  AdminResultCaptchaDto,
   AdminResultFileOutput,
   AdminResultIActionResult,
   AdminResultInt32,
@@ -268,10 +269,10 @@ export class Api<
    * @summary 获取验证码
    * @request GET:/api/sysAuth/captcha
    * @secure
-   * @response `200` `AdminResultObject` Success
+   * @response `200` `AdminResultCaptchaDto` Success
    */
   apiSysAuthCaptchaGet = (params: RequestParams = {}) =>
-    this.request<AdminResultObject, any>({
+    this.request<AdminResultCaptchaDto, any>({
       path: `/api/sysAuth/captcha`,
       method: "GET",
       secure: true,

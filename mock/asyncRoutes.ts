@@ -22,7 +22,7 @@ const systemRouter = {
       meta: {
         icon: "flUser",
         title: "menus.hsUser",
-        roles: ["admin"]
+        roles: ["admin", "superAdmin"]
       }
     },
     {
@@ -31,7 +31,7 @@ const systemRouter = {
       meta: {
         icon: "role",
         title: "menus.hsRole",
-        roles: ["admin"]
+        roles: ["admin", "superAdmin"]
       }
     },
     {
@@ -40,7 +40,7 @@ const systemRouter = {
       meta: {
         icon: "dept",
         title: "menus.hsDept",
-        roles: ["admin"]
+        roles: ["admin", "superAdmin"]
       }
     }
   ]
@@ -59,7 +59,7 @@ const permissionRouter = {
       name: "PermissionPage",
       meta: {
         title: "menus.permissionPage",
-        roles: ["admin", "common"]
+        roles: ["admin", "common", "superAdmin"]
       }
     },
     {
@@ -67,7 +67,7 @@ const permissionRouter = {
       name: "PermissionButton",
       meta: {
         title: "menus.permissionButton",
-        roles: ["admin", "common"],
+        roles: ["admin", "common", "superAdmin"],
         auths: ["btn_add", "btn_edit", "btn_delete"]
       }
     }
@@ -87,7 +87,7 @@ const frameRouter = {
       name: "https://yiming_chang.gitee.io/pure-admin-doc",
       meta: {
         title: "menus.externalLink",
-        roles: ["admin", "common"]
+        roles: ["admin", "common", "superAdmin"]
       }
     },
     {
@@ -96,7 +96,7 @@ const frameRouter = {
       meta: {
         title: "menus.hsPureDocument",
         frameSrc: "https://yiming_chang.gitee.io/pure-admin-doc",
-        roles: ["admin", "common"]
+        roles: ["admin", "common", "superAdmin"]
       }
     },
     {
@@ -105,7 +105,7 @@ const frameRouter = {
       meta: {
         title: "menus.hsEpDocument",
         frameSrc: "https://element-plus.org/zh-CN/",
-        roles: ["admin", "common"]
+        roles: ["admin", "common", "superAdmin"]
       }
     },
     {
@@ -114,7 +114,7 @@ const frameRouter = {
       meta: {
         title: "menus.hsVueDocument",
         frameSrc: "https://cn.vuejs.org/",
-        roles: ["admin", "common"]
+        roles: ["admin", "common", "superAdmin"]
       }
     },
     {
@@ -123,7 +123,7 @@ const frameRouter = {
       meta: {
         title: "menus.hsViteDocument",
         frameSrc: "https://cn.vitejs.dev/",
-        roles: ["admin", "common"]
+        roles: ["admin", "common", "superAdmin"]
       }
     },
     {
@@ -132,7 +132,7 @@ const frameRouter = {
       meta: {
         title: "menus.hsPiniaDocument",
         frameSrc: "https://pinia.vuejs.org/zh/index.html",
-        roles: ["admin", "common"]
+        roles: ["admin", "common", "superAdmin"]
       }
     },
     {
@@ -141,7 +141,7 @@ const frameRouter = {
       meta: {
         title: "menus.hsRouterDocument",
         frameSrc: "https://router.vuejs.org/zh/",
-        roles: ["admin", "common"]
+        roles: ["admin", "common", "superAdmin"]
       }
     },
     {
@@ -150,7 +150,7 @@ const frameRouter = {
       meta: {
         title: "menus.hsTailwindcssDocument",
         frameSrc: "https://tailwindcss.com/docs/installation",
-        roles: ["admin", "common"]
+        roles: ["admin", "common", "superAdmin"]
       }
     }
   ]
@@ -169,7 +169,7 @@ const tabsRouter = {
       name: "Tabs",
       meta: {
         title: "menus.hstabs",
-        roles: ["admin", "common"]
+        roles: ["admin", "common", "superAdmin"]
       }
     },
     // query 传参模式
@@ -179,7 +179,7 @@ const tabsRouter = {
       meta: {
         // 不在menu菜单中显示
         showLink: false,
-        roles: ["admin", "common"]
+        roles: ["admin", "common", "superAdmin"]
       }
     },
     // params 传参模式
@@ -190,7 +190,7 @@ const tabsRouter = {
       meta: {
         // 不在menu菜单中显示
         showLink: false,
-        roles: ["admin", "common"]
+        roles: ["admin", "common", "superAdmin"]
       }
     }
   ]

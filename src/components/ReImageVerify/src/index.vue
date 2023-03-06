@@ -1,3 +1,9 @@
+<style>
+.imageVerify {
+  width: 120px;
+  height: 40px;
+}
+</style>
 <script setup lang="ts">
 import { watch } from "vue";
 import { useImageVerify } from "./hooks";
@@ -20,7 +26,7 @@ const props = withDefaults(defineProps<Props>(), {
 
 const emit = defineEmits<Emits>();
 
-const { domRef, imgCode, setImgCode, getImgCode } = useImageVerify();
+const { base64Ref, codeId, setImgCode, getImgCode } = useImageVerify();
 
 watch(
   () => props.code,
@@ -28,19 +34,24 @@ watch(
     setImgCode(newValue);
   }
 );
-watch(imgCode, newValue => {
-  emit("update:code", newValue);
+watch(codeId, newValue => {
+  emit("update:code", newValue.toString());
 });
 
 defineExpose({ getImgCode });
 </script>
 
 <template>
-  <canvas
-    ref="domRef"
-    width="120"
-    height="40"
-    class="cursor-pointer"
+  <!--  <canvas-->
+  <!--    ref="domRef"-->
+  <!--    width="120"-->
+  <!--    height="40"-->
+  <!--    class="cursor-pointer"-->
+  <!--    @click="getImgCode"-->
+  <!--  />-->
+  <el-image
+    :src="base64Ref"
+    class="cursor-pointer imageVerify"
     @click="getImgCode"
   />
 </template>

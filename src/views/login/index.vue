@@ -71,7 +71,9 @@ const onLogin = async (formEl: FormInstance | undefined) => {
         .loginByUsername({
           username: ruleForm.username,
           password: ruleForm.password,
-          rememberMe: checked.value
+          rememberMe: checked.value,
+          code: ruleForm.verifyCode,
+          codeId: imgCode.value
         })
         .then(() => {
           // 获取后端路由

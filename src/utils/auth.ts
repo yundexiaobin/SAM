@@ -1,5 +1,5 @@
 import Cookies from "js-cookie";
-import { storageSession } from "@pureadmin/utils";
+import { storageLocal } from "@pureadmin/utils";
 import { useUserStoreHook } from "@/store/modules/user";
 
 export interface TokenInfo {
@@ -13,7 +13,6 @@ export interface TokenInfo {
   roles?: Array<string>;
 }
 
-export const sessionKey = "user-info";
 export const TokenKey = "authorized-token";
 
 /** 获取`token` */
@@ -21,7 +20,7 @@ export function getToken(): TokenInfo {
   // 此处与`TokenKey`相同，此写法解决初始化时`Cookies`中不存在`TokenKey`报错
   return Cookies.get(TokenKey)
     ? JSON.parse(Cookies.get(TokenKey))
-    : storageSession().getItem(sessionKey);
+    : storageLocal().getItem(TokenKey);
 }
 
 /**
@@ -39,10 +38,11 @@ export function setToken(data: TokenInfo) {
     sameSite: "lax"
   });
 
-  function setSessionKey(username: string, roles: Array<string>) {
+  function setLocalKey(username: string, roles: Array<string>) {
     useUserStoreHook().SET_USERNAME(username);
     useUserStoreHook().SET_ROLES(roles);
-    storageSession().setItem(sessionKey, {
+    storageLocal().setItem(TokenKey, {
+      accessToken,
       refreshToken,
       username,
       roles
@@ -50,28 +50,19 @@ export function setToken(data: TokenInfo) {
   }
   if (data.username && data.roles) {
     const { username, roles } = data;
-    setSessionKey(username, roles);
+    setLocalKey(username, roles);
   } else {
     const username =
-      storageSession().getItem<TokenInfo>(sessionKey)?.username ?? "";
-    const roles = storageSession().getItem<TokenInfo>(sessionKey)?.roles ?? [];
-    setSessionKey(username, roles);
+      storageLocal().getItem<TokenInfo>(TokenKey)?.username ?? "";
+    const roles = storageLocal().getItem<TokenInfo>(TokenKey)?.roles ?? [];
+    setLocalKey(username, roles);
   }
-}
-
-export function setRoles(username: string, roles: Array<string>) {
-  const sRoles = storageSession().getItem<TokenInfo>(sessionKey) ?? {
-    roles: []
-  };
-  useUserStoreHook().SET_ROLES(roles);
-  sRoles.roles = roles;
-  storageSession().setItem(sessionKey, sRoles);
 }
 
 /** 删除`token`以及key值为`user-info`的session信息 */
 export function removeToken() {
   Cookies.remove(TokenKey);
-  sessionStorage.clear();
+  storageLocal().clear();
 }
 
 /** 格式化token（jwt格式） */

@@ -11,8 +11,10 @@ import {
 } from "./types.d";
 import { stringify } from "qs";
 import NProgress from "../progress";
-import { getToken, formatToken, setToken } from "@/utils/auth";
+import { getToken, formatToken, setToken, removeToken } from "@/utils/auth";
 import { Api } from "@/api-services/Api";
+import { message } from "@/utils/message";
+import router from "@/router";
 
 // 相关配置请参考：www.axios-js.com/zh-cn/docs/#axios-request-config-1
 const defaultConfig: AxiosRequestConfig = {
@@ -114,6 +116,12 @@ class PureHttp {
       const newRefreshToken = response.headers["X-Authorization"];
       if (newToken && newRefreshToken) {
         setToken({ accessToken: newToken, refreshToken: newRefreshToken });
+      }
+      if (response.status === 401) {
+        removeToken();
+        message("授权过期，请重新登录!", { type: "error" });
+        router.push("/login");
+        return response;
       }
       return response;
     });
