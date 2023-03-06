@@ -290,9 +290,4 @@ http.api.apiStockPerceptionGet({}).then(res => {
 .main-content {
   margin: 20px 20px 0 20px !important;
 }
-
-.timeline-scrollbar {
-  height: 324px;
-  overflow: visible;
-}
 </style>
