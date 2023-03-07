@@ -38,6 +38,7 @@ defineOptions({
 });
 
 const imgCode = ref("");
+const reImageVerifyC = ref(null);
 const router = useRouter();
 const loading = ref(false);
 const checked = ref(false);
@@ -45,7 +46,6 @@ const ruleFormRef = ref<FormInstance>();
 const currentPage = computed(() => {
   return useUserStoreHook().currentPage;
 });
-
 const { t } = useI18n();
 const { initStorage } = useLayout();
 initStorage();
@@ -73,27 +73,25 @@ const onLogin = async (formEl: FormInstance | undefined) => {
           password: ruleForm.password,
           rememberMe: checked.value,
           code: ruleForm.verifyCode,
-          codeId: imgCode.value
+          codeId: useUserStoreHook().verifyCode
         })
         .then(() => {
           // 获取后端路由
-          initRouter()
-            .then(() => {
-              router.push("/");
-              message("登录成功", { type: "success" });
-            })
-            .catch(reason => {
-              console.error(reason);
-              message(reason, { type: "error" });
-            });
+          initRouter().then(() => {
+            router.push("/");
+            message("登录成功", { type: "success" });
+          });
         })
         .catch(reason => {
-          console.error(reason);
-          message(reason, { type: "error" });
+          reImageVerifyC.value?.getImgCode();
+          if (reason.code === 400) {
+            message(reason.message, { type: "error" });
+          }
         });
       loading.value = false;
       return fields;
     } else {
+      reImageVerifyC.value?.getImgCode();
       loading.value = false;
       return fields;
     }
@@ -226,7 +224,10 @@ watch(imgCode, value => {
                   :prefix-icon="useRenderIcon('ri:shield-keyhole-line')"
                 >
                   <template v-slot:append>
-                    <ReImageVerify v-model:code="imgCode" />
+                    <ReImageVerify
+                      ref="reImageVerifyC"
+                      v-model:code="imgCode"
+                    />
                   </template>
                 </el-input>
               </el-form-item>

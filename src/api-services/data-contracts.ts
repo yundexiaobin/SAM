@@ -3116,11 +3116,8 @@ export interface LoginInput {
    * @example "123456"
    */
   password: string;
-  /**
-   * 验证码Id
-   * @format int64
-   */
-  codeId?: number;
+  /** 验证码Id */
+  codeId?: string | null;
   /** 验证码 */
   code?: string | null;
 }
@@ -7170,6 +7167,13 @@ export interface UserRoleInput {
   userId?: number;
   /** 角色Id集合 */
   roleIdList?: number[] | null;
+}
+
+export interface ValidateCaptchaInput {
+  /** 验证码Id */
+  codeId?: string | null;
+  /** 验证码 */
+  code?: string | null;
 }
 
 export interface WechatOAuth2Input {

@@ -42,4 +42,5 @@ export type userType = {
   roles?: Array<string>;
   verifyCode?: string;
   currentPage?: number;
+  fresh: boolean;
 };

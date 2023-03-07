@@ -19,7 +19,8 @@ export const useUserStore = defineStore({
     // 前端生成的验证码（按实际需求替换）
     verifyCode: "0",
     // 判断登录页面显示哪个组件（0：登录（默认）、1：手机登录、2：二维码登录、3：注册、4：忘记密码）
-    currentPage: 0
+    currentPage: 0,
+    fresh: false
   }),
   actions: {
     /** 存储用户名 */
@@ -33,6 +34,9 @@ export const useUserStore = defineStore({
     /** 存储前端生成的验证码 */
     SET_VERIFYCODE(verifyCode: string) {
       this.verifyCode = verifyCode;
+    },
+    REFRESH_VERIFY(fresh: boolean) {
+      this.fresh = fresh;
     },
     /** 存储登录页面显示哪个组件 */
     SET_CURRENTPAGE(value: number) {
@@ -49,7 +53,7 @@ export const useUserStore = defineStore({
             code: data.code
           })
           .then(rs => {
-            if (rs.status === 200 && rs.data.code === 200) {
+            if (rs.data.code === 200) {
               const outputDto = rs.data.result;
               setToken({
                 accessToken: outputDto.accessToken,
@@ -59,7 +63,7 @@ export const useUserStore = defineStore({
               });
               resolve(outputDto);
             } else {
-              reject(rs.data.message);
+              reject(rs.data);
             }
           })
           .catch(reason => {

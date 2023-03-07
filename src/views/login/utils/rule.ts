@@ -2,6 +2,8 @@ import { reactive } from "vue";
 import { isPhone } from "@pureadmin/utils";
 import type { FormRules } from "element-plus";
 import { $t, transformI18n } from "@/plugins/i18n";
+import { useUserStoreHook } from "@/store/modules/user";
+import { http } from "@/utils/http";
 
 /** 6位数字验证码正则 */
 export const REGEXP_SIX = /^\d{6}$/;
@@ -28,15 +30,22 @@ const loginRules = reactive(<FormRules>{
   ],
   verifyCode: [
     {
-      validator: (rule, value, callback) => {
+      validator: async (rule, value, callback) => {
         if (value === "") {
           callback(new Error(transformI18n($t("login.verifyCodeReg"))));
-        }
-        // else if (useUserStoreHook().verifyCode !== value) {
-        //   callback(new Error(transformI18n($t("login.verifyCodeCorrectReg"))));
-        // }
-        else {
-          callback();
+        } else {
+          const r = await http.api.apiSysAuthValidateCaptchaPost({
+            codeId: useUserStoreHook().verifyCode,
+            code: value
+          });
+          if (r.data.result) {
+            callback();
+          } else {
+            useUserStoreHook().REFRESH_VERIFY(true);
+            callback(
+              new Error(transformI18n($t("login.verifyCodeCorrectReg")))
+            );
+          }
         }
       },
       trigger: "blur"

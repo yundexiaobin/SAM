@@ -26,8 +26,7 @@ const props = withDefaults(defineProps<Props>(), {
 
 const emit = defineEmits<Emits>();
 
-const { base64Ref, codeId, setImgCode, getImgCode } = useImageVerify();
-
+const { base64Ref, codeId, getImgCode, setImgCode } = useImageVerify();
 watch(
   () => props.code,
   newValue => {

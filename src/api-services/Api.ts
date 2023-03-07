@@ -157,6 +157,7 @@ import {
   UpdateUserInput,
   UserInput,
   UserRoleInput,
+  ValidateCaptchaInput,
   WechatOAuth2Input,
   WechatPayParaInput,
   WechatPayTransactionInput,
@@ -276,6 +277,29 @@ export class Api<
       path: `/api/sysAuth/captcha`,
       method: "GET",
       secure: true,
+      format: "json",
+      ...params
+    });
+  /**
+   * No description
+   *
+   * @tags sysAuth
+   * @name ApiSysAuthValidateCaptchaPost
+   * @summary 驗證驗證碼
+   * @request POST:/api/sysAuth/validateCaptcha
+   * @secure
+   * @response `200` `AdminResultBoolean` Success
+   */
+  apiSysAuthValidateCaptchaPost = (
+    data: ValidateCaptchaInput,
+    params: RequestParams = {}
+  ) =>
+    this.request<AdminResultBoolean, any>({
+      path: `/api/sysAuth/validateCaptcha`,
+      method: "POST",
+      body: data,
+      secure: true,
+      type: ContentType.Json,
       format: "json",
       ...params
     });
