@@ -90,7 +90,7 @@ http.api.apiStockPerceptionGet({}).then(res => {
           </template>
           <el-skeleton animated :rows="7" :loading="loading">
             <template #default>
-              <el-scrollbar height="300px">
+              <el-scrollbar style="min-height: 300px">
                 <el-timeline v-show="list?.length > 0">
                   <el-timeline-item
                     v-for="(item, index) in list"

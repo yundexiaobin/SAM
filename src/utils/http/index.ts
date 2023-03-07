@@ -120,8 +120,9 @@ class PureHttp {
       if (response.status === 401) {
         removeToken();
         message("授权过期，请重新登录!", { type: "error" });
-        router.push("/login");
-        return response;
+        router.push("/login").then(() => {
+          return response;
+        });
       }
       return response;
     });

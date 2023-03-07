@@ -15,12 +15,14 @@ export interface TokenInfo {
 
 export const TokenKey = "authorized-token";
 
+export const CookieTokenKey = "authorized-token";
+
 /** 获取`token` */
 export function getToken(): TokenInfo {
   // 此处与`TokenKey`相同，此写法解决初始化时`Cookies`中不存在`TokenKey`报错
-  return Cookies.get(TokenKey)
-    ? JSON.parse(Cookies.get(TokenKey))
-    : storageLocal().getItem(TokenKey);
+  return Cookies.get(CookieTokenKey)
+    ? JSON.parse(Cookies.get(CookieTokenKey))
+    : {};
 }
 
 /**
@@ -33,7 +35,7 @@ export function setToken(data: TokenInfo) {
   const { accessToken, refreshToken } = data;
   const cookieString = JSON.stringify({ accessToken, refreshToken });
 
-  Cookies.set(TokenKey, cookieString, {
+  Cookies.set(CookieTokenKey, cookieString, {
     secure: true,
     sameSite: "lax"
   });
@@ -61,7 +63,7 @@ export function setToken(data: TokenInfo) {
 
 /** 删除`token`以及key值为`user-info`的session信息 */
 export function removeToken() {
-  Cookies.remove(TokenKey);
+  Cookies.remove(CookieTokenKey);
   storageLocal().clear();
 }
 
