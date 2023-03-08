@@ -124,9 +124,10 @@ class PureHttp {
         return response;
       }
       if (response.status === 401 || response.data.code === 401) {
-        message(response.data.message, { type: "error" });
         removeToken();
-        router.push("/login");
+        router.push("/login").then(() => {
+          message(response.data.message, { type: "error", grouping: true });
+        });
       }
       return response;
     });
