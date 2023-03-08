@@ -16,6 +16,12 @@ import { Api } from "@/api-services/Api";
 import { message } from "@/utils/message";
 import router from "@/router";
 
+//无感刷新，接口返回的新token
+const ResponseAccessTokenKey = "access-token";
+
+//无感刷新，接口返回的新刷新token
+const ResponseXAccessTokenKey = "x-access-token";
+
 // 相关配置请参考：www.axios-js.com/zh-cn/docs/#axios-request-config-1
 const defaultConfig: AxiosRequestConfig = {
   // 请求超时时间
@@ -103,6 +109,11 @@ class PureHttp {
       const $config = response.config;
       // 关闭进度条动画
       NProgress.done();
+      const newToken = response.headers[ResponseAccessTokenKey];
+      const newRefreshToken = response.headers[ResponseXAccessTokenKey];
+      if (newToken && newRefreshToken) {
+        setToken({ accessToken: newToken, refreshToken: newRefreshToken });
+      }
       // 优先判断post/get等方法是否传入回掉，否则执行初始化设置等回掉
       if (typeof $config.beforeResponseCallback === "function") {
         $config.beforeResponseCallback(response);
@@ -112,17 +123,10 @@ class PureHttp {
         PureHttp.initConfig.beforeResponseCallback(response);
         return response;
       }
-      const newToken = response.headers["Authorization"];
-      const newRefreshToken = response.headers["X-Authorization"];
-      if (newToken && newRefreshToken) {
-        setToken({ accessToken: newToken, refreshToken: newRefreshToken });
-      }
-      if (response.status === 401) {
+      if (response.status === 401 || response.data.code === 401) {
+        message(response.data.message, { type: "error" });
         removeToken();
-        message("授权过期，请重新登录!", { type: "error" });
-        router.push("/login").then(() => {
-          return response;
-        });
+        router.push("/login");
       }
       return response;
     });
