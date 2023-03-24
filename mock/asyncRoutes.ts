@@ -196,6 +196,35 @@ const tabsRouter = {
   ]
 };
 
+const baskTestRouter = {
+  path: "/back-test",
+  meta: {
+    icon: "setting",
+    title: "menus.back-test",
+    rank: 3
+  },
+  children: [
+    {
+      path: "/back-test/strategy/index",
+      name: "Strategy",
+      meta: {
+        icon: "flUser",
+        title: "menus.strategy",
+        roles: ["admin", "superAdmin"]
+      }
+    },
+    {
+      path: "/back-test/stock/index",
+      name: "Stock",
+      meta: {
+        icon: "flUser",
+        title: "menus.stock",
+        roles: ["admin", "superAdmin"]
+      }
+    }
+  ]
+};
+
 export default [
   {
     url: "/getAsyncRoutes",
@@ -203,7 +232,13 @@ export default [
     response: () => {
       return {
         success: true,
-        data: [systemRouter, permissionRouter, frameRouter, tabsRouter]
+        data: [
+          systemRouter,
+          permissionRouter,
+          frameRouter,
+          tabsRouter,
+          baskTestRouter
+        ]
       };
     }
   }

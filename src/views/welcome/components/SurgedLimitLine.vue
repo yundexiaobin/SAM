@@ -9,7 +9,6 @@ import {
   type EchartOptions
 } from "@pureadmin/utils";
 import { http } from "@/utils/http";
-import { message } from "@/utils/message";
 
 const { isDark } = useDark();
 
@@ -164,8 +163,6 @@ http.api.apiStockSurgedDeclineInfoGet().then(res => {
         }
       );
     });
-  } else {
-    message(res.errors, { type: "error" });
   }
 });
 

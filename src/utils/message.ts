@@ -39,6 +39,7 @@ const message = (
   message: string | VNode | (() => VNode),
   params?: MessageParams
 ): MessageHandler => {
+  console.log(message);
   if (!params) {
     return ElMessage({
       message,

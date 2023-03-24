@@ -85,7 +85,7 @@ const onLogin = async (formEl: FormInstance | undefined) => {
         .catch(reason => {
           reImageVerifyC.value?.getImgCode();
           if (reason.code === 400) {
-            message(reason.message, { type: "error" });
+            message("登录失败:" + reason.message, { type: "error" });
           }
         });
       loading.value = false;

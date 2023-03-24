@@ -102,6 +102,9 @@ menus:
   hsTree: 大数据树业务组件
   hsMenuoverflow: 目录超出显示 Tooltip 文字提示
   hsChildMenuoverflow: 菜单超出显示 Tooltip 文字提示
+  strategy: 策略
+  back-test: 回测管理
+  stock: 市场管理
 status:
   hsLoad: 加载中...
 login:

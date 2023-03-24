@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import basic from "./basic.vue";
+import Basic from "./basic.vue";
 import menuGroup from "./menuGroup.vue";
 import menuDynamic from "./menuDynamic.vue";
 import "v-contextmenu/dist/themes/default.css";
@@ -19,7 +19,7 @@ defineOptions({
     <el-row :gutter="24">
       <el-col :xs="24" :sm="10" :md="10" :lg="8" :xl="10">
         <!-- 基本使用 -->
-        <basic />
+        <Basic />
       </el-col>
       <el-col :xs="24" :sm="10" :md="10" :lg="8" :xl="10">
         <!-- 按钮组 -->

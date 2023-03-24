@@ -42,6 +42,8 @@ import {
   AdminResultListMenuOutput,
   AdminResultListObject,
   AdminResultListRoleOutput,
+  AdminResultListStockStrategyDto,
+  AdminResultListStockTradingAccount,
   AdminResultListString,
   AdminResultListSurgedDeclineInfoDto,
   AdminResultListSysConfig,
@@ -60,9 +62,9 @@ import {
   AdminResultLoginOutput,
   AdminResultLoginUserOutput,
   AdminResultObject,
-  AdminResultPageQueryResultStockDto,
-  AdminResultPageQueryResultStockOptionalDto,
-  AdminResultPageQueryResultStockPerceptionDto,
+  AdminResultPageResultDtoStockDto,
+  AdminResultPageResultDtoStockOptionalDto,
+  AdminResultPageResultDtoStockPerceptionDto,
   AdminResultSqlSugarPagedListJobOutput,
   AdminResultSqlSugarPagedListSysCodeGen,
   AdminResultSqlSugarPagedListSysConfig,
@@ -91,6 +93,7 @@ import {
   AdminResultWechatPayOutput,
   ChangePwdInput,
   CodeGenConfig,
+  CreateAccountRequestDto,
   CreateEntityInput,
   DbColumnInput,
   DbTableInput,
@@ -130,6 +133,7 @@ import {
   RoleInput,
   RoleMenuInput,
   RoleOrgInput,
+  RunRequestDto,
   SignatureInput,
   StatusEnum,
   StockPerceptionRequestDto,
@@ -4495,6 +4499,234 @@ export class Api<
   /**
    * No description
    *
+   * @tags backgroundJob
+   * @name ApiBackgroundJobExecuteStockStopDownJobPost
+   * @request POST:/api/backgroundJob/executeStockStopDownJob
+   * @secure
+   * @response `200` `void` Success
+   */
+  apiBackgroundJobExecuteStockStopDownJobPost = (params: RequestParams = {}) =>
+    this.request<void, any>({
+      path: `/api/backgroundJob/executeStockStopDownJob`,
+      method: "POST",
+      secure: true,
+      ...params
+    });
+  /**
+   * No description
+   *
+   * @tags backgroundJob
+   * @name ApiBackgroundJobExecuteStockAvg20JobPost
+   * @request POST:/api/backgroundJob/executeStockAvg20Job
+   * @secure
+   * @response `200` `void` Success
+   */
+  apiBackgroundJobExecuteStockAvg20JobPost = (params: RequestParams = {}) =>
+    this.request<void, any>({
+      path: `/api/backgroundJob/executeStockAvg20Job`,
+      method: "POST",
+      secure: true,
+      ...params
+    });
+  /**
+   * No description
+   *
+   * @tags backgroundJob
+   * @name ApiBackgroundJobExecuteStockHotJobPost
+   * @request POST:/api/backgroundJob/executeStockHotJob
+   * @secure
+   * @response `200` `void` Success
+   */
+  apiBackgroundJobExecuteStockHotJobPost = (params: RequestParams = {}) =>
+    this.request<void, any>({
+      path: `/api/backgroundJob/executeStockHotJob`,
+      method: "POST",
+      secure: true,
+      ...params
+    });
+  /**
+   * No description
+   *
+   * @tags quant
+   * @name ApiQuantRunPost
+   * @summary 运行
+   * @request POST:/api/quant/run
+   * @secure
+   * @response `200` `void` Success
+   */
+  apiQuantRunPost = (data: RunRequestDto, params: RequestParams = {}) =>
+    this.request<void, any>({
+      path: `/api/quant/run`,
+      method: "POST",
+      body: data,
+      secure: true,
+      type: ContentType.Json,
+      ...params
+    });
+  /**
+   * No description
+   *
+   * @tags quant
+   * @name ApiQuantAccountPost
+   * @summary 創建交易賬戶
+   * @request POST:/api/quant/account
+   * @secure
+   * @response `200` `AdminResultBoolean` Success
+   */
+  apiQuantAccountPost = (
+    data: CreateAccountRequestDto,
+    params: RequestParams = {}
+  ) =>
+    this.request<AdminResultBoolean, any>({
+      path: `/api/quant/account`,
+      method: "POST",
+      body: data,
+      secure: true,
+      type: ContentType.Json,
+      format: "json",
+      ...params
+    });
+  /**
+   * No description
+   *
+   * @tags quant
+   * @name ApiQuantAccountListGet
+   * @summary 獲取交易賬戶列表
+   * @request GET:/api/quant/accountList
+   * @secure
+   * @response `200` `AdminResultListStockTradingAccount` Success
+   */
+  apiQuantAccountListGet = (params: RequestParams = {}) =>
+    this.request<AdminResultListStockTradingAccount, any>({
+      path: `/api/quant/accountList`,
+      method: "GET",
+      secure: true,
+      format: "json",
+      ...params
+    });
+  /**
+   * No description
+   *
+   * @tags strategy
+   * @name ApiStrategyStartIdPut
+   * @summary 启动策略
+   * @request PUT:/api/strategy/start/{id}
+   * @secure
+   * @response `200` `AdminResultBoolean` Success
+   */
+  apiStrategyStartIdPut = (id: number, params: RequestParams = {}) =>
+    this.request<AdminResultBoolean, any>({
+      path: `/api/strategy/start/${id}`,
+      method: "PUT",
+      secure: true,
+      format: "json",
+      ...params
+    });
+  /**
+   * No description
+   *
+   * @tags strategy
+   * @name ApiStrategyStopIdPut
+   * @summary 停止策略
+   * @request PUT:/api/strategy/stop/{id}
+   * @secure
+   * @response `200` `AdminResultBoolean` Success
+   */
+  apiStrategyStopIdPut = (id: number, params: RequestParams = {}) =>
+    this.request<AdminResultBoolean, any>({
+      path: `/api/strategy/stop/${id}`,
+      method: "PUT",
+      secure: true,
+      format: "json",
+      ...params
+    });
+  /**
+   * No description
+   *
+   * @tags strategy
+   * @name ApiStrategySetNameIdNamePut
+   * @summary 设置名称
+   * @request PUT:/api/strategy/setName/{id}/{name}
+   * @secure
+   * @response `200` `AdminResultBoolean` Success
+   */
+  apiStrategySetNameIdNamePut = (
+    id: number,
+    name: string,
+    params: RequestParams = {}
+  ) =>
+    this.request<AdminResultBoolean, any>({
+      path: `/api/strategy/setName/${id}/${name}`,
+      method: "PUT",
+      secure: true,
+      format: "json",
+      ...params
+    });
+  /**
+   * No description
+   *
+   * @tags strategy
+   * @name ApiStrategySetAccountIdAccountIdPut
+   * @summary 设置交易賬戶
+   * @request PUT:/api/strategy/setAccount/{id}/{accountId}
+   * @secure
+   * @response `200` `AdminResultBoolean` Success
+   */
+  apiStrategySetAccountIdAccountIdPut = (
+    id: number,
+    accountId: number,
+    params: RequestParams = {}
+  ) =>
+    this.request<AdminResultBoolean, any>({
+      path: `/api/strategy/setAccount/${id}/${accountId}`,
+      method: "PUT",
+      secure: true,
+      format: "json",
+      ...params
+    });
+  /**
+   * No description
+   *
+   * @tags strategy
+   * @name ApiStrategyStrategyListGet
+   * @summary 获取策略列表
+   * @request GET:/api/strategy/strategyList
+   * @secure
+   * @response `200` `AdminResultListStockStrategyDto` Success
+   */
+  apiStrategyStrategyListGet = (params: RequestParams = {}) =>
+    this.request<AdminResultListStockStrategyDto, any>({
+      path: `/api/strategy/strategyList`,
+      method: "GET",
+      secure: true,
+      format: "json",
+      ...params
+    });
+  /**
+   * No description
+   *
+   * @tags strategy
+   * @name ApiStrategySubscribeStockIdSymbolPut
+   * @summary 订阅股票
+   * @request PUT:/api/strategy/subscribeStock/{id}/{symbol}
+   * @secure
+   * @response `200` `AdminResultBoolean` Success
+   */
+  apiStrategySubscribeStockIdSymbolPut = (
+    id: number,
+    symbol: string,
+    params: RequestParams = {}
+  ) =>
+    this.request<AdminResultBoolean, any>({
+      path: `/api/strategy/subscribeStock/${id}/${symbol}`,
+      method: "PUT",
+      secure: true,
+      format: "json",
+      ...params
+    });
+  /**
+   * No description
+   *
    * @tags public
    * @name ApiPublicWallpaperGet
    * @request GET:/api/public/wallpaper
@@ -4568,10 +4800,19 @@ export class Api<
    * @secure
    * @response `200` `AdminResultString` Success
    */
-  apiSyncSyncStockDailyPost = (params: RequestParams = {}) =>
+  apiSyncSyncStockDailyPost = (
+    query?: {
+      /** @format date-time */
+      startDate?: string;
+      /** @format date-time */
+      endDate?: string;
+    },
+    params: RequestParams = {}
+  ) =>
     this.request<AdminResultString, any>({
       path: `/api/sync/syncStockDaily`,
       method: "POST",
+      query: query,
       secure: true,
       format: "json",
       ...params
@@ -4580,14 +4821,38 @@ export class Api<
    * No description
    *
    * @tags sync
-   * @name ApiSyncStockOptionalAsyncPost
-   * @request POST:/api/sync/stockOptionalAsync
+   * @name ApiSyncSyncStockHistoryDailyPost
+   * @request POST:/api/sync/syncStockHistoryDaily
    * @secure
    * @response `200` `AdminResultString` Success
    */
-  apiSyncStockOptionalAsyncPost = (params: RequestParams = {}) =>
+  apiSyncSyncStockHistoryDailyPost = (
+    query?: {
+      /** @format date-time */
+      startDate?: string;
+    },
+    params: RequestParams = {}
+  ) =>
     this.request<AdminResultString, any>({
-      path: `/api/sync/stockOptionalAsync`,
+      path: `/api/sync/syncStockHistoryDaily`,
+      method: "POST",
+      query: query,
+      secure: true,
+      format: "json",
+      ...params
+    });
+  /**
+   * No description
+   *
+   * @tags sync
+   * @name ApiSyncStockOptionalPost
+   * @request POST:/api/sync/stockOptional
+   * @secure
+   * @response `200` `AdminResultString` Success
+   */
+  apiSyncStockOptionalPost = (params: RequestParams = {}) =>
+    this.request<AdminResultString, any>({
+      path: `/api/sync/stockOptional`,
       method: "POST",
       secure: true,
       format: "json",
@@ -4598,15 +4863,23 @@ export class Api<
    *
    * @tags stock
    * @name ApiStockSurgedLimitStockGet
+   * @summary 查询指定日期涨停数据
    * @request GET:/api/stock/surgedLimitStock
    * @secure
-   * @response `200` `AdminResultPageQueryResultStockDto` Success
+   * @response `200` `AdminResultPageResultDtoStockDto` Success
    */
   apiStockSurgedLimitStockGet = (
     query?: {
-      /** @format date-time */
+      /**
+       * 指定日期涨停
+       * @format date-time
+       * @example "Datetime.Today"
+       */
       TradeDay?: string;
-      /** @format int32 */
+      /**
+       * 历史涨停
+       * @format int32
+       */
       HistoryDay?: number;
       /** @format int32 */
       PageNumber?: number;
@@ -4615,7 +4888,7 @@ export class Api<
     },
     params: RequestParams = {}
   ) =>
-    this.request<AdminResultPageQueryResultStockDto, any>({
+    this.request<AdminResultPageResultDtoStockDto, any>({
       path: `/api/stock/surgedLimitStock`,
       method: "GET",
       query: query,
@@ -4628,6 +4901,7 @@ export class Api<
    *
    * @tags stock
    * @name ApiStockSurgedDeclineInfoGet
+   * @summary 获取涨停统计信息
    * @request GET:/api/stock/surgedDeclineInfo
    * @secure
    * @response `200` `AdminResultListSurgedDeclineInfoDto` Success
@@ -4645,15 +4919,16 @@ export class Api<
    *
    * @tags stock
    * @name ApiStockOptionalGet
+   * @summary 查詢自選股
    * @request GET:/api/stock/optional
    * @secure
-   * @response `200` `AdminResultPageQueryResultStockOptionalDto` Success
+   * @response `200` `AdminResultPageResultDtoStockOptionalDto` Success
    */
   apiStockOptionalGet = (
     data: OptionalRequestDto,
     params: RequestParams = {}
   ) =>
-    this.request<AdminResultPageQueryResultStockOptionalDto, any>({
+    this.request<AdminResultPageResultDtoStockOptionalDto, any>({
       path: `/api/stock/optional`,
       method: "GET",
       body: data,
@@ -4667,6 +4942,7 @@ export class Api<
    *
    * @tags stock
    * @name ApiStockWritePerceptionPost
+   * @summary 寫交易心得
    * @request POST:/api/stock/writePerception
    * @secure
    * @response `200` `AdminResultBoolean` Success
@@ -4689,9 +4965,10 @@ export class Api<
    *
    * @tags stock
    * @name ApiStockPerceptionGet
+   * @summary 獲取交易心得
    * @request GET:/api/stock/perception
    * @secure
-   * @response `200` `AdminResultPageQueryResultStockPerceptionDto` Success
+   * @response `200` `AdminResultPageResultDtoStockPerceptionDto` Success
    */
   apiStockPerceptionGet = (
     query?: {
@@ -4702,7 +4979,7 @@ export class Api<
     },
     params: RequestParams = {}
   ) =>
-    this.request<AdminResultPageQueryResultStockPerceptionDto, any>({
+    this.request<AdminResultPageResultDtoStockPerceptionDto, any>({
       path: `/api/stock/perception`,
       method: "GET",
       query: query,
@@ -4715,6 +4992,7 @@ export class Api<
    *
    * @tags stock
    * @name ApiStockTodayAttentionGet
+   * @summary 获取今天的推荐
    * @request GET:/api/stock/todayAttention
    * @secure
    * @response `200` `AdminResultListTodayAttentionDto` Success
@@ -4730,6 +5008,50 @@ export class Api<
   ) =>
     this.request<AdminResultListTodayAttentionDto, any>({
       path: `/api/stock/todayAttention`,
+      method: "GET",
+      query: query,
+      secure: true,
+      format: "json",
+      ...params
+    });
+  /**
+   * No description
+   *
+   * @tags stock
+   * @name ApiStockTodayHotStockGet
+   * @summary 查询当天的热门股
+   * @request GET:/api/stock/todayHotStock
+   * @secure
+   * @response `200` `AdminResultListTodayAttentionDto` Success
+   */
+  apiStockTodayHotStockGet = (params: RequestParams = {}) =>
+    this.request<AdminResultListTodayAttentionDto, any>({
+      path: `/api/stock/todayHotStock`,
+      method: "GET",
+      secure: true,
+      format: "json",
+      ...params
+    });
+  /**
+   * No description
+   *
+   * @tags stock
+   * @name ApiStockListGet
+   * @request GET:/api/stock/list
+   * @secure
+   * @response `200` `AdminResultPageResultDtoStockDto` Success
+   */
+  apiStockListGet = (
+    query?: {
+      /** @format int32 */
+      PageNumber?: number;
+      /** @format int32 */
+      PageSize?: number;
+    },
+    params: RequestParams = {}
+  ) =>
+    this.request<AdminResultPageResultDtoStockDto, any>({
+      path: `/api/stock/list`,
       method: "GET",
       query: query,
       secure: true,

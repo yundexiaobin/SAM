@@ -23,12 +23,7 @@ const titleClass = computed(() => {
 setTimeout(() => {
   loading.value = !loading.value;
 }, 800);
-export type PerceptionResult = {
-  /** 用户名 */
-  itemCount: number;
-  /** 当前登陆用户的角色 */
-  items: Array<PerceptionItem>;
-};
+
 export type PerceptionItem = {
   /** 用户名 */
   content: number;

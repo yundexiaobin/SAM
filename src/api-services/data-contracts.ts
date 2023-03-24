@@ -1532,6 +1532,50 @@ export interface AdminResultListRoleOutput {
 }
 
 /** 全局返回结果 */
+export interface AdminResultListStockStrategyDto {
+  /**
+   * 状态码
+   * @format int32
+   */
+  code?: number;
+  /** 类型success、warning、error */
+  type?: string | null;
+  /** 错误信息 */
+  message?: string | null;
+  /** 数据 */
+  result?: StockStrategyDto[] | null;
+  /** 附加数据 */
+  extras?: any;
+  /**
+   * 时间
+   * @format date-time
+   */
+  time?: string;
+}
+
+/** 全局返回结果 */
+export interface AdminResultListStockTradingAccount {
+  /**
+   * 状态码
+   * @format int32
+   */
+  code?: number;
+  /** 类型success、warning、error */
+  type?: string | null;
+  /** 错误信息 */
+  message?: string | null;
+  /** 数据 */
+  result?: StockTradingAccount[] | null;
+  /** 附加数据 */
+  extras?: any;
+  /**
+   * 时间
+   * @format date-time
+   */
+  time?: string;
+}
+
+/** 全局返回结果 */
 export interface AdminResultListString {
   /**
    * 状态码
@@ -1928,7 +1972,7 @@ export interface AdminResultObject {
 }
 
 /** 全局返回结果 */
-export interface AdminResultPageQueryResultStockDto {
+export interface AdminResultPageResultDtoStockDto {
   /**
    * 状态码
    * @format int32
@@ -1938,7 +1982,7 @@ export interface AdminResultPageQueryResultStockDto {
   type?: string | null;
   /** 错误信息 */
   message?: string | null;
-  result?: PageQueryResultStockDto;
+  result?: PageResultDtoStockDto;
   /** 附加数据 */
   extras?: any;
   /**
@@ -1949,7 +1993,7 @@ export interface AdminResultPageQueryResultStockDto {
 }
 
 /** 全局返回结果 */
-export interface AdminResultPageQueryResultStockOptionalDto {
+export interface AdminResultPageResultDtoStockOptionalDto {
   /**
    * 状态码
    * @format int32
@@ -1959,7 +2003,7 @@ export interface AdminResultPageQueryResultStockOptionalDto {
   type?: string | null;
   /** 错误信息 */
   message?: string | null;
-  result?: PageQueryResultStockOptionalDto;
+  result?: PageResultDtoStockOptionalDto;
   /** 附加数据 */
   extras?: any;
   /**
@@ -1970,7 +2014,7 @@ export interface AdminResultPageQueryResultStockOptionalDto {
 }
 
 /** 全局返回结果 */
-export interface AdminResultPageQueryResultStockPerceptionDto {
+export interface AdminResultPageResultDtoStockPerceptionDto {
   /**
    * 状态码
    * @format int32
@@ -1980,7 +2024,7 @@ export interface AdminResultPageQueryResultStockPerceptionDto {
   type?: string | null;
   /** 错误信息 */
   message?: string | null;
-  result?: PageQueryResultStockPerceptionDto;
+  result?: PageResultDtoStockPerceptionDto;
   /** 附加数据 */
   extras?: any;
   /**
@@ -2561,6 +2605,15 @@ export interface AdminResultWechatPayOutput {
   time?: string;
 }
 
+/**
+ * <br />&nbsp; Day = 0<br />&nbsp; Tick = 1<br />
+ * @format int32
+ */
+export enum BarDataType {
+  Value0 = 0,
+  Value1 = 1
+}
+
 export interface CaptchaDto {
   /** @format int64 */
   id?: number;
@@ -2690,6 +2743,16 @@ export interface ConstOutput {
   data?: any;
 }
 
+export interface CreateAccountRequestDto {
+  userName?: string | null;
+  /** @format double */
+  enableBalance?: number;
+  /** @format double */
+  handlingFee?: number;
+  /** @format double */
+  stampDuty?: number;
+}
+
 export interface CreateEntityInput {
   /**
    * 表名
@@ -2731,27 +2794,60 @@ export enum CultureLevelEnum {
 }
 
 export interface DailyDto {
-  /** @format double */
+  /**
+   * 开盘价
+   * @format double
+   */
   open?: number;
-  /** @format double */
+  /**
+   * 最高价
+   * @format double
+   */
   high?: number;
-  /** @format double */
+  /**
+   * 最低价
+   * @format double
+   */
   low?: number;
-  /** @format double */
+  /**
+   * 收盘价
+   * @format double
+   */
   close?: number;
-  /** @format double */
+  /**
+   * 昨天收盘价
+   * @format double
+   */
   yesterdayClose?: number;
-  /** @format double */
+  /**
+   * 涨停
+   * @format double
+   */
   surgedLimit?: number;
-  /** @format double */
+  /**
+   * 跌停
+   * @format double
+   */
   declineLimit?: number;
-  /** @format double */
+  /**
+   * 涨跌额
+   * @format double
+   */
   change?: number;
-  /** @format double */
+  /**
+   * 涨跌幅
+   * @format double
+   */
   pctChg?: number;
-  /** @format double */
+  /**
+   * 成交量 （手）
+   * @format double
+   */
   vol?: number;
-  /** @format double */
+  /**
+   * 成交额 （元）
+   * @format double
+   */
   amount?: number;
 }
 
@@ -3279,19 +3375,19 @@ export interface OptionalRequestDto {
   pageSize?: number | null;
 }
 
-export interface PageQueryResultStockDto {
+export interface PageResultDtoStockDto {
   items?: StockDto[] | null;
   /** @format int64 */
   itemCount?: number;
 }
 
-export interface PageQueryResultStockOptionalDto {
+export interface PageResultDtoStockOptionalDto {
   items?: StockOptionalDto[] | null;
   /** @format int64 */
   itemCount?: number;
 }
 
-export interface PageQueryResultStockPerceptionDto {
+export interface PageResultDtoStockPerceptionDto {
   items?: StockPerceptionDto[] | null;
   /** @format int64 */
   itemCount?: number;
@@ -3366,6 +3462,16 @@ export interface RoleOutput {
   name?: string | null;
   /** 编码 */
   code?: string | null;
+}
+
+export interface RunRequestDto {
+  /** <br />&nbsp; Day = 0<br />&nbsp; Tick = 1<br /> */
+  barDataType?: BarDataType;
+  /** @format date-time */
+  begin?: string | null;
+  /** @format date-time */
+  end?: string | null;
+  symbols?: string[] | null;
 }
 
 export interface SignatureInput {
@@ -3893,13 +3999,25 @@ export enum StatusEnum {
 }
 
 export interface StockDto {
+  /** 股票代码，带交易所 */
   tsCode?: string | null;
+  /** 股票名称 */
   name?: string | null;
   todayDaily?: DailyDto;
 }
 
-export interface StockOptionalDto {
+export interface StockHolder {
   tsCode?: string | null;
+  /** @format double */
+  currentAmount?: number;
+  /** @format double */
+  enableAmount?: number;
+}
+
+export interface StockOptionalDto {
+  /** 股票代码，带交易所 */
+  tsCode?: string | null;
+  /** 股票名称 */
   name?: string | null;
   todayDaily?: DailyDto;
   /** @format int32 */
@@ -3908,10 +4026,17 @@ export interface StockOptionalDto {
 }
 
 export interface StockOptionalLogDto {
-  /** @format date-time */
+  /**
+   * 交易日
+   * @format date-time
+   */
   tradeDay?: string;
+  /** 選中類型 */
   type?: string | null;
-  /** @format int32 */
+  /**
+   * 分數
+   * @format int32
+   */
   mark?: number;
 }
 
@@ -3924,6 +4049,52 @@ export interface StockPerceptionDto {
 export interface StockPerceptionRequestDto {
   /** @minLength 1 */
   content: string;
+}
+
+export interface StockStrategyDto {
+  /** @format int64 */
+  id?: number;
+  name?: string | null;
+  /** @format int64 */
+  accountId?: number | null;
+  userName?: string | null;
+  /** @format int32 */
+  status?: number;
+}
+
+export interface StockTradingAccount {
+  /**
+   * 雪花Id
+   * @format int64
+   */
+  id?: number;
+  /**
+   * 创建者Id
+   * @format int64
+   */
+  createUserId?: number | null;
+  /**
+   * 修改者Id
+   * @format int64
+   */
+  updateUserId?: number | null;
+  /** @format date-time */
+  createTime?: string | null;
+  /** @format date-time */
+  updateTime?: string | null;
+  isDelete?: boolean;
+  userName?: string | null;
+  /** @format double */
+  assetBalance?: number;
+  /** @format double */
+  enableBalance?: number;
+  /** @format double */
+  marketValue?: number;
+  /** @format double */
+  handlingFee?: number;
+  /** @format double */
+  stampDuty?: number;
+  holders?: StockHolder[] | null;
 }
 
 export interface SurgedDeclineInfoDto {
@@ -5991,23 +6162,46 @@ export interface TenantUserInput {
 export interface TodayAttentionDto {
   name?: string | null;
   tsCode?: string | null;
-  /** @format double */
+  /**
+   * 开盘价
+   * @format double
+   */
   open?: number;
-  /** @format double */
+  /**
+   * 最高价
+   * @format double
+   */
   high?: number;
-  /** @format double */
+  /**
+   * 最低价
+   * @format double
+   */
   low?: number;
-  /** @format double */
+  /**
+   * 收盘价
+   * @format double
+   */
   close?: number;
-  /** @format double */
+  /**
+   * 涨跌幅
+   * @format double
+   */
   pctChg?: number;
   /** @format int32 */
   mark?: number;
+  /** 行业 */
   industry?: string | null;
+  /** 概念 */
   concept?: string | null;
-  /** @format double */
+  /**
+   * 箱体最低
+   * @format double
+   */
   boxLow?: number;
-  /** @format double */
+  /**
+   * 箱体最高
+   * @format double
+   */
   boxHigh?: number;
 }
 
