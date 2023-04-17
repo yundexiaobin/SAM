@@ -44,6 +44,7 @@ onMounted(() => {
 <template>
   <div style="min-height: 324px">
     <pure-table
+      class="vh-100"
       border
       row-key="id"
       alignWhole="center"
@@ -51,13 +52,7 @@ onMounted(() => {
       :size="tableSize"
       :loading="loading"
       :loading-config="loadingConfig"
-      :height="600"
-      :data="
-        dataList.slice(
-          (pagination.currentPage - 1) * pagination.pageSize,
-          pagination.currentPage * pagination.pageSize
-        )
-      "
+      :data="dataList"
       :columns="columns"
       :pagination="pagination"
       @size-change="onSizeChange"

@@ -3368,13 +3368,6 @@ export enum NoticeUserStatusEnum {
   Value1 = 1
 }
 
-export interface OptionalRequestDto {
-  /** @format int32 */
-  pageNumber?: number;
-  /** @format int32 */
-  pageSize?: number | null;
-}
-
 export interface PageResultDtoStockDto {
   items?: StockDto[] | null;
   /** @format int64 */
@@ -3467,7 +3460,10 @@ export interface RoleOutput {
 export interface RunRequestDto {
   /** <br />&nbsp; Day = 0<br />&nbsp; Tick = 1<br /> */
   barDataType?: BarDataType;
-  /** @format date-time */
+  /**
+   * @format date-time
+   * @example "2023-01-01"
+   */
   begin?: string | null;
   /** @format date-time */
   end?: string | null;

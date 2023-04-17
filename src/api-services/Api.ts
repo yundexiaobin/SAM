@@ -128,7 +128,6 @@ import {
   MessageInput,
   NoticeInput,
   NoticeTypeEnum,
-  OptionalRequestDto,
   ResetPwdUserInput,
   RoleInput,
   RoleMenuInput,
@@ -4925,15 +4924,19 @@ export class Api<
    * @response `200` `AdminResultPageResultDtoStockOptionalDto` Success
    */
   apiStockOptionalGet = (
-    data: OptionalRequestDto,
+    query?: {
+      /** @format int32 */
+      PageNumber?: number;
+      /** @format int32 */
+      PageSize?: number;
+    },
     params: RequestParams = {}
   ) =>
     this.request<AdminResultPageResultDtoStockOptionalDto, any>({
       path: `/api/stock/optional`,
       method: "GET",
-      body: data,
+      query: query,
       secure: true,
-      type: ContentType.Json,
       format: "json",
       ...params
     });

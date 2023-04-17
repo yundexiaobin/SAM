@@ -3,6 +3,7 @@ import type { PaginationProps, LoadingConfig, Align } from "@pureadmin/table";
 import { http } from "@/utils/http";
 
 export function useColumns() {
+  const height = ref(600);
   const dataList = ref([]);
   const loading = ref(true);
   const hideVal = ref("nohide");
@@ -90,6 +91,9 @@ export function useColumns() {
           });
           dataList.value = newList;
           pagination.total = r.data.result.itemCount;
+          pagination.pageCount = Math.ceil(
+            pagination.total / pagination.pageSize
+          );
         } else {
           console.log(r.data.message);
         }
@@ -156,6 +160,7 @@ export function useColumns() {
     loadingConfig,
     paginationAlign,
     paginationSmall,
+    height,
     onChange,
     onSizeChange,
     onCurrentChange
