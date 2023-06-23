@@ -27,19 +27,27 @@ const filterNode = (value, data) => {
 const buttonText = ref("全部展開");
 const buttonTextClick = () => {
   if (buttonText.value == "全部展開") {
-    buttonText.value = "全部收起";
     expandAll(true);
   } else {
-    buttonText.value = "全部展開";
     expandAll(false);
   }
 };
 const expandAll = bool => {
+  if (bool === true) {
+    buttonText.value = "全部收起";
+  } else {
+    buttonText.value = "全部展開";
+  }
   const nodes = treeRef.value.store.nodesMap;
   for (const i in nodes) {
     nodes[i].expanded = bool;
   }
 };
+
+function createOrUpdateMenu(newData?: SysMenuResponse) {
+  onSubmit(newData);
+  expandAll(true);
+}
 
 function onBeforeSureClick() {
   const newData = ref<SysMenuResponse>({
@@ -57,7 +65,7 @@ function onBeforeSureClick() {
     },
     contentRenderer: () => editForm,
     beforeSure: done => {
-      onSubmit(newData.value);
+      createOrUpdateMenu(newData.value);
       done();
     }
   });
@@ -87,7 +95,10 @@ function onBeforeSureClick() {
     <div class="float-left w-[50%] ml-5">
       <edit-form :form="formData" :data="dataList" />
       <el-row class="mb-4">
-        <el-button type="primary" @click="onSubmit(formData)" class="mb-4"
+        <el-button
+          type="primary"
+          @click="createOrUpdateMenu(formData)"
+          class="mb-4"
           >提交
         </el-button>
         <el-button type="danger" @click="onDelete(formData.id)" class="mb-4"

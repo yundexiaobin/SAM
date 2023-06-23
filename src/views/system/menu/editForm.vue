@@ -16,13 +16,13 @@ interface FormProps {
   data: [];
 }
 const props = withDefaults(defineProps<FormProps>(), {
-  form: {
+  form: () => ({
     type: 1,
     isHide: false,
     isIframe: false,
     status: 1,
     order: 1
-  }
+  })
 });
 const formData = ref(props.form);
 const menuData = ref(props.data);
