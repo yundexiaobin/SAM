@@ -24,7 +24,7 @@ const tableData = ref([]);
 
 const initTableData = async () => {
   try {
-    const { data } = await http.api.apiStockListGet({});
+    const { data } = await http.services.apiStockListGet({});
     if (data.code === 200) {
       tableData.value = data.result.items;
     }

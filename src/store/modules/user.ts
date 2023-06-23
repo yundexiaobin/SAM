@@ -45,7 +45,7 @@ export const useUserStore = defineStore({
     /** 登入 */
     async loginByUsername(data) {
       return new Promise<LoginOutput>((resolve, reject) => {
-        http.api
+        http.services
           .apiSysAuthLoginPost({
             account: data.username,
             password: data.password,
@@ -53,18 +53,14 @@ export const useUserStore = defineStore({
             code: data.code
           })
           .then(rs => {
-            if (rs.data.code === 200) {
-              const outputDto = rs.data.result;
-              setToken({
-                accessToken: outputDto.accessToken,
-                refreshToken: outputDto.refreshToken,
-                username: outputDto.username,
-                roles: outputDto.roles
-              });
-              resolve(outputDto);
-            } else {
-              reject(rs.data);
-            }
+            const outputDto = rs.data;
+            setToken({
+              accessToken: outputDto.accessToken,
+              refreshToken: outputDto.refreshToken,
+              username: outputDto.username,
+              roles: outputDto.roles
+            });
+            resolve(outputDto);
           })
           .catch(reason => {
             reject(reason);

@@ -1,3 +1,140 @@
+# 4.4.0 (2023-06-14)
+
+### 🎫 Feat
+
+- 路由 `meta` 添加 `activePath` 属性，可将某个菜单激活（主要用于通过 `query` 或 `params` 传参的路由，当它们通过配置 `showLink: false` 后不在菜单中显示，就不会有任何菜单高亮，而通过设置 `activePath` 指定激活菜单即可获得高亮，`activePath` 为指定激活菜单的 `path` [查看详情](https://github.com/pure-admin/vue-pure-admin/commit/58cafbc73ffa27253446ee93077e1e382519ce8a#commitcomment-117834411)）
+- `pure-admin-table` 高级用法添加自适应内容区高度示例
+- 添加防抖、节流和文本复制指令并规范自定义指令用法错误时的提示以及添加使用示例
+- `notice` 消息提示组件空数据时添加 `el-empty` 组件
+- 函数式弹窗示例代码添加子组件 `prop` 为 `primitive` 类型的示例
+- 添加 `vscode-docker` 插件
+
+### 🐞 Bug fixes
+
+- 修复国际化切换到英文模式刷新会回到中文模式
+- 修复搜索菜单功能的弹框遮罩未覆盖左侧菜单的问题
+
+### 🍏 Perf
+
+- 页面切换性能优化，不考虑网络的情况下，页面切换逻辑的速度差不多比之前快 `3-4` 倍 [查看优化详情](https://github.com/pure-admin/vue-pure-admin/pull/600#issuecomment-1586094078)
+- 优化标签页操作-路由传参模式用法
+- 系统管理中表格均改为自适应内容区高度，需将 `@pureadmin/table` 升级到最新版
+- 使用 `vueuse` 的 `useResizeObserver` 函数替换 `v-resize` 自定义指令，从测试后的表现来看性能会更好
+- 对未解绑的公共事件，在页面销毁时解绑
+
+# 4.3.0 (2023-06-04)
+
+### 🎫 Feat
+
+- 添加 `docker` 支持
+- 添加项目版本实时更新检测功能
+- 完善系统管理-角色管理页面
+- 瀑布流组件添加无限滚动
+- 函数式弹框添加 `updateDialog` 更改弹框自身属性值方法
+- `wangeditor` 富文本添加多个富文本和自定义图片上传示例
+- `pure-table` 表格高级用法添加保留已选中的 `CheckBox` 选项示例
+- `RePureTableBar` 组件添加 `title` 插槽
+
+### 🐞 Bug fixes
+
+- 修复获取验证码倒计时会有 `1s` 延时禁用的问题
+- 修复图标选择器未正确初始化预览问题
+- 修复动态路由重定向造成标签页出现重复内容
+- 修复强制刷新页面 `getTopMenu()` 函数获取不到 `path` 报错的问题
+- 修复左侧菜单折叠后突然拉升造成左侧菜单整体不显示的问题
+- 修复 `RePureTableBar` 关闭列设置后在 `windows` 出现滚动条的问题
+
+### 🍏 Perf
+
+- 优化标签页操作-路由传参模式用法
+- 优化菜单搜索功能和样式
+- 更新 `vscode` 代码片段
+- 优化 `dataThemeChange` 主题设置的初始化调用时机
+
+# 4.2.0 (2023-05-15)
+
+### 🎫 Feat
+
+- 新增分段控制器组件并适配暗黑模式
+- 静态路由支持配置数组格式
+- 函数式弹框组件添加全屏、退出全屏操作按钮
+- 新增组件-瀑布流 `demo`
+- 添加 `Exclusive` 类型互斥语法糖
+
+### 🍏 Perf
+
+- 规范 `template` 模版中路由写法，不再使用 `$route` 和 `$router`，此写法 `vue-tsc` 编译不通过
+
+# 4.1.0 (2023-05-12)
+
+### 🎫 Feat
+
+- 函数式弹框组件添加结合 `Form` 的 `demo` 示例
+- 封装 `element-plus` 的 `el-col` 组件
+- 函数式弹框组件添加 `beforeCancel` 和 `beforeSure` 回调，可暂停弹框的关闭
+- 完善 `系统管理-部门管理` 页面
+- 优化 `PureTableBar` 组件，列展示添加拖拽功能
+
+### 🐞 Bug fixes
+
+- 修复开启 `keepAlive` 后点击标签页的重新加载，页面缓存还存在的问题
+- 修复混合模式菜单下刷新页签后左侧菜单会闪烁一下的问题
+
+### 🍏 Perf
+
+- 优化首页布局
+- 依赖更新到 `vue3.3+` 以及删除 `unplugin-vue-define-options` 插件
+
+# 4.0.0 (2023-05-09)
+
+[查看 4.0.0 版本优化细节](https://github.com/pure-admin/vue-pure-admin/issues/428#issuecomment-1422191158)
+
+### ✔️ refactor
+
+- 采用 `css` 伪类 `before` 写法重构菜单的激活背景，类似于 [ant.design-menu](https://ant.design/components/menu-cn#components-menu-demo-inline-collapsed)
+
+### 🎫 Feat
+
+- 优化菜单名称右侧的额外图标，使其支持更多图标渲染模式
+- 可配置首页菜单显示与隐藏
+- 将本地响应式存储的命名空间提升到全局配置中
+- 新增函数式弹框组件以及 `demo` 示例，使用更便捷
+- `PureTableBar` 组件添加列展示功能
+
+### 🐞 Bug fixes
+
+- 修复当菜单折叠或展开时首页 `echarts` 图表未自适应容器
+- 修复当只有一个子菜单时，搜索功能搜索不到该子菜单问题
+- 修复全局配置 `Theme` 为 `light` 清空缓存重新登录主题配置不生效的问题
+- 修复菜单搜索功能弹框打开后搜索框未自动聚集的问题
+- 修复按 `ESC` 退出全屏后，工具栏按钮文案展示问题
+- 修复移动端通知栏 `tooltip` 点击穿透问题
+- 修复当左侧菜单收起后，切换到 `horizontal` 导航模式时文字不展示的问题
+- 修复导航 `tab` 关闭其他标签页无法重置状态问题
+- 修复 `getHistoryMode` 函数中环境变量未初始化带来的页面热更新报错
+- 修复导航 `tab` 过多导致关闭左侧标签页无法正常显示
+- 修复点击内容区全屏报错问题
+- 修复混合导航下打开 `showLink:false` 页面并刷新后，左侧导航栏一直处于加载状态的问题
+- 修复混合模式导航下调用 `initRouter` 函数导致左侧导航内存溢出问题
+- 修复关闭左侧、右侧、其他、全部标签页操作时缓存页面并没有销毁问题
+- 修复路由通过 `query` 或 `params` 传参，开启缓存后关闭标签页缓存失效问题
+- 修复 `params` 路由传参模式下，面包屑无法找到父级路径问题
+
+### 🍏 Perf
+
+- 优化 `RePureTableBar` 组件的 `buttons` 具名插槽
+- 优化导航样式以及菜单折叠动画
+- 优化菜单名称右侧的额外图标，使其支持更多图标渲染模式
+- 优化 `logo` 图和文字布局以及统一配置
+- 路由信息 `showLink` 设置成 `false` 后，当前路由信息不添加到标签页
+- 导出 `addPathMatch` 函数
+- `pinia` 中所有 `getters` 改为官方推荐写法，`this` 改成 `state` 可自动推导类型
+- 适配最新版 `pure-table` 的 `api`
+- 忽略 `sourcemap-codec` 和 `stable` 依赖包的 `deprecation` 警告
+- 从 `tsconfig.json` 文件中移除 `"incremental": true`
+- 更新 `stylelint` 以及相关配置至最新，强化样式校验
+- 面包屑去首页化，根据选择的菜单对应显示，首页不在固定到面包屑里，并优化面包屑页面的路由监听
+
 # 3.9.7 (2022-12-26)
 
 ### 🍏 Perf

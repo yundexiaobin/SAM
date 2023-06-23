@@ -32,7 +32,7 @@ const { setOptions, getInstance, resize } = useECharts(
   { theme }
 );
 
-http.api.apiStockSurgedDeclineInfoGet().then(res => {
+http.services.apiStockSurgedDeclineInfoGet().then(res => {
   if (res.status === 200 && res.data.code === 200) {
     const items = res.data.result;
     items.map(v => {

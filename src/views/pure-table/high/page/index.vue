@@ -5,6 +5,7 @@ const {
   loading,
   columns,
   dataList,
+  select,
   hideVal,
   tableSize,
   pagination,
@@ -20,6 +21,12 @@ const {
 <template>
   <div>
     <el-space class="float-right mb-4">
+      <p class="text-sm">多选：</p>
+      <el-radio-group v-model="select" size="small">
+        <el-radio-button label="yes">是</el-radio-button>
+        <el-radio-button label="no">否</el-radio-button>
+      </el-radio-group>
+      <el-divider direction="vertical" />
       <p class="text-sm">动态列：</p>
       <el-radio-group v-model="hideVal" size="small">
         <el-radio-button label="nohide">不隐藏</el-radio-button>
@@ -54,7 +61,7 @@ const {
       row-key="id"
       alignWhole="center"
       showOverflowTooltip
-      :size="tableSize"
+      :size="tableSize as any"
       :loading="loading"
       :loading-config="loadingConfig"
       :height="tableSize === 'small' ? 352 : 440"
@@ -66,8 +73,8 @@ const {
       "
       :columns="columns"
       :pagination="pagination"
-      @size-change="onSizeChange"
-      @current-change="onCurrentChange"
+      @page-size-change="onSizeChange"
+      @page-current-change="onCurrentChange"
     />
   </div>
 </template>

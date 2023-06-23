@@ -56,9 +56,16 @@ function onCloseTags() {
         class="m-2"
         v-for="index in 6"
         :key="index"
-        @click="toDetail(index, 'query')"
+        @click="toDetail({ id: index }, 'query')"
       >
         打开{{ index }}详情页
+      </el-button>
+      <el-button
+        @click="
+          toDetail({ id: 666, name: '小明', age: 18, job: '工程师' }, 'query')
+        "
+      >
+        多个参数
       </el-button>
     </div>
 
@@ -70,7 +77,7 @@ function onCloseTags() {
         class="m-2"
         v-for="index in 6"
         :key="index"
-        @click="toDetail(index, 'params')"
+        @click="toDetail({ id: index }, 'params')"
       >
         打开{{ index }}详情页
       </el-button>
@@ -101,14 +108,14 @@ function onCloseTags() {
     <el-button class="m-2" @click="onCloseTags">关闭标签</el-button>
 
     <el-divider />
-    <el-button @click="$router.push({ name: 'Menu1-2-2' })">
+    <el-button @click="router.push({ name: 'Menu1-2-2' })">
       跳转页内菜单（传name对象，优先推荐）
     </el-button>
-    <el-button @click="$router.push('/nested/menu1/menu1-2/menu1-2-2')">
+    <el-button @click="router.push('/nested/menu1/menu1-2/menu1-2-2')">
       跳转页内菜单（直接传要跳转的路径）
     </el-button>
     <el-button
-      @click="$router.push({ path: '/nested/menu1/menu1-2/menu1-2-2' })"
+      @click="router.push({ path: '/nested/menu1/menu1-2/menu1-2-2' })"
     >
       跳转页内菜单（传path对象）
     </el-button>
@@ -116,7 +123,7 @@ function onCloseTags() {
     <el-divider />
     <el-button
       @click="
-        $router.push({
+        router.push({
           name: 'Menu1-2-2',
           query: { text: '传name对象，优先推荐' }
         })
@@ -126,7 +133,7 @@ function onCloseTags() {
     </el-button>
     <el-button
       @click="
-        $router.push({
+        router.push({
           path: '/nested/menu1/menu1-2/menu1-2-2',
           query: { text: '传path对象' }
         })
@@ -143,7 +150,7 @@ function onCloseTags() {
     </el-link>
 
     <el-divider />
-    <el-button @click="$router.push({ name: 'Empty' })">
+    <el-button @click="router.push({ name: 'Empty' })">
       跳转无Layout的空白页面
     </el-button>
   </el-card>

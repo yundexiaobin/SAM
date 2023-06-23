@@ -17,11 +17,9 @@ export const useImageVerify = () => {
   }
 
   function getImgCode() {
-    http.api.apiSysAuthCaptchaGet().then(re => {
-      if (re.data.code === 200) {
-        base64Ref.value = "data:image/png;base64," + re.data.result.img;
-        codeId.value = re.data.result.id;
-      }
+    http.services.apiSysAuthCaptchaGet().then(re => {
+      base64Ref.value = "data:image/png;base64," + re.data.img;
+      codeId.value = re.data.id;
     });
     // if (!domRef.value) return;
     // imgCode.value = draw(domRef.value, width, height);

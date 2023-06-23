@@ -1,6 +1,8 @@
 import Axios, {
+  AxiosHeaders,
   AxiosInstance,
   AxiosRequestConfig,
+  AxiosRequestHeaders,
   CustomParamsSerializer
 } from "axios";
 import {
@@ -22,29 +24,26 @@ const ResponseAccessTokenKey = "access-token";
 //无感刷新，接口返回的新刷新token
 const ResponseXAccessTokenKey = "x-access-token";
 
+const defaultHeaders: AxiosRequestHeaders = new AxiosHeaders({
+  Accept: "application/json, text/plain, */*",
+  "Content-Type": "application/json",
+  "X-Requested-With": "XMLHttpRequest"
+});
+
 // 相关配置请参考：www.axios-js.com/zh-cn/docs/#axios-request-config-1
 const defaultConfig: AxiosRequestConfig = {
   // 请求超时时间
   timeout: 10000,
-  headers: {
-    Accept: "application/json, text/plain, */*",
-    "Content-Type": "application/json",
-    "X-Requested-With": "XMLHttpRequest"
-  },
+  headers: defaultHeaders,
   // 数组格式参数序列化（https://github.com/axios/axios/issues/5142）
   paramsSerializer: {
     serialize: stringify as unknown as CustomParamsSerializer
   }
 };
-
 const apiAxiosConfig: AxiosRequestConfig = {
   // 请求超时时间
   timeout: 10000,
-  headers: {
-    Accept: "application/json, text/plain, */*",
-    "Content-Type": "application/json",
-    "X-Requested-With": "XMLHttpRequest"
-  },
+  headers: defaultHeaders,
   baseURL: import.meta.env.VITE_API_BASE_URL,
   // 数组格式参数序列化（https://github.com/axios/axios/issues/5142）
   paramsSerializer: {
@@ -57,26 +56,28 @@ class PureHttp {
     this.httpInterceptorsRequest(PureHttp.axiosInstance);
     this.httpInterceptorsResponse(PureHttp.axiosInstance);
 
-    this.AxiosInterceptorsRequest(this.api.instance);
-    this.AxiosInterceptorsResponse(this.api.instance);
+    this.AxiosInterceptorsRequest(this.services.instance);
+    this.AxiosInterceptorsResponse(this.services.instance);
   }
 
   /** token过期后，暂存待执行的请求 */
   private static requests = [];
 
   /** 初始化配置对象 */
-  private static initConfig: PureHttpRequestConfig = {};
+  private static initConfig: PureHttpRequestConfig = {
+    headers: defaultHeaders
+  };
 
   /** 保存当前Axios实例对象 */
   private static axiosInstance: AxiosInstance = Axios.create(defaultConfig);
 
-  public api: Api = new Api({
+  public services: Api = new Api({
     ...apiAxiosConfig
   });
 
   /** 请求拦截 */
   private AxiosInterceptorsRequest(instance: AxiosInstance): void {
-    instance.interceptors.request.use(async (config: PureHttpRequestConfig) => {
+    instance.interceptors.request.use((config: PureHttpRequestConfig) => {
       // 开启进度条动画
       NProgress.start();
       // 优先判断post/get等方法是否传入回掉，否则执行初始化设置等回掉
@@ -135,10 +136,10 @@ class PureHttp {
   /** 请求拦截 */
   private httpInterceptorsRequest(instance: AxiosInstance): void {
     instance.interceptors.request.use(
-      async (config: PureHttpRequestConfig) => {
+      async (config: PureHttpRequestConfig): Promise<any> => {
         // 开启进度条动画
         NProgress.start();
-        // 优先判断post/get等方法是否传入回掉，否则执行初始化设置等回掉
+        // 优先判断post/get等方法是否传入回调，否则执行初始化设置等回调
         if (typeof config.beforeRequestCallback === "function") {
           config.beforeRequestCallback(config);
           return config;
@@ -162,7 +163,7 @@ class PureHttp {
         const $config = response.config;
         // 关闭进度条动画
         NProgress.done();
-        // 优先判断post/get等方法是否传入回掉，否则执行初始化设置等回掉
+        // 优先判断post/get等方法是否传入回调，否则执行初始化设置等回调
         if (typeof $config.beforeResponseCallback === "function") {
           $config.beforeResponseCallback(response);
           return response.data;
@@ -198,7 +199,7 @@ class PureHttp {
       ...axiosConfig
     } as PureHttpRequestConfig;
 
-    // 单独处理自定义请求/响应回掉
+    // 单独处理自定义请求/响应回调
     return new Promise((resolve, reject) => {
       PureHttp.axiosInstance
         .request(config)

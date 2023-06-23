@@ -1,11 +1,6 @@
 import { http } from "@/utils/http";
-
-type Result = {
-  success: boolean;
-  data: Array<any>;
-};
-
 export const getAsyncRoutes = () => {
-  const result = http.request<Result>("get", "/getAsyncRoutes");
+  // const result = apiSysMenuTreeGet;
+  const result = http.services.apiSysMenuTreeGet();
   return result;
 };

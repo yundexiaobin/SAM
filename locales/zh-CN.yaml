@@ -36,8 +36,11 @@ menus:
   hsfourZeroOne: "403"
   hsFive: "500"
   hscomponents: 组件
+  hsdialog: 函数式弹框组件
   hsmessage: 消息提示组件
   hsvideo: 视频组件
+  hssegmented: 分段控制器组件
+  hswaterfall: 瀑布流无限滚动组件
   hsmap: 地图组件
   hsdraggable: 拖拽组件
   hssplitPane: 切割面板
@@ -65,6 +68,7 @@ menus:
   hsguide: 引导页
   hsAble: 功能
   hsMenuTree: 菜单树结构
+  hsOptimize: 防抖、截流、复制指令
   hsWatermark: 水印
   hsPrint: 打印
   hsDownload: 下载
@@ -98,7 +102,7 @@ menus:
   hsInfiniteScroll: 表格无限滚动
   hsdanmaku: 弹幕组件
   hsPureTableBase: 基础用法（23个示例）
-  hsPureTableHigh: 高级用法（10个示例）
+  hsPureTableHigh: 高级用法（11个示例）
   hsTree: 大数据树业务组件
   hsMenuoverflow: 目录超出显示 Tooltip 文字提示
   hsChildMenuoverflow: 菜单超出显示 Tooltip 文字提示

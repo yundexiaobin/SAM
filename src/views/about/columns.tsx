@@ -54,13 +54,14 @@ export function useColumns() {
       }
     },
     {
-      label: "QQ交流群",
+      label: "精简版",
       cellRenderer: () => {
         return (
-          <a href="https://jq.qq.com/?_wv=1027&k=E9fwmFGr" target="_blank">
-            <span style="color: var(--el-color-primary)">
-              点击链接加入群聊【Pure Admin】
-            </span>
+          <a
+            href="https://github.com/pure-admin/pure-admin-thin"
+            target="_blank"
+          >
+            <span style="color: var(--el-color-primary)">精简版</span>
           </a>
         );
       }

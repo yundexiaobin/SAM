@@ -105,7 +105,8 @@ watch(
         props.modelValue.indexOf(":") + 1
       );
     }
-  }
+  },
+  { immediate: true }
 );
 watch(
   () => {
@@ -140,12 +141,11 @@ watch(
           </template>
 
           <el-input
-            class="p-2"
+            class="px-2 pt-2"
             v-model="filterValue"
             placeholder="搜索图标"
             clearable
           />
-          <el-divider border-style="dashed" />
 
           <el-tabs v-model="currentActiveType" @tab-click="handleClick">
             <el-tab-pane
@@ -154,24 +154,26 @@ watch(
               :label="pane.label"
               :name="pane.name"
             >
-              <el-divider class="tab-divider" border-style="dashed" />
               <el-scrollbar height="220px">
                 <ul class="flex flex-wrap px-2 ml-2">
                   <li
                     v-for="(item, key) in pageList"
                     :key="key"
                     :title="item"
-                    class="icon-item p-2 w-[1/10] cursor-pointer mr-2 mt-1 flex justify-center items-center border border-solid"
+                    class="icon-item p-2 cursor-pointer mr-2 mt-1 flex justify-center items-center border border-solid"
                     :style="iconItemStyle(item)"
                     @click="onChangeIcon(item)"
                   >
-                    <IconifyIconOnline :icon="currentActiveType + item" />
+                    <IconifyIconOnline
+                      :icon="currentActiveType + item"
+                      width="20px"
+                      height="20px"
+                    />
                   </li>
                 </ul>
               </el-scrollbar>
             </el-tab-pane>
           </el-tabs>
-          <el-divider border-style="dashed" />
 
           <el-pagination
             small
@@ -190,18 +192,10 @@ watch(
 </template>
 
 <style lang="scss" scoped>
-.el-divider--horizontal {
-  margin: 1px auto !important;
-}
-
-.tab-divider.el-divider--horizontal {
-  margin: 0 !important;
-}
-
 .icon-item {
   &:hover {
-    border-color: var(--el-color-primary);
     color: var(--el-color-primary);
+    border-color: var(--el-color-primary);
     transition: all 0.4s;
     transform: scaleX(1.05);
   }
@@ -224,15 +218,20 @@ watch(
 }
 
 :deep(.el-tabs__item) {
+  height: 30px;
   font-size: 12px;
   font-weight: normal;
-  height: 30px;
   line-height: 30px;
 }
 
 :deep(.el-tabs__header),
 :deep(.el-tabs__nav-wrap) {
-  margin: 0;
   position: static;
+  margin: 0;
+  box-shadow: 0 2px 5px rgb(0 0 0 / 6%);
+}
+
+:deep(.el-tabs__content) {
+  margin-top: 4px;
 }
 </style>

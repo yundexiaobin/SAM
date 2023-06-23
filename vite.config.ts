@@ -15,22 +15,6 @@ const pathResolve = (dir: string): string => {
   return resolve(__dirname, ".", dir);
 };
 
-if (process.env.NODE_ENV === "development") {
-  // eslint-disable-next-line @typescript-eslint/no-var-requires
-  const { generateApi } = require("swagger-typescript-api");
-  generateApi({
-    name: "SamApi.ts",
-    // input: path.resolve(__dirname, "./schemas.json"),
-    url: "https://localhost:5001/swagger/All%20Groups/swagger.json",
-    output: pathResolve("./src/api-services"),
-    modular: true,
-    templates: pathResolve("./src/api-templates"),
-    httpClientType: "axios",
-    generateClient: true,
-    generateResponses: true
-  }).catch(e => console.error(e));
-}
-
 /** 设置别名 */
 const alias: Record<string, string> = {
   "@": pathResolve("src"),

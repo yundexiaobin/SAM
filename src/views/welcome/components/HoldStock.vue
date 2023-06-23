@@ -8,7 +8,7 @@ const tableData = ref([]);
 
 const initTableData = async () => {
   try {
-    const { data } = await http.api.apiStockTodayAttentionGet({
+    const { data } = await http.services.apiStockTodayAttentionGet({
       PageNumber: 0,
       PageSize: 20
     });

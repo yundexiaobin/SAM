@@ -79,24 +79,20 @@ export function useColumns() {
     pagination.pageSize = val;
     loading.value = true;
     const newList = [];
-    http.api
+    http.services
       .apiStockListGet({
         PageNumber: pagination.currentPage,
         PageSize: pagination.pageSize
       })
       .then(r => {
-        if (r.data.code === 200) {
-          r.data.result.items.map(t => {
-            newList.push(t);
-          });
-          dataList.value = newList;
-          pagination.total = r.data.result.itemCount;
-          pagination.pageCount = Math.ceil(
-            pagination.total / pagination.pageSize
-          );
-        } else {
-          console.log(r.data.message);
-        }
+        r.data.items.map(t => {
+          newList.push(t);
+        });
+        dataList.value = newList;
+        pagination.total = r.data.itemCount;
+        pagination.pageCount = Math.ceil(
+          pagination.total / pagination.pageSize
+        );
         loading.value = false;
       });
   }
@@ -105,22 +101,18 @@ export function useColumns() {
     loadingConfig.text = `正在加载第${val}页...`;
     pagination.currentPage = val;
     loading.value = true;
-    http.api
+    http.services
       .apiStockListGet({
         PageNumber: pagination.currentPage,
         PageSize: pagination.pageSize
       })
       .then(r => {
-        if (r.data.code !== 200) {
-          console.log(r.data.message);
-        } else {
-          const newList = [];
-          r.data.result.items.map(t => {
-            newList.push(t);
-          });
-          dataList.value = newList;
-          pagination.total = r.data.result.itemCount;
-        }
+        const newList = [];
+        r.data.items.map(t => {
+          newList.push(t);
+        });
+        dataList.value = newList;
+        pagination.total = r.data.itemCount;
         loading.value = false;
       });
   }
@@ -130,22 +122,18 @@ export function useColumns() {
   });
 
   onMounted(() => {
-    http.api
+    http.services
       .apiStockListGet({
         PageNumber: pagination.currentPage,
         PageSize: pagination.pageSize
       })
       .then(r => {
-        if (r.data.code !== 200) {
-          console.log(r.data.message);
-        } else {
-          const newList = [];
-          r.data.result.items.map(t => {
-            newList.push(t);
-          });
-          dataList.value = newList;
-          pagination.total = r.data.result.itemCount;
-        }
+        const newList = [];
+        r.data.items.map(t => {
+          newList.push(t);
+        });
+        dataList.value = newList;
+        pagination.total = r.data.itemCount;
         loading.value = false;
       });
   });

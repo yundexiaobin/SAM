@@ -12,10 +12,16 @@ import { tagsViewsType } from "../types";
 import { useEventListener } from "@vueuse/core";
 import { useRoute, useRouter } from "vue-router";
 import { transformI18n, $t } from "@/plugins/i18n";
-import { isEqual, isBoolean } from "@pureadmin/utils";
+import { responsiveStorageNameSpace } from "@/config";
 import { useSettingStoreHook } from "@/store/modules/settings";
 import { useMultiTagsStoreHook } from "@/store/modules/multiTags";
-import { storageLocal, toggleClass, hasClass } from "@pureadmin/utils";
+import {
+  isEqual,
+  isBoolean,
+  storageLocal,
+  toggleClass,
+  hasClass
+} from "@pureadmin/utils";
 
 import Fullscreen from "@iconify-icons/ri/fullscreen-fill";
 import CloseAllTags from "@iconify-icons/ri/subtract-line";
@@ -41,13 +47,16 @@ export function useTags() {
 
   /** 显示模式，默认灵动模式 */
   const showModel = ref(
-    storageLocal().getItem<StorageConfigs>("responsive-configure")?.showModel ||
-      "smart"
+    storageLocal().getItem<StorageConfigs>(
+      `${responsiveStorageNameSpace()}configure`
+    )?.showModel || "smart"
   );
   /** 是否隐藏标签页，默认显示 */
   const showTags =
     ref(
-      storageLocal().getItem<StorageConfigs>("responsive-configure").hideTabs
+      storageLocal().getItem<StorageConfigs>(
+        `${responsiveStorageNameSpace()}configure`
+      ).hideTabs
     ) ?? ref("false");
   const multiTags: any = computed(() => {
     return useMultiTagsStoreHook().multiTags;
@@ -196,10 +205,13 @@ export function useTags() {
   onMounted(() => {
     if (!showModel.value) {
       const configure = storageLocal().getItem<StorageConfigs>(
-        "responsive-configure"
+        `${responsiveStorageNameSpace()}configure`
       );
       configure.showModel = "card";
-      storageLocal().setItem("responsive-configure", configure);
+      storageLocal().setItem(
+        `${responsiveStorageNameSpace()}configure`,
+        configure
+      );
     }
   });
 

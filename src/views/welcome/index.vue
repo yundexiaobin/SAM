@@ -2,9 +2,9 @@
 import dayjs from "dayjs";
 import { http } from "@/utils/http";
 import MdEditor from "md-editor-v3";
-// import Bar from "./components/Bar.vue";
 import Pie from "./components/Pie.vue";
 import TypeIt from "@/components/ReTypeit";
+import { useWindowSize } from "@vueuse/core";
 import { ref, computed, markRaw } from "vue";
 import { randomColor } from "@pureadmin/utils";
 import { useRenderFlicker } from "@/components/ReFlicker";
@@ -20,6 +20,7 @@ const loading = ref<boolean>(true);
 const titleClass = computed(() => {
   return ["text-base", "font-medium"];
 });
+const { height } = useWindowSize();
 setTimeout(() => {
   loading.value = !loading.value;
 }, 800);
@@ -31,7 +32,7 @@ export type PerceptionItem = {
   createdAt: string;
 };
 
-http.api.apiStockPerceptionGet({}).then(res => {
+http.services.apiStockPerceptionGet({}).then(res => {
   if (res.status === 200 && res.data.code === 200) {
     const items = res.data.result.items;
     list.value = items.map(v => {
@@ -72,14 +73,17 @@ http.api.apiStockPerceptionGet({}).then(res => {
           }
         }"
       >
-        <el-card shadow="never" style="min-height: 347px">
+        <el-card
+          shadow="never"
+          :style="{ height: `calc(${height}px - 35vh - 250px)` }"
+        >
           <template #header>
             <a :class="titleClass" href="#" target="_black">
               <TypeIt
                 :className="'type-it2'"
                 :values="['交易心得']"
                 :cursor="false"
-                :speed="80"
+                :speed="60"
               />
             </a>
           </template>
@@ -283,6 +287,6 @@ http.api.apiStockPerceptionGet({}).then(res => {
 }
 
 .main-content {
-  margin: 20px 20px 0 20px !important;
+  margin: 20px 20px 0 !important;
 }
 </style>

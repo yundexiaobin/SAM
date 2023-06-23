@@ -14,7 +14,7 @@ const tableData = ref([]);
 
 const initTableData = async () => {
   try {
-    const { data } = await http.api.apiStrategyStrategyListGet({});
+    const { data } = await http.services.apiStrategyStrategyListGet({});
     if (data.code === 200) {
       tableData.value = data.result;
     }

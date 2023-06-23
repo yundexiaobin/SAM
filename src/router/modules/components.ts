@@ -3,7 +3,7 @@ import { components } from "@/router/enums";
 
 export default {
   path: "/components",
-  redirect: "/components/video",
+  redirect: "/components/dialog",
   meta: {
     icon: "menu",
     title: $t("menus.hscomponents"),
@@ -11,11 +11,11 @@ export default {
   },
   children: [
     {
-      path: "/components/message",
-      name: "Message",
-      component: () => import("@/views/components/message/index.vue"),
+      path: "/components/dialog",
+      name: "DialogPage",
+      component: () => import("@/views/components/dialog/index.vue"),
       meta: {
-        title: $t("menus.hsmessage"),
+        title: $t("menus.hsdialog"),
         extraIcon: "IF-pure-iconfont-new svg",
         transition: {
           enterTransition: "animate__fadeInLeft",
@@ -24,8 +24,34 @@ export default {
       }
     },
     {
+      path: "/components/message",
+      name: "Message",
+      component: () => import("@/views/components/message/index.vue"),
+      meta: {
+        title: $t("menus.hsmessage")
+      }
+    },
+    {
+      path: "/components/segmented",
+      name: "Segmented",
+      component: () => import("@/views/components/segmented/index.vue"),
+      meta: {
+        title: $t("menus.hssegmented"),
+        extraIcon: "IF-pure-iconfont-new svg"
+      }
+    },
+    {
+      path: "/components/waterfall",
+      name: "Waterfall",
+      component: () => import("@/views/components/waterfall/index.vue"),
+      meta: {
+        title: $t("menus.hswaterfall"),
+        extraIcon: "IF-pure-iconfont-new svg"
+      }
+    },
+    {
       path: "/components/video",
-      name: "Video",
+      name: "VideoPage",
       component: () => import("@/views/components/video/index.vue"),
       meta: {
         title: $t("menus.hsvideo")
@@ -33,7 +59,7 @@ export default {
     },
     {
       path: "/components/map",
-      name: "Map",
+      name: "MapPage",
       component: () => import("@/views/components/map/index.vue"),
       meta: {
         title: $t("menus.hsmap"),
@@ -65,7 +91,7 @@ export default {
     },
     {
       path: "/components/button",
-      name: "Button",
+      name: "ButtonPage",
       component: () => import("@/views/components/button/index.vue"),
       meta: {
         title: $t("menus.hsbutton")

@@ -2,7 +2,7 @@
 const { apiConfig, generateResponses, config } = it;
 %>
 
-import axios, { AxiosInstance, AxiosHeaders, AxiosRequestConfig, AxiosResponse, ResponseType, HeadersDefaults } from "axios";
+import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse, ResponseType, HeadersDefaults } from "axios";
 
 export type QueryParamsType = Record<string | number, any>;
 
@@ -61,7 +61,11 @@ export class HttpClient<SecurityDataType = unknown> {
         ...this.instance.defaults,
         ...params1,
         ...(params2 || {}),
-        headers: AxiosHeaders.concat((method && this.instance.defaults.headers[method.toLowerCase() as keyof HeadersDefaults]) || {},(params1.headers || {}),((params2 && params2.headers) || {}))
+        headers: {
+          ...((method && this.instance.defaults.headers[method.toLowerCase() as keyof HeadersDefaults]) || {}),
+          ...(params1.headers || {}),
+          ...((params2 && params2.headers) || {}),
+        },
       };
     }
 
@@ -117,7 +121,10 @@ export class HttpClient<SecurityDataType = unknown> {
 
         return this.instance.request({
             ...requestParams,
-            headers: AxiosHeaders.concat(requestParams.headers || {},type && type !== ContentType.FormData ? { "Content-Type": type } : {}),
+            headers: {
+                ...(requestParams.headers || {}),
+                ...(type && type !== ContentType.FormData ? { "Content-Type": type } : {}),
+            },
             params: query,
             responseType: responseFormat,
             data: body,
