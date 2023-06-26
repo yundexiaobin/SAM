@@ -32,7 +32,7 @@ const thirdParty = [
   // },
   {
     title: $t("login.samLogin"),
-    icon: "ri:stock-fill"
+    icon: "ri:market-fill"
   }
 ];
 

@@ -197,6 +197,18 @@ export interface AdminResultPageResultDtoStockPerceptionDto {
   time?: string;
 }
 
+export interface AdminResultPageResultResponseStockResponse {
+  /** @format int32 */
+  code?: number;
+  success?: boolean;
+  type?: string | null;
+  message?: string | null;
+  data?: PageResultResponseStockResponse;
+  extras?: any;
+  /** @format date-time */
+  time?: string;
+}
+
 export interface AdminResultPageResultResponseSysMenuResponse {
   /** @format int32 */
   code?: number;
@@ -240,6 +252,18 @@ export interface AdminResultSearchConfigResponse {
   type?: string | null;
   message?: string | null;
   data?: SearchConfigResponse;
+  extras?: any;
+  /** @format date-time */
+  time?: string;
+}
+
+export interface AdminResultStockResponse {
+  /** @format int32 */
+  code?: number;
+  success?: boolean;
+  type?: string | null;
+  message?: string | null;
+  data?: StockResponse;
   extras?: any;
   /** @format date-time */
   time?: string;
@@ -452,6 +476,16 @@ export interface PageResultDtoStockPerceptionDto {
   itemCount?: number;
 }
 
+export interface PageResultResponseStockResponse {
+  /** @format int64 */
+  total?: number;
+  /** @format int32 */
+  pageNumber?: number;
+  /** @format int32 */
+  pageTotal?: number;
+  items?: StockResponse[] | null;
+}
+
 export interface PageResultResponseSysMenuResponse {
   /** @format int64 */
   total?: number;
@@ -490,7 +524,17 @@ export interface SearchConfigModel {
 export interface SearchConfigResponse {
   field?: string | null;
   value?: string | null;
+  /** @minLength 1 */
+  label: string;
+  /** <br />&nbsp; Text = 0<br />&nbsp; Radio = 1<br />&nbsp; Select = 2<br />&nbsp; Date = 3<br />&nbsp; DateTime = 4<br /> */
+  type: SearchConfigType;
 }
+
+/**
+ * <br />&nbsp; Text = 0<br />&nbsp; Radio = 1<br />&nbsp; Select = 2<br />&nbsp; Date = 3<br />&nbsp; DateTime = 4<br />
+ * @format int32
+ */
+export type SearchConfigType = 0 | 1 | 2 | 3 | 4;
 
 export interface SearchRequest {
   /** @format int32 */
@@ -514,6 +558,12 @@ export interface StockDto {
   name?: string | null;
   todayDaily?: DailyDto;
 }
+
+/**
+ * <br />&nbsp;其他 Other = 0<br />&nbsp;主板 MainBoard = 1<br />&nbsp;中小板 SmeBoard = 2<br />
+ * @format int32
+ */
+export type StockMarket = 0 | 1 | 2;
 
 export interface StockOptionalDto {
   /** 股票代码，带交易所 */
@@ -551,6 +601,34 @@ export interface StockPerceptionRequestDto {
   /** @minLength 1 */
   content: string;
 }
+
+export interface StockResponse {
+  /** 股票代码，不带交易所号码 */
+  symbol?: string | null;
+  /** 股票代码，带交易所 */
+  tsCode?: string | null;
+  /** 股票名称 */
+  name?: string | null;
+  /** <br />&nbsp;其他 Other = 0<br />&nbsp;主板 MainBoard = 1<br />&nbsp;中小板 SmeBoard = 2<br /> */
+  market?: StockMarket;
+  /** <br />&nbsp;上市 L = 0<br />&nbsp;退市 D = 1<br />&nbsp;暂停上市 P = 2<br /> */
+  status?: StockStatus;
+  /** 交易所代码 */
+  exchange?: string | null;
+  /**
+   * 上市日期
+   * @format date-time
+   */
+  listDate?: string;
+  /** @format int64 */
+  id?: number;
+}
+
+/**
+ * <br />&nbsp;上市 L = 0<br />&nbsp;退市 D = 1<br />&nbsp;暂停上市 P = 2<br />
+ * @format int32
+ */
+export type StockStatus = 0 | 1 | 2;
 
 export interface SurgedDeclineInfoDto {
   day?: string | null;
