@@ -1,8 +1,13 @@
+<% const {config} = data; -%>
 import { reactive } from "vue";
 import type { FormRules } from "element-plus";
 
 /** 自定义表单规则校验 */
 export const formRules = reactive(<FormRules>{
-  name: [{ required: true, message: "角色名称为必填项", trigger: "blur" }],
-  code: [{ required: true, message: "角色标识为必填项", trigger: "blur" }]
+ <% let index = 0; %>
+ <% config.formItems.forEach(t=>{ -%>
+ <%if(t.required){ -%>
+  <%= t.name %>: [{ required: <%= t.required %>, message: "<%= t.description %>为必填项", trigger: "blur" }]<% index=index+1;-%><% if(index<config.formItems.length){ %>,<% } %>
+ <% } -%>
+<% }) -%>
 });

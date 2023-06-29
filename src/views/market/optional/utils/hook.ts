@@ -1,11 +1,9 @@
 import { message } from "@/utils/message";
-import { reactive, ref, onMounted, h, computed } from "vue";
+import { reactive, ref, onMounted, h } from "vue";
 import { http } from "@/utils/http";
 import { PaginationProps } from "@pureadmin/table";
 import { addDialog } from "@/components/ReDialog/index";
 import editForm from "../form.vue";
-import optionalForm from "../../optional/form.vue";
-import { cloneDeep } from "@pureadmin/utils";
 
 const dataList = ref([]);
 const loading = ref(true);
@@ -22,7 +20,7 @@ export function useHook() {
 
   function initSearchConfig() {
     setTimeout(async () => {
-      const response = await http.services.apiStockSearchConfigGet({});
+      const response = await http.services.apiStockOptionalSearchConfigGet({});
       const data = response.data;
       searchConfigs.value = data;
     }, 500);
@@ -31,7 +29,7 @@ export function useHook() {
   function onSearch() {
     loading.value = true;
     setTimeout(async () => {
-      const response = await http.services.apiStockSearchPost({
+      const response = await http.services.apiStockOptionalSearchPost({
         pageNumber: pagination.currentPage,
         pageSize: pagination.pageSize,
         filter: searchConfigs.value
@@ -54,7 +52,8 @@ export function useHook() {
   }
 
   function handleDelete(row) {
-    setTimeout(() => {
+    setTimeout(async () => {
+      await http.services.apiStockOptionalDelete(row.id);
       message(`您删除了角色名称为${row.name}的这条数据`, { type: "success" });
       onSearch();
     }, 300);
@@ -78,9 +77,9 @@ export function useHook() {
     const isUpdated = value.id != null && parseInt(value.id) > 0;
     setTimeout(async () => {
       if (isUpdated) {
-        await http.services.apiSysRolePut(parseInt(value.id), value);
+        await http.services.apiStockOptionalPut(parseInt(value.id), value);
       } else {
-        await http.services.apiSysRolePost(value);
+        await http.services.apiStockOptionalPost(value);
       }
       const messageStr = isUpdated ? "修改成功" : "新建成功";
       message(messageStr, { type: "success" });
@@ -89,56 +88,19 @@ export function useHook() {
     }, 500);
   }
 
-  const buttonClass = computed(() => {
-    return [
-      "!h-[20px]",
-      "reset-margin",
-      "!text-gray-500",
-      "dark:!text-white",
-      "dark:hover:!text-primary"
-    ];
-  });
-
   function handleSelectionChange(val) {
     console.log("handleSelectionChange", val);
   }
 
-  function joinStockOption(tsCode: string) {
-    const optionalFormRef = ref();
-    addDialog({
-      title: `加入自選`,
-      props: {
-        formInline: {
-          tsCode: tsCode
-        }
-      },
-      width: "40%",
-      draggable: true,
-      fullscreenIcon: true,
-      closeOnClickModal: false,
-      contentRenderer: () => h(optionalForm, { ref: optionalFormRef }),
-      beforeSure: (done, { options }) => {
-        const FormRef = optionalFormRef.value.getRef();
-        const curData = options.props.formInline;
-        FormRef.validate(valid => {
-          if (valid) {
-            setTimeout(async () => {
-              await http.services.apiStockOptionalPost(curData);
-              loading.value = false;
-            }, 500);
-            done(); // 关闭弹框
-          }
-        });
-      }
-    });
+  async function getDetailAsync(val?: number) {
+    return await http.services.apiStockOptionalGet(val);
   }
 
   function openDialog(title: string, row?: any) {
-    const data = cloneDeep(row);
     addDialog({
       title: `${title}`,
       props: {
-        formInline: data
+        formInline: row
       },
       width: "40%",
       draggable: true,
@@ -152,11 +114,21 @@ export function useHook() {
         FormRef.validate(valid => {
           if (valid) {
             onSubmit(curData);
+            done(); // 关闭弹框
           }
         });
-        done(); // 关闭弹框
       }
     });
+  }
+
+  function openForm(title: string, row?: any) {
+    if (row != null) {
+      getDetailAsync(row.id).then(t => {
+        openDialog(title, t.data);
+      });
+    } else {
+      openDialog(title, {});
+    }
   }
 
   onMounted(() => {
@@ -174,8 +146,6 @@ export function useHook() {
     loading,
     dataList,
     pagination,
-    openDialog,
-    buttonClass,
-    joinStockOption
+    openForm
   };
 }

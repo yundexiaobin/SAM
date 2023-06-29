@@ -10,6 +10,7 @@
  */
 
 import {
+  AddStockOptionalRequest,
   AddSysMenuRequest,
   AddSysRoleRequest,
   AddSysUserRequest,
@@ -23,13 +24,14 @@ import {
   AdminResultLoginOutput,
   AdminResultLoginUserOutput,
   AdminResultObject,
-  AdminResultPageResultDtoStockDto,
-  AdminResultPageResultDtoStockOptionalDto,
-  AdminResultPageResultDtoStockPerceptionDto,
+  AdminResultPageResultResponseStockDto,
+  AdminResultPageResultResponseStockOptionalResponse,
+  AdminResultPageResultResponseStockPerceptionDto,
   AdminResultPageResultResponseStockResponse,
   AdminResultPageResultResponseSysMenuResponse,
   AdminResultPageResultResponseSysRoleResponse,
   AdminResultPageResultResponseSysUserResponse,
+  AdminResultStockOptionalResponse,
   AdminResultStockResponse,
   AdminResultString,
   AdminResultSysMenuResponse,
@@ -38,6 +40,7 @@ import {
   LoginInput,
   SearchRequest,
   StockPerceptionRequestDto,
+  UpdateStockOptionalRequest,
   UpdateSysMenuRequest,
   UpdateSysRoleRequest,
   UpdateSysUserRequest,
@@ -45,14 +48,13 @@ import {
 } from "./data-contracts";
 import { ContentType, HttpClient, RequestParams } from "./http-client";
 
-export class Api<
-  SecurityDataType = unknown
-> extends HttpClient<SecurityDataType> {
+export class Api<SecurityDataType = unknown> extends HttpClient<SecurityDataType> {
   /**
-   * No description
+   * @description 用户名/密码：superadmin/123456
    *
    * @tags sysAuth
    * @name ApiSysAuthLoginPost
+   * @summary 登录系统
    * @request POST:/api/sysAuth/login
    * @secure
    * @response `200` `AdminResultLoginOutput` Success
@@ -72,6 +74,7 @@ export class Api<
    *
    * @tags sysAuth
    * @name ApiSysAuthUserInfoGet
+   * @summary 获取登录账号
    * @request GET:/api/sysAuth/userInfo
    * @secure
    * @response `200` `AdminResultLoginUserOutput` Success
@@ -89,14 +92,12 @@ export class Api<
    *
    * @tags sysAuth
    * @name ApiSysAuthRefreshTokenGet
+   * @summary 获取刷新Token
    * @request GET:/api/sysAuth/refreshToken/{accessToken}
    * @secure
    * @response `200` `AdminResultString` Success
    */
-  apiSysAuthRefreshTokenGet = (
-    accessToken: string,
-    params: RequestParams = {}
-  ) =>
+  apiSysAuthRefreshTokenGet = (accessToken: string, params: RequestParams = {}) =>
     this.request<AdminResultString, any>({
       path: `/api/sysAuth/refreshToken/${accessToken}`,
       method: "GET",
@@ -109,6 +110,7 @@ export class Api<
    *
    * @tags sysAuth
    * @name ApiSysAuthLogoutPost
+   * @summary 退出系统
    * @request POST:/api/sysAuth/logout
    * @secure
    * @response `200` `void` Success
@@ -125,6 +127,7 @@ export class Api<
    *
    * @tags sysAuth
    * @name ApiSysAuthLoginConfigGet
+   * @summary 获取登录配置
    * @request GET:/api/sysAuth/loginConfig
    * @secure
    * @response `200` `AdminResultObject` Success
@@ -142,6 +145,7 @@ export class Api<
    *
    * @tags sysAuth
    * @name ApiSysAuthCaptchaGet
+   * @summary 获取验证码
    * @request GET:/api/sysAuth/captcha
    * @secure
    * @response `200` `AdminResultCaptchaDto` Success
@@ -159,14 +163,12 @@ export class Api<
    *
    * @tags sysAuth
    * @name ApiSysAuthValidateCaptchaPost
+   * @summary 驗證驗證碼
    * @request POST:/api/sysAuth/validateCaptcha
    * @secure
    * @response `200` `AdminResultBoolean` Success
    */
-  apiSysAuthValidateCaptchaPost = (
-    data: ValidateCaptchaInput,
-    params: RequestParams = {}
-  ) =>
+  apiSysAuthValidateCaptchaPost = (data: ValidateCaptchaInput, params: RequestParams = {}) =>
     this.request<AdminResultBoolean, any>({
       path: `/api/sysAuth/validateCaptcha`,
       method: "POST",
@@ -181,6 +183,7 @@ export class Api<
    *
    * @tags sysAuth
    * @name ApiSysAuthSwaggerCheckUrlPost
+   * @summary swagger登录检查
    * @request POST:/api/swagger/checkUrl
    * @secure
    * @response `200` `number` Success
@@ -198,6 +201,7 @@ export class Api<
    *
    * @tags sysAuth
    * @name ApiSysAuthSwaggerSubmitUrlPost
+   * @summary swagger登录提交
    * @request POST:/api/swagger/submitUrl
    * @secure
    * @response `200` `number` Success
@@ -242,15 +246,12 @@ export class Api<
    *
    * @tags sysUser
    * @name ApiSysUserPut
+   * @summary 修改
    * @request PUT:/api/sysUser/{id}
    * @secure
    * @response `200` `AdminResultBoolean` Success
    */
-  apiSysUserPut = (
-    id: number,
-    data: UpdateSysUserRequest,
-    params: RequestParams = {}
-  ) =>
+  apiSysUserPut = (id: number, data: UpdateSysUserRequest, params: RequestParams = {}) =>
     this.request<AdminResultBoolean, any>({
       path: `/api/sysUser/${id}`,
       method: "PUT",
@@ -265,6 +266,7 @@ export class Api<
    *
    * @tags sysUser
    * @name ApiSysUserDelete
+   * @summary 删除
    * @request DELETE:/api/sysUser/{id}
    * @secure
    * @response `200` `AdminResultBoolean` Success
@@ -282,6 +284,7 @@ export class Api<
    *
    * @tags sysUser
    * @name ApiSysUserGet
+   * @summary 數據詳情
    * @request GET:/api/sysUser/{id}
    * @secure
    * @response `200` `AdminResultSysUserResponse` Success
@@ -299,6 +302,7 @@ export class Api<
    *
    * @tags sysUser
    * @name ApiSysUserSearchConfigGet
+   * @summary 获取搜索查询配置
    * @request GET:/api/sysUser/searchConfig
    * @secure
    * @response `200` `AdminResultICollectionSearchConfigResponse` Success
@@ -316,6 +320,7 @@ export class Api<
    *
    * @tags sysUser
    * @name ApiSysUserSearchPost
+   * @summary 搜索
    * @request POST:/api/sysUser/search
    * @secure
    * @response `200` `AdminResultPageResultResponseSysUserResponse` Success
@@ -335,15 +340,22 @@ export class Api<
    *
    * @tags sysUser
    * @name ApiSysUserListGet
+   * @summary 數據列表
    * @request GET:/api/sysUser/list
    * @secure
    * @response `200` `AdminResultPageResultResponseSysUserResponse` Success
    */
   apiSysUserListGet = (
     query?: {
-      /** @format int32 */
+      /**
+       * 页码
+       * @format int32
+       */
       PageNumber?: number;
-      /** @format int32 */
+      /**
+       * 页面大小
+       * @format int32
+       */
       PageSize?: number;
     },
     params: RequestParams = {}
@@ -361,6 +373,7 @@ export class Api<
    *
    * @tags sysRole
    * @name ApiSysRolePost
+   * @summary 创建
    * @request POST:/api/sysRole
    * @secure
    * @response `200` `AdminResultBoolean` Success
@@ -380,15 +393,12 @@ export class Api<
    *
    * @tags sysRole
    * @name ApiSysRolePut
+   * @summary 修改
    * @request PUT:/api/sysRole/{id}
    * @secure
    * @response `200` `AdminResultBoolean` Success
    */
-  apiSysRolePut = (
-    id: number,
-    data: UpdateSysRoleRequest,
-    params: RequestParams = {}
-  ) =>
+  apiSysRolePut = (id: number, data: UpdateSysRoleRequest, params: RequestParams = {}) =>
     this.request<AdminResultBoolean, any>({
       path: `/api/sysRole/${id}`,
       method: "PUT",
@@ -403,6 +413,7 @@ export class Api<
    *
    * @tags sysRole
    * @name ApiSysRoleDelete
+   * @summary 删除
    * @request DELETE:/api/sysRole/{id}
    * @secure
    * @response `200` `AdminResultBoolean` Success
@@ -420,6 +431,7 @@ export class Api<
    *
    * @tags sysRole
    * @name ApiSysRoleGet
+   * @summary 數據詳情
    * @request GET:/api/sysRole/{id}
    * @secure
    * @response `200` `AdminResultSysRoleResponse` Success
@@ -437,6 +449,7 @@ export class Api<
    *
    * @tags sysRole
    * @name ApiSysRoleSearchConfigGet
+   * @summary 获取搜索查询配置
    * @request GET:/api/sysRole/searchConfig
    * @secure
    * @response `200` `AdminResultICollectionSearchConfigResponse` Success
@@ -454,6 +467,7 @@ export class Api<
    *
    * @tags sysRole
    * @name ApiSysRoleSearchPost
+   * @summary 搜索
    * @request POST:/api/sysRole/search
    * @secure
    * @response `200` `AdminResultPageResultResponseSysRoleResponse` Success
@@ -473,15 +487,22 @@ export class Api<
    *
    * @tags sysRole
    * @name ApiSysRoleListGet
+   * @summary 數據列表
    * @request GET:/api/sysRole/list
    * @secure
    * @response `200` `AdminResultPageResultResponseSysRoleResponse` Success
    */
   apiSysRoleListGet = (
     query?: {
-      /** @format int32 */
+      /**
+       * 页码
+       * @format int32
+       */
       PageNumber?: number;
-      /** @format int32 */
+      /**
+       * 页面大小
+       * @format int32
+       */
       PageSize?: number;
     },
     params: RequestParams = {}
@@ -499,6 +520,7 @@ export class Api<
    *
    * @tags sysMenu
    * @name ApiSysMenuTreeGet
+   * @summary 获取菜单树
    * @request GET:/api/sysMenu/tree
    * @secure
    * @response `200` `AdminResultICollectionMenuResponse` Success
@@ -516,6 +538,7 @@ export class Api<
    *
    * @tags sysMenu
    * @name ApiSysMenuPost
+   * @summary 创建
    * @request POST:/api/sysMenu
    * @secure
    * @response `200` `AdminResultBoolean` Success
@@ -535,15 +558,12 @@ export class Api<
    *
    * @tags sysMenu
    * @name ApiSysMenuPut
+   * @summary 修改
    * @request PUT:/api/sysMenu/{id}
    * @secure
    * @response `200` `AdminResultBoolean` Success
    */
-  apiSysMenuPut = (
-    id: number,
-    data: UpdateSysMenuRequest,
-    params: RequestParams = {}
-  ) =>
+  apiSysMenuPut = (id: number, data: UpdateSysMenuRequest, params: RequestParams = {}) =>
     this.request<AdminResultBoolean, any>({
       path: `/api/sysMenu/${id}`,
       method: "PUT",
@@ -558,6 +578,7 @@ export class Api<
    *
    * @tags sysMenu
    * @name ApiSysMenuDelete
+   * @summary 删除
    * @request DELETE:/api/sysMenu/{id}
    * @secure
    * @response `200` `AdminResultBoolean` Success
@@ -575,6 +596,7 @@ export class Api<
    *
    * @tags sysMenu
    * @name ApiSysMenuGet
+   * @summary 數據詳情
    * @request GET:/api/sysMenu/{id}
    * @secure
    * @response `200` `AdminResultSysMenuResponse` Success
@@ -592,6 +614,7 @@ export class Api<
    *
    * @tags sysMenu
    * @name ApiSysMenuSearchConfigGet
+   * @summary 获取搜索查询配置
    * @request GET:/api/sysMenu/searchConfig
    * @secure
    * @response `200` `AdminResultICollectionSearchConfigResponse` Success
@@ -609,6 +632,7 @@ export class Api<
    *
    * @tags sysMenu
    * @name ApiSysMenuSearchPost
+   * @summary 搜索
    * @request POST:/api/sysMenu/search
    * @secure
    * @response `200` `AdminResultPageResultResponseSysMenuResponse` Success
@@ -628,15 +652,22 @@ export class Api<
    *
    * @tags sysMenu
    * @name ApiSysMenuListGet
+   * @summary 數據列表
    * @request GET:/api/sysMenu/list
    * @secure
    * @response `200` `AdminResultPageResultResponseSysMenuResponse` Success
    */
   apiSysMenuListGet = (
     query?: {
-      /** @format int32 */
+      /**
+       * 页码
+       * @format int32
+       */
       PageNumber?: number;
-      /** @format int32 */
+      /**
+       * 页面大小
+       * @format int32
+       */
       PageSize?: number;
     },
     params: RequestParams = {}
@@ -706,14 +737,157 @@ export class Api<
    * @secure
    * @response `200` `AdminResultString` Success
    */
-  apiQuantTradyTestPost = (
-    symbol: string,
-    begin: string,
-    params: RequestParams = {}
-  ) =>
+  apiQuantTradyTestPost = (symbol: string, begin: string, params: RequestParams = {}) =>
     this.request<AdminResultString, any>({
       path: `/api/quant/tradyTest/${symbol}/${begin}`,
       method: "POST",
+      secure: true,
+      format: "json",
+      ...params
+    });
+  /**
+   * No description
+   *
+   * @tags stockOptional
+   * @name ApiStockOptionalPost
+   * @summary 创建
+   * @request POST:/api/stockOptional
+   * @secure
+   * @response `200` `AdminResultBoolean` Success
+   */
+  apiStockOptionalPost = (data: AddStockOptionalRequest, params: RequestParams = {}) =>
+    this.request<AdminResultBoolean, any>({
+      path: `/api/stockOptional`,
+      method: "POST",
+      body: data,
+      secure: true,
+      type: ContentType.Json,
+      format: "json",
+      ...params
+    });
+  /**
+   * No description
+   *
+   * @tags stockOptional
+   * @name ApiStockOptionalPut
+   * @summary 修改
+   * @request PUT:/api/stockOptional/{id}
+   * @secure
+   * @response `200` `AdminResultBoolean` Success
+   */
+  apiStockOptionalPut = (id: number, data: UpdateStockOptionalRequest, params: RequestParams = {}) =>
+    this.request<AdminResultBoolean, any>({
+      path: `/api/stockOptional/${id}`,
+      method: "PUT",
+      body: data,
+      secure: true,
+      type: ContentType.Json,
+      format: "json",
+      ...params
+    });
+  /**
+   * No description
+   *
+   * @tags stockOptional
+   * @name ApiStockOptionalDelete
+   * @summary 删除
+   * @request DELETE:/api/stockOptional/{id}
+   * @secure
+   * @response `200` `AdminResultBoolean` Success
+   */
+  apiStockOptionalDelete = (id: number, params: RequestParams = {}) =>
+    this.request<AdminResultBoolean, any>({
+      path: `/api/stockOptional/${id}`,
+      method: "DELETE",
+      secure: true,
+      format: "json",
+      ...params
+    });
+  /**
+   * No description
+   *
+   * @tags stockOptional
+   * @name ApiStockOptionalGet
+   * @summary 數據詳情
+   * @request GET:/api/stockOptional/{id}
+   * @secure
+   * @response `200` `AdminResultStockOptionalResponse` Success
+   */
+  apiStockOptionalGet = (id: number, params: RequestParams = {}) =>
+    this.request<AdminResultStockOptionalResponse, any>({
+      path: `/api/stockOptional/${id}`,
+      method: "GET",
+      secure: true,
+      format: "json",
+      ...params
+    });
+  /**
+   * No description
+   *
+   * @tags stockOptional
+   * @name ApiStockOptionalSearchConfigGet
+   * @summary 获取搜索查询配置
+   * @request GET:/api/stockOptional/searchConfig
+   * @secure
+   * @response `200` `AdminResultICollectionSearchConfigResponse` Success
+   */
+  apiStockOptionalSearchConfigGet = (params: RequestParams = {}) =>
+    this.request<AdminResultICollectionSearchConfigResponse, any>({
+      path: `/api/stockOptional/searchConfig`,
+      method: "GET",
+      secure: true,
+      format: "json",
+      ...params
+    });
+  /**
+   * No description
+   *
+   * @tags stockOptional
+   * @name ApiStockOptionalSearchPost
+   * @summary 搜索
+   * @request POST:/api/stockOptional/search
+   * @secure
+   * @response `200` `AdminResultPageResultResponseStockOptionalResponse` Success
+   */
+  apiStockOptionalSearchPost = (data: SearchRequest, params: RequestParams = {}) =>
+    this.request<AdminResultPageResultResponseStockOptionalResponse, any>({
+      path: `/api/stockOptional/search`,
+      method: "POST",
+      body: data,
+      secure: true,
+      type: ContentType.Json,
+      format: "json",
+      ...params
+    });
+  /**
+   * No description
+   *
+   * @tags stockOptional
+   * @name ApiStockOptionalListGet
+   * @summary 數據列表
+   * @request GET:/api/stockOptional/list
+   * @secure
+   * @response `200` `AdminResultPageResultResponseStockOptionalResponse` Success
+   */
+  apiStockOptionalListGet = (
+    query?: {
+      /**
+       * 页码
+       * @format int32
+       */
+      PageNumber?: number;
+      /**
+       * 页面大小
+       * @format int32
+       */
+      PageSize?: number;
+    },
+    params: RequestParams = {}
+  ) =>
+    this.request<AdminResultPageResultResponseStockOptionalResponse, any>({
+      path: `/api/stockOptional/list`,
+      method: "GET",
+      query: query,
       secure: true,
       format: "json",
       ...params
@@ -743,7 +917,7 @@ export class Api<
    * @summary 查询指定日期涨停数据
    * @request GET:/api/stock/surgedLimitStock
    * @secure
-   * @response `200` `AdminResultPageResultDtoStockDto` Success
+   * @response `200` `AdminResultPageResultResponseStockDto` Success
    */
   apiStockSurgedLimitStockGet = (
     query?: {
@@ -758,14 +932,20 @@ export class Api<
        * @format int32
        */
       HistoryDay?: number;
-      /** @format int32 */
+      /**
+       * 页码
+       * @format int32
+       */
       PageNumber?: number;
-      /** @format int32 */
+      /**
+       * 页面大小
+       * @format int32
+       */
       PageSize?: number;
     },
     params: RequestParams = {}
   ) =>
-    this.request<AdminResultPageResultDtoStockDto, any>({
+    this.request<AdminResultPageResultResponseStockDto, any>({
       path: `/api/stock/surgedLimitStock`,
       method: "GET",
       query: query,
@@ -795,43 +975,13 @@ export class Api<
    * No description
    *
    * @tags stock
-   * @name ApiStockOptionalGet
-   * @summary 查詢自選股
-   * @request GET:/api/stock/optional
-   * @secure
-   * @response `200` `AdminResultPageResultDtoStockOptionalDto` Success
-   */
-  apiStockOptionalGet = (
-    query?: {
-      /** @format int32 */
-      PageNumber?: number;
-      /** @format int32 */
-      PageSize?: number;
-    },
-    params: RequestParams = {}
-  ) =>
-    this.request<AdminResultPageResultDtoStockOptionalDto, any>({
-      path: `/api/stock/optional`,
-      method: "GET",
-      query: query,
-      secure: true,
-      format: "json",
-      ...params
-    });
-  /**
-   * No description
-   *
-   * @tags stock
    * @name ApiStockWritePerceptionPost
    * @summary 寫交易心得
    * @request POST:/api/stock/writePerception
    * @secure
    * @response `200` `AdminResultBoolean` Success
    */
-  apiStockWritePerceptionPost = (
-    data: StockPerceptionRequestDto,
-    params: RequestParams = {}
-  ) =>
+  apiStockWritePerceptionPost = (data: StockPerceptionRequestDto, params: RequestParams = {}) =>
     this.request<AdminResultBoolean, any>({
       path: `/api/stock/writePerception`,
       method: "POST",
@@ -849,46 +999,25 @@ export class Api<
    * @summary 獲取交易心得
    * @request GET:/api/stock/perception
    * @secure
-   * @response `200` `AdminResultPageResultDtoStockPerceptionDto` Success
+   * @response `200` `AdminResultPageResultResponseStockPerceptionDto` Success
    */
   apiStockPerceptionGet = (
     query?: {
-      /** @format int32 */
+      /**
+       * 页码
+       * @format int32
+       */
       PageNumber?: number;
-      /** @format int32 */
+      /**
+       * 页面大小
+       * @format int32
+       */
       PageSize?: number;
     },
     params: RequestParams = {}
   ) =>
-    this.request<AdminResultPageResultDtoStockPerceptionDto, any>({
+    this.request<AdminResultPageResultResponseStockPerceptionDto, any>({
       path: `/api/stock/perception`,
-      method: "GET",
-      query: query,
-      secure: true,
-      format: "json",
-      ...params
-    });
-  /**
-   * No description
-   *
-   * @tags stock
-   * @name ApiStockTodayAttentionGet
-   * @summary 获取今天的推荐
-   * @request GET:/api/stock/todayAttention
-   * @secure
-   * @response `200` `AdminResultListTodayAttentionDto` Success
-   */
-  apiStockTodayAttentionGet = (
-    query?: {
-      /** @format int32 */
-      PageNumber?: number;
-      /** @format int32 */
-      PageSize?: number;
-    },
-    params: RequestParams = {}
-  ) =>
-    this.request<AdminResultListTodayAttentionDto, any>({
-      path: `/api/stock/todayAttention`,
       method: "GET",
       query: query,
       secure: true,
@@ -918,6 +1047,7 @@ export class Api<
    *
    * @tags stock
    * @name ApiStockSearchPost
+   * @summary 搜索
    * @request POST:/api/stock/search
    * @secure
    * @response `200` `AdminResultPageResultResponseStockResponse` Success
@@ -937,15 +1067,22 @@ export class Api<
    *
    * @tags stock
    * @name ApiStockListGet
+   * @summary 數據列表
    * @request GET:/api/stock/list
    * @secure
    * @response `200` `AdminResultPageResultResponseStockResponse` Success
    */
   apiStockListGet = (
     query?: {
-      /** @format int32 */
+      /**
+       * 页码
+       * @format int32
+       */
       PageNumber?: number;
-      /** @format int32 */
+      /**
+       * 页面大小
+       * @format int32
+       */
       PageSize?: number;
     },
     params: RequestParams = {}
@@ -963,6 +1100,7 @@ export class Api<
    *
    * @tags stock
    * @name ApiStockGet
+   * @summary 數據詳情
    * @request GET:/api/stock/{id}
    * @secure
    * @response `200` `AdminResultStockResponse` Success

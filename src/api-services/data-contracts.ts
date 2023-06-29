@@ -15,305 +15,622 @@
  */
 export type AccountTypeEnum = 0 | 1 | 4 | 999;
 
+export interface AddStockOptionalRequest {
+  /**
+   * 股票號碼
+   * @minLength 1
+   */
+  tsCode: string;
+  /**
+   * 加入原因
+   * @minLength 1
+   */
+  reason: string;
+  /**
+   * 加入時間
+   * @format date-time
+   */
+  joinDate?: string;
+  /** 是否移除 */
+  removed?: boolean;
+}
+
 export interface AddSysMenuRequest {
   /** @format int64 */
   parentId?: number | null;
   /** <br />&nbsp;目录 Dir = 1<br />&nbsp;菜单 Menu = 2<br />&nbsp;按钮 Btn = 3<br /> */
   type?: MenuTypeEnum;
+  /** 标识 */
   slug?: string | null;
+  /** 名称 */
   name?: string | null;
+  /** 路由地址 */
   path?: string | null;
+  /** 组件路径 */
   component?: string | null;
+  /** 权限标识 */
   permission?: string | null;
+  /** 图标 */
   icon?: string | null;
+  /** 是否内嵌 */
   isIframe?: boolean;
+  /** 外链链接 */
   outLink?: string | null;
+  /** 是否隐藏 */
   isHide?: boolean;
-  /** @format int32 */
+  /**
+   * 排序位置
+   * @format int32
+   */
   order?: number;
   /** <br />&nbsp;启用 Enable = 1<br />&nbsp;停用 Disable = 2<br /> */
   status?: StatusEnum;
 }
 
 export interface AddSysRoleRequest {
+  /** 名称 */
   name?: string | null;
+  /** 编码 */
   code?: string | null;
-  /** @format int32 */
+  /**
+   * 排序
+   * @format int32
+   */
   order?: number;
   /** <br />&nbsp;全部数据 All = 1<br />&nbsp;本部门及以下数据 DeptChild = 2<br />&nbsp;本部门数据 Dept = 3<br />&nbsp;仅本人数据 Self = 4<br />&nbsp;自定义数据 Define = 5<br /> */
   dataScope?: DataScopeEnum;
+  /** 备注 */
   remark?: string | null;
   /** <br />&nbsp;启用 Enable = 1<br />&nbsp;停用 Disable = 2<br /> */
   status?: StatusEnum;
 }
 
 export interface AddSysUserRequest {
+  /** 账号 */
   account?: string | null;
+  /** 密码 */
   password?: string | null;
 }
 
+/** 全局返回结果 */
 export interface AdminResultBoolean {
-  /** @format int32 */
+  /**
+   * 状态码
+   * @format int32
+   */
   code?: number;
+  /** 是否成功 */
   success?: boolean;
+  /** 类型success、warning、error */
   type?: string | null;
+  /** 错误信息 */
   message?: string | null;
+  /** 数据 */
   data?: boolean;
+  /** 附加数据 */
   extras?: any;
-  /** @format date-time */
+  /**
+   * 时间
+   * @format date-time
+   */
   time?: string;
 }
 
+/** 全局返回结果 */
 export interface AdminResultCaptchaDto {
-  /** @format int32 */
+  /**
+   * 状态码
+   * @format int32
+   */
   code?: number;
+  /** 是否成功 */
   success?: boolean;
+  /** 类型success、warning、error */
   type?: string | null;
+  /** 错误信息 */
   message?: string | null;
   data?: CaptchaDto;
+  /** 附加数据 */
   extras?: any;
-  /** @format date-time */
+  /**
+   * 时间
+   * @format date-time
+   */
   time?: string;
 }
 
+/** 全局返回结果 */
 export interface AdminResultFileResult {
-  /** @format int32 */
+  /**
+   * 状态码
+   * @format int32
+   */
   code?: number;
+  /** 是否成功 */
   success?: boolean;
+  /** 类型success、warning、error */
   type?: string | null;
+  /** 错误信息 */
   message?: string | null;
-  /** @format binary */
+  /**
+   * 数据
+   * @format binary
+   */
   data?: File | null;
+  /** 附加数据 */
   extras?: any;
-  /** @format date-time */
+  /**
+   * 时间
+   * @format date-time
+   */
   time?: string;
 }
 
+/** 全局返回结果 */
 export interface AdminResultICollectionMenuResponse {
-  /** @format int32 */
+  /**
+   * 状态码
+   * @format int32
+   */
   code?: number;
+  /** 是否成功 */
   success?: boolean;
+  /** 类型success、warning、error */
   type?: string | null;
+  /** 错误信息 */
   message?: string | null;
+  /** 数据 */
   data?: MenuResponse[] | null;
+  /** 附加数据 */
   extras?: any;
-  /** @format date-time */
+  /**
+   * 时间
+   * @format date-time
+   */
   time?: string;
 }
 
+/** 全局返回结果 */
 export interface AdminResultICollectionSearchConfigResponse {
-  /** @format int32 */
+  /**
+   * 状态码
+   * @format int32
+   */
   code?: number;
+  /** 是否成功 */
   success?: boolean;
+  /** 类型success、warning、error */
   type?: string | null;
+  /** 错误信息 */
   message?: string | null;
+  /** 数据 */
   data?: SearchConfigResponse[] | null;
+  /** 附加数据 */
   extras?: any;
-  /** @format date-time */
+  /**
+   * 时间
+   * @format date-time
+   */
   time?: string;
 }
 
+/** 全局返回结果 */
 export interface AdminResultListSurgedDeclineInfoDto {
-  /** @format int32 */
+  /**
+   * 状态码
+   * @format int32
+   */
   code?: number;
+  /** 是否成功 */
   success?: boolean;
+  /** 类型success、warning、error */
   type?: string | null;
+  /** 错误信息 */
   message?: string | null;
+  /** 数据 */
   data?: SurgedDeclineInfoDto[] | null;
+  /** 附加数据 */
   extras?: any;
-  /** @format date-time */
+  /**
+   * 时间
+   * @format date-time
+   */
   time?: string;
 }
 
+/** 全局返回结果 */
 export interface AdminResultListTodayAttentionDto {
-  /** @format int32 */
+  /**
+   * 状态码
+   * @format int32
+   */
   code?: number;
+  /** 是否成功 */
   success?: boolean;
+  /** 类型success、warning、error */
   type?: string | null;
+  /** 错误信息 */
   message?: string | null;
+  /** 数据 */
   data?: TodayAttentionDto[] | null;
+  /** 附加数据 */
   extras?: any;
-  /** @format date-time */
+  /**
+   * 时间
+   * @format date-time
+   */
   time?: string;
 }
 
+/** 全局返回结果 */
 export interface AdminResultLoginOutput {
-  /** @format int32 */
+  /**
+   * 状态码
+   * @format int32
+   */
   code?: number;
+  /** 是否成功 */
   success?: boolean;
+  /** 类型success、warning、error */
   type?: string | null;
+  /** 错误信息 */
   message?: string | null;
+  /** 用户登录结果 */
   data?: LoginOutput;
+  /** 附加数据 */
   extras?: any;
-  /** @format date-time */
+  /**
+   * 时间
+   * @format date-time
+   */
   time?: string;
 }
 
+/** 全局返回结果 */
 export interface AdminResultLoginUserOutput {
-  /** @format int32 */
+  /**
+   * 状态码
+   * @format int32
+   */
   code?: number;
+  /** 是否成功 */
   success?: boolean;
+  /** 类型success、warning、error */
   type?: string | null;
+  /** 错误信息 */
   message?: string | null;
+  /** 用户登录信息 */
   data?: LoginUserOutput;
+  /** 附加数据 */
   extras?: any;
-  /** @format date-time */
+  /**
+   * 时间
+   * @format date-time
+   */
   time?: string;
 }
 
+/** 全局返回结果 */
 export interface AdminResultObject {
-  /** @format int32 */
+  /**
+   * 状态码
+   * @format int32
+   */
   code?: number;
+  /** 是否成功 */
   success?: boolean;
+  /** 类型success、warning、error */
   type?: string | null;
+  /** 错误信息 */
   message?: string | null;
+  /** 数据 */
   data?: any;
+  /** 附加数据 */
   extras?: any;
-  /** @format date-time */
+  /**
+   * 时间
+   * @format date-time
+   */
   time?: string;
 }
 
-export interface AdminResultPageResultDtoStockDto {
-  /** @format int32 */
+/** 全局返回结果 */
+export interface AdminResultPageResultResponseStockDto {
+  /**
+   * 状态码
+   * @format int32
+   */
   code?: number;
+  /** 是否成功 */
   success?: boolean;
+  /** 类型success、warning、error */
   type?: string | null;
+  /** 错误信息 */
   message?: string | null;
-  data?: PageResultDtoStockDto;
+  data?: PageResultResponseStockDto;
+  /** 附加数据 */
   extras?: any;
-  /** @format date-time */
+  /**
+   * 时间
+   * @format date-time
+   */
   time?: string;
 }
 
-export interface AdminResultPageResultDtoStockOptionalDto {
-  /** @format int32 */
+/** 全局返回结果 */
+export interface AdminResultPageResultResponseStockOptionalResponse {
+  /**
+   * 状态码
+   * @format int32
+   */
   code?: number;
+  /** 是否成功 */
   success?: boolean;
+  /** 类型success、warning、error */
   type?: string | null;
+  /** 错误信息 */
   message?: string | null;
-  data?: PageResultDtoStockOptionalDto;
+  data?: PageResultResponseStockOptionalResponse;
+  /** 附加数据 */
   extras?: any;
-  /** @format date-time */
+  /**
+   * 时间
+   * @format date-time
+   */
   time?: string;
 }
 
-export interface AdminResultPageResultDtoStockPerceptionDto {
-  /** @format int32 */
+/** 全局返回结果 */
+export interface AdminResultPageResultResponseStockPerceptionDto {
+  /**
+   * 状态码
+   * @format int32
+   */
   code?: number;
+  /** 是否成功 */
   success?: boolean;
+  /** 类型success、warning、error */
   type?: string | null;
+  /** 错误信息 */
   message?: string | null;
-  data?: PageResultDtoStockPerceptionDto;
+  data?: PageResultResponseStockPerceptionDto;
+  /** 附加数据 */
   extras?: any;
-  /** @format date-time */
+  /**
+   * 时间
+   * @format date-time
+   */
   time?: string;
 }
 
+/** 全局返回结果 */
 export interface AdminResultPageResultResponseStockResponse {
-  /** @format int32 */
+  /**
+   * 状态码
+   * @format int32
+   */
   code?: number;
+  /** 是否成功 */
   success?: boolean;
+  /** 类型success、warning、error */
   type?: string | null;
+  /** 错误信息 */
   message?: string | null;
   data?: PageResultResponseStockResponse;
+  /** 附加数据 */
   extras?: any;
-  /** @format date-time */
+  /**
+   * 时间
+   * @format date-time
+   */
   time?: string;
 }
 
+/** 全局返回结果 */
 export interface AdminResultPageResultResponseSysMenuResponse {
-  /** @format int32 */
+  /**
+   * 状态码
+   * @format int32
+   */
   code?: number;
+  /** 是否成功 */
   success?: boolean;
+  /** 类型success、warning、error */
   type?: string | null;
+  /** 错误信息 */
   message?: string | null;
   data?: PageResultResponseSysMenuResponse;
+  /** 附加数据 */
   extras?: any;
-  /** @format date-time */
+  /**
+   * 时间
+   * @format date-time
+   */
   time?: string;
 }
 
+/** 全局返回结果 */
 export interface AdminResultPageResultResponseSysRoleResponse {
-  /** @format int32 */
+  /**
+   * 状态码
+   * @format int32
+   */
   code?: number;
+  /** 是否成功 */
   success?: boolean;
+  /** 类型success、warning、error */
   type?: string | null;
+  /** 错误信息 */
   message?: string | null;
   data?: PageResultResponseSysRoleResponse;
+  /** 附加数据 */
   extras?: any;
-  /** @format date-time */
+  /**
+   * 时间
+   * @format date-time
+   */
   time?: string;
 }
 
+/** 全局返回结果 */
 export interface AdminResultPageResultResponseSysUserResponse {
-  /** @format int32 */
+  /**
+   * 状态码
+   * @format int32
+   */
   code?: number;
+  /** 是否成功 */
   success?: boolean;
+  /** 类型success、warning、error */
   type?: string | null;
+  /** 错误信息 */
   message?: string | null;
   data?: PageResultResponseSysUserResponse;
+  /** 附加数据 */
   extras?: any;
-  /** @format date-time */
+  /**
+   * 时间
+   * @format date-time
+   */
   time?: string;
 }
 
-export interface AdminResultStockResponse {
-  /** @format int32 */
+/** 全局返回结果 */
+export interface AdminResultStockOptionalResponse {
+  /**
+   * 状态码
+   * @format int32
+   */
   code?: number;
+  /** 是否成功 */
   success?: boolean;
+  /** 类型success、warning、error */
   type?: string | null;
+  /** 错误信息 */
+  message?: string | null;
+  data?: StockOptionalResponse;
+  /** 附加数据 */
+  extras?: any;
+  /**
+   * 时间
+   * @format date-time
+   */
+  time?: string;
+}
+
+/** 全局返回结果 */
+export interface AdminResultStockResponse {
+  /**
+   * 状态码
+   * @format int32
+   */
+  code?: number;
+  /** 是否成功 */
+  success?: boolean;
+  /** 类型success、warning、error */
+  type?: string | null;
+  /** 错误信息 */
   message?: string | null;
   data?: StockResponse;
+  /** 附加数据 */
   extras?: any;
-  /** @format date-time */
+  /**
+   * 时间
+   * @format date-time
+   */
   time?: string;
 }
 
+/** 全局返回结果 */
 export interface AdminResultString {
-  /** @format int32 */
+  /**
+   * 状态码
+   * @format int32
+   */
   code?: number;
+  /** 是否成功 */
   success?: boolean;
+  /** 类型success、warning、error */
   type?: string | null;
+  /** 错误信息 */
   message?: string | null;
+  /** 数据 */
   data?: string | null;
+  /** 附加数据 */
   extras?: any;
-  /** @format date-time */
+  /**
+   * 时间
+   * @format date-time
+   */
   time?: string;
 }
 
+/** 全局返回结果 */
 export interface AdminResultSysMenuResponse {
-  /** @format int32 */
+  /**
+   * 状态码
+   * @format int32
+   */
   code?: number;
+  /** 是否成功 */
   success?: boolean;
+  /** 类型success、warning、error */
   type?: string | null;
+  /** 错误信息 */
   message?: string | null;
   data?: SysMenuResponse;
+  /** 附加数据 */
   extras?: any;
-  /** @format date-time */
+  /**
+   * 时间
+   * @format date-time
+   */
   time?: string;
 }
 
+/** 全局返回结果 */
 export interface AdminResultSysRoleResponse {
-  /** @format int32 */
+  /**
+   * 状态码
+   * @format int32
+   */
   code?: number;
+  /** 是否成功 */
   success?: boolean;
+  /** 类型success、warning、error */
   type?: string | null;
+  /** 错误信息 */
   message?: string | null;
   data?: SysRoleResponse;
+  /** 附加数据 */
   extras?: any;
-  /** @format date-time */
+  /**
+   * 时间
+   * @format date-time
+   */
   time?: string;
 }
 
+/** 全局返回结果 */
 export interface AdminResultSysUserResponse {
-  /** @format int32 */
+  /**
+   * 状态码
+   * @format int32
+   */
   code?: number;
+  /** 是否成功 */
   success?: boolean;
+  /** 类型success、warning、error */
   type?: string | null;
+  /** 错误信息 */
   message?: string | null;
   data?: SysUserResponse;
+  /** 附加数据 */
   extras?: any;
-  /** @format date-time */
+  /**
+   * 时间
+   * @format date-time
+   */
   time?: string;
 }
 
@@ -399,44 +716,85 @@ export type DataScopeEnum = 1 | 2 | 3 | 4 | 5;
  */
 export type GenderEnum = 1 | 2;
 
+/** 用户登录参数 */
 export interface LoginInput {
-  /** @minLength 3 */
+  /**
+   * 账号
+   * @minLength 3
+   * @example "admin"
+   */
   account: string;
-  /** @minLength 3 */
+  /**
+   * 密码
+   * @minLength 3
+   * @example "123456"
+   */
   password: string;
+  /**
+   * 验证码Id
+   * @example null
+   */
   codeId?: string | null;
+  /**
+   * 验证码
+   * @example null
+   */
   code?: string | null;
 }
 
+/** 用户登录结果 */
 export interface LoginOutput {
+  /** 令牌Token */
   accessToken?: string | null;
+  /** 刷新Token */
   refreshToken?: string | null;
   username?: string | null;
   roles?: string[] | null;
 }
 
+/** 用户登录信息 */
 export interface LoginUserOutput {
+  /** 账号名称 */
   account?: string | null;
+  /** 真实姓名 */
   realName?: string | null;
+  /** 头像 */
   avatar?: string | null;
+  /** 个人简介 */
   introduction?: string | null;
+  /** 地址 */
   address?: string | null;
-  /** @format int64 */
+  /**
+   * 机构Id
+   * @format int64
+   */
   orgId?: number;
+  /** 机构名称 */
   orgName?: string | null;
+  /** 职位名称 */
   posName?: string | null;
+  /** 按钮权限集合 */
   buttons?: string[] | null;
 }
 
 export interface MenuMetaDto {
   icon?: string | null;
-  title?: string | null;
+  /**
+   * 菜单名称
+   * @minLength 1
+   */
+  title: string;
   /** @format int32 */
   rank?: number;
+  /** 内嵌的`iframe`链接 `可选` */
   frameSrc?: string | null;
+  /** 是否在菜单中显示 */
   showLink?: boolean;
+  /** 页面级别权限设置 `可选` */
   roles?: string[] | null;
+  /** 按钮级别权限设置 `可选` */
   auths?: string[] | null;
+  /** 路由缓存 */
   keepAlive?: boolean;
   activePath?: string | null;
 }
@@ -444,9 +802,16 @@ export interface MenuMetaDto {
 export interface MenuResponse {
   /** @format int64 */
   id: number;
+  /** 路由名字（保持唯一）`可选` */
   name?: string | null;
-  path?: string | null;
+  /**
+   * 路由地址
+   * @minLength 1
+   */
+  path: string;
+  /** Layout`组件 */
   component?: string | null;
+  /** 路由重定向 `可选` */
   redirect?: string | null;
   meta?: MenuMetaDto;
   children?: MenuResponse[] | null;
@@ -458,22 +823,34 @@ export interface MenuResponse {
  */
 export type MenuTypeEnum = 1 | 2 | 3;
 
-export interface PageResultDtoStockDto {
+export interface PageResultResponseStockDto {
+  /** @format int64 */
+  total?: number;
+  /** @format int32 */
+  pageNumber?: number;
+  /** @format int32 */
+  pageTotal?: number;
   items?: StockDto[] | null;
-  /** @format int64 */
-  itemCount?: number;
 }
 
-export interface PageResultDtoStockOptionalDto {
-  items?: StockOptionalDto[] | null;
+export interface PageResultResponseStockOptionalResponse {
   /** @format int64 */
-  itemCount?: number;
+  total?: number;
+  /** @format int32 */
+  pageNumber?: number;
+  /** @format int32 */
+  pageTotal?: number;
+  items?: StockOptionalResponse[] | null;
 }
 
-export interface PageResultDtoStockPerceptionDto {
+export interface PageResultResponseStockPerceptionDto {
+  /** @format int64 */
+  total?: number;
+  /** @format int32 */
+  pageNumber?: number;
+  /** @format int32 */
+  pageTotal?: number;
   items?: StockPerceptionDto[] | null;
-  /** @format int64 */
-  itemCount?: number;
 }
 
 export interface PageResultResponseStockResponse {
@@ -518,6 +895,8 @@ export interface PageResultResponseSysUserResponse {
 
 export interface SearchConfigModel {
   field?: string | null;
+  /** <br />&nbsp; Text = 0<br />&nbsp; Radio = 1<br />&nbsp; Select = 2<br />&nbsp; Date = 3<br />&nbsp; DateTime = 4<br />&nbsp; CheckBox = 5<br /> */
+  type: SearchConfigType;
   value?: string | null;
 }
 
@@ -526,22 +905,30 @@ export interface SearchConfigResponse {
   value?: string | null;
   /** @minLength 1 */
   label: string;
-  /** <br />&nbsp; Text = 0<br />&nbsp; Radio = 1<br />&nbsp; Select = 2<br />&nbsp; Date = 3<br />&nbsp; DateTime = 4<br /> */
+  /** <br />&nbsp; Text = 0<br />&nbsp; Radio = 1<br />&nbsp; Select = 2<br />&nbsp; Date = 3<br />&nbsp; DateTime = 4<br />&nbsp; CheckBox = 5<br /> */
   type: SearchConfigType;
 }
 
 /**
- * <br />&nbsp; Text = 0<br />&nbsp; Radio = 1<br />&nbsp; Select = 2<br />&nbsp; Date = 3<br />&nbsp; DateTime = 4<br />
+ * <br />&nbsp; Text = 0<br />&nbsp; Radio = 1<br />&nbsp; Select = 2<br />&nbsp; Date = 3<br />&nbsp; DateTime = 4<br />&nbsp; CheckBox = 5<br />
  * @format int32
  */
-export type SearchConfigType = 0 | 1 | 2 | 3 | 4;
+export type SearchConfigType = 0 | 1 | 2 | 3 | 4 | 5;
 
 export interface SearchRequest {
-  /** @format int32 */
+  /**
+   * 页码
+   * @format int32
+   */
   pageNumber?: number;
-  /** @format int32 */
+  /**
+   * 页面大小
+   * @format int32
+   */
   pageSize?: number;
+  /** 全局条件 */
   global?: SearchConfigModel[] | null;
+  /** 具体条件 */
   filter?: SearchConfigModel[] | null;
 }
 
@@ -565,30 +952,29 @@ export interface StockDto {
  */
 export type StockMarket = 0 | 1 | 2;
 
-export interface StockOptionalDto {
-  /** 股票代码，带交易所 */
-  tsCode?: string | null;
-  /** 股票名称 */
-  name?: string | null;
-  todayDaily?: DailyDto;
-  /** @format int32 */
-  mark?: number;
-  logs?: StockOptionalLogDto[] | null;
-}
-
-export interface StockOptionalLogDto {
+export interface StockOptionalResponse {
   /**
-   * 交易日
+   * 股票號碼
+   * @minLength 1
+   */
+  tsCode: string;
+  /**
+   * 加入原因
+   * @minLength 1
+   */
+  reason: string;
+  /**
+   * 加入時間
    * @format date-time
    */
-  tradeDay?: string;
-  /** 選中類型 */
-  type?: string | null;
+  joinDate?: string;
+  /** 是否移除 */
+  removed?: boolean;
   /**
-   * 分數
-   * @format int32
+   * Id
+   * @format int64
    */
-  mark?: number;
+  id: number;
 }
 
 export interface StockPerceptionDto {
@@ -620,8 +1006,13 @@ export interface StockResponse {
    * @format date-time
    */
   listDate?: string;
-  /** @format int64 */
+  /**
+   * Id
+   * @format int64
+   */
   id?: number;
+  /** 是否已加入自選 */
+  isJoinOptional?: boolean;
 }
 
 /**
@@ -643,70 +1034,120 @@ export interface SysMenuResponse {
   parentId?: number | null;
   /** <br />&nbsp;目录 Dir = 1<br />&nbsp;菜单 Menu = 2<br />&nbsp;按钮 Btn = 3<br /> */
   type?: MenuTypeEnum;
+  /** 标识 */
   slug?: string | null;
+  /** 名称 */
   name?: string | null;
+  /** 路由地址 */
   path?: string | null;
+  /** 组件路径 */
   component?: string | null;
+  /** 权限标识 */
   permission?: string | null;
+  /** 图标 */
   icon?: string | null;
+  /** 是否内嵌 */
   isIframe?: boolean;
+  /** 外链链接 */
   outLink?: string | null;
+  /** 是否隐藏 */
   isHide?: boolean;
-  /** @format int32 */
+  /**
+   * 排序位置
+   * @format int32
+   */
   order?: number;
   /** <br />&nbsp;启用 Enable = 1<br />&nbsp;停用 Disable = 2<br /> */
   status?: StatusEnum;
   /** @format int64 */
   id?: number | null;
   parentName?: string | null;
+  /** 菜单子项 */
   children?: SysMenuResponse[] | null;
 }
 
 export interface SysRoleResponse {
+  /** 名称 */
   name?: string | null;
+  /** 编码 */
   code?: string | null;
-  /** @format int32 */
+  /**
+   * 排序
+   * @format int32
+   */
   order?: number;
   /** <br />&nbsp;全部数据 All = 1<br />&nbsp;本部门及以下数据 DeptChild = 2<br />&nbsp;本部门数据 Dept = 3<br />&nbsp;仅本人数据 Self = 4<br />&nbsp;自定义数据 Define = 5<br /> */
   dataScope?: DataScopeEnum;
+  /** 备注 */
   remark?: string | null;
   /** <br />&nbsp;启用 Enable = 1<br />&nbsp;停用 Disable = 2<br /> */
   status?: StatusEnum;
-  /** @format int64 */
+  /**
+   * Id
+   * @format int64
+   */
   id?: number;
+  /** 菜單id */
   menus?: number[] | null;
 }
 
 export interface SysUserResponse {
+  /** 账号 */
   account?: string | null;
+  /** 真实姓名 */
   realName?: string | null;
+  /** 昵称 */
   nickName?: string | null;
+  /** 头像 */
   avatar?: string | null;
   /** <br />&nbsp;男 Male = 1<br />&nbsp;女 Female = 2<br /> */
   sex?: GenderEnum;
-  /** @format date-time */
+  /**
+   * 出生日期
+   * @format date-time
+   */
   birthday?: string | null;
   /** <br />&nbsp; Gregorian = 1<br />&nbsp; Lunar = 2<br /> */
   birthdayType?: BirthdayTypeEnum;
+  /** 民族 */
   nation?: string | null;
+  /** 手机号码 */
   phone?: string | null;
+  /** 邮箱 */
   email?: string | null;
+  /** 地址 */
   address?: string | null;
+  /** 办公电话 */
   officePhone?: string | null;
+  /** 个人简介 */
   introduction?: string | null;
   /** <br />&nbsp;启用 Enable = 1<br />&nbsp;停用 Disable = 2<br /> */
   status?: StatusEnum;
+  /** 备注 */
   remark?: string | null;
   /** <br />&nbsp;其他 None = 0<br />&nbsp;普通账号 User = 1<br />&nbsp;系统管理员 Admin = 4<br />&nbsp;超级管理员 SuperAdmin = 999<br /> */
   accountType?: AccountTypeEnum;
-  /** @format int64 */
+  /**
+   * 机构Id
+   * @format int64
+   */
   organizationId?: number | null;
-  /** @format int64 */
+  /**
+   * 职位Id
+   * @format int64
+   */
   positionId?: number;
+  /** 工号 */
   jobNum?: string | null;
-  /** @maxLength 32 */
+  /**
+   * 职级
+   * @maxLength 32
+   */
   positionLevel?: string | null;
-  /** @format date-time */
+  /**
+   * 入职日期
+   * @format date-time
+   */
   joinDate?: string | null;
 }
 
@@ -756,42 +1197,83 @@ export interface TodayAttentionDto {
   boxHigh?: number;
 }
 
+export interface UpdateStockOptionalRequest {
+  /**
+   * 股票號碼
+   * @minLength 1
+   */
+  tsCode: string;
+  /**
+   * 加入原因
+   * @minLength 1
+   */
+  reason: string;
+  /**
+   * 加入時間
+   * @format date-time
+   */
+  joinDate?: string;
+  /** 是否移除 */
+  removed?: boolean;
+}
+
 export interface UpdateSysMenuRequest {
   /** @format int64 */
   parentId?: number | null;
   /** <br />&nbsp;目录 Dir = 1<br />&nbsp;菜单 Menu = 2<br />&nbsp;按钮 Btn = 3<br /> */
   type?: MenuTypeEnum;
+  /** 标识 */
   slug?: string | null;
+  /** 名称 */
   name?: string | null;
+  /** 路由地址 */
   path?: string | null;
+  /** 组件路径 */
   component?: string | null;
+  /** 权限标识 */
   permission?: string | null;
+  /** 图标 */
   icon?: string | null;
+  /** 是否内嵌 */
   isIframe?: boolean;
+  /** 外链链接 */
   outLink?: string | null;
+  /** 是否隐藏 */
   isHide?: boolean;
-  /** @format int32 */
+  /**
+   * 排序位置
+   * @format int32
+   */
   order?: number;
   /** <br />&nbsp;启用 Enable = 1<br />&nbsp;停用 Disable = 2<br /> */
   status?: StatusEnum;
 }
 
 export interface UpdateSysRoleRequest {
+  /** 名称 */
   name?: string | null;
+  /** 编码 */
   code?: string | null;
-  /** @format int32 */
+  /**
+   * 排序
+   * @format int32
+   */
   order?: number;
   /** <br />&nbsp;全部数据 All = 1<br />&nbsp;本部门及以下数据 DeptChild = 2<br />&nbsp;本部门数据 Dept = 3<br />&nbsp;仅本人数据 Self = 4<br />&nbsp;自定义数据 Define = 5<br /> */
   dataScope?: DataScopeEnum;
+  /** 备注 */
   remark?: string | null;
   /** <br />&nbsp;启用 Enable = 1<br />&nbsp;停用 Disable = 2<br /> */
   status?: StatusEnum;
+  /** 菜單id */
   menus?: number[] | null;
 }
 
 export type UpdateSysUserRequest = object;
 
 export interface ValidateCaptchaInput {
+  /** 验证码Id */
   codeId?: string | null;
+  /** 验证码 */
   code?: string | null;
 }

@@ -37,7 +37,6 @@ export function useHook() {
       });
       const data = response.data;
       dataList.value = data.items;
-      console.log(data);
       pagination.total = data.total;
       pagination.currentPage = data.pageNumber;
       loading.value = false;
@@ -110,14 +109,13 @@ export function useHook() {
       contentRenderer: () => h(editForm, { ref: formRef }),
       beforeSure: (done, { options }) => {
         const FormRef = formRef.value.getRef();
-        console.log(options.props);
         const curData = options.props.formInline;
         FormRef.validate(valid => {
           if (valid) {
             onSubmit(curData);
+            done(); // 关闭弹框
           }
         });
-        done(); // 关闭弹框
       }
     });
   }

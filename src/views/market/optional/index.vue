@@ -2,9 +2,6 @@
 import { ref } from "vue";
 import { PureTableBar } from "@/components/RePureTableBar";
 import { useRenderIcon } from "@/components/ReIcon/src/hooks";
-
-// import Database from "@iconify-icons/ri/database-2-line";
-// import More from "@iconify-icons/ep/more-filled";
 import Delete from "@iconify-icons/ep/delete";
 import EditPen from "@iconify-icons/ep/edit-pen";
 import Search from "@iconify-icons/ep/search";
@@ -13,12 +10,9 @@ import AddFill from "@iconify-icons/ri/add-circle-line";
 import { ElFormItem } from "element-plus";
 import { useColumns } from "./utils/columns";
 import { useHook } from "./utils/hook";
-import More from "@iconify-icons/ep/more-filled";
-import Password from "@iconify-icons/ri/lock-password-line";
-import Role from "@iconify-icons/ri/admin-line";
 
 defineOptions({
-  name: "Stock"
+  name: "StockOptional"
 });
 
 const formRef = ref();
@@ -33,9 +27,7 @@ const {
   dataList,
   pagination,
   loading,
-  openDialog,
-  buttonClass,
-  joinStockOption
+  openForm
 } = useHook();
 const { columns } = useColumns();
 </script>
@@ -71,8 +63,8 @@ const { columns } = useColumns();
     </el-form>
     <PureTableBar title="数据列表" :columns="columns" @refresh="onSearch">
       <template #buttons>
-        <el-button type="primary" :icon="useRenderIcon(AddFill)">
-          加入自選
+        <el-button type="primary" :icon="useRenderIcon(AddFill)" @click="openForm('修改')">
+          新增
         </el-button>
       </template>
       <template v-slot="{ size, dynamicColumns }">
@@ -98,50 +90,31 @@ const { columns } = useColumns();
         >
           <template #operation="{ row }">
             <el-button
-              v-if="row.isJoinOptional === false"
               class="reset-margin"
               link
               type="primary"
               :size="size"
               :icon="useRenderIcon(EditPen)"
-              @click="joinStockOption(row.tsCode)"
+              @click="openForm('修改', row)"
             >
-              加入自選
+              修改
             </el-button>
-            <el-button
-              class="reset-margin"
-              link
-              type="primary"
-              :size="size"
-              :icon="useRenderIcon(EditPen)"
-              @click="openDialog('修改', row)"
+            <el-popconfirm
+              :title="`是否确认删除这条数据`"
+              @confirm="handleDelete(row)"
             >
-              詳情
-            </el-button>
-            <el-dropdown>
-              <el-button
-                class="ml-3 mt-[2px]"
-                link
-                type="primary"
-                :size="size"
-                :icon="useRenderIcon(More)"
-              />
-              <template #dropdown>
-                <el-dropdown-menu>
-                  <el-dropdown-item>
-                    <el-button
-                      :class="buttonClass"
-                      link
-                      type="primary"
-                      :size="size"
-                      :icon="useRenderIcon(Password)"
-                    >
-                      回測
-                    </el-button>
-                  </el-dropdown-item>
-                </el-dropdown-menu>
+              <template #reference>
+                <el-button
+                  class="reset-margin"
+                  link
+                  type="primary"
+                  :size="size"
+                  :icon="useRenderIcon(Delete)"
+                >
+                  删除
+                </el-button>
               </template>
-            </el-dropdown>
+            </el-popconfirm>
           </template>
         </pure-table>
       </template>

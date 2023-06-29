@@ -3,7 +3,7 @@ const fs = require("fs");
 const SwaggerParser = require("@apidevtools/swagger-parser");
 const ejs = require("ejs");
 const { resolve } = require("path");
-const { isNullAndUnDef } = require("@pureadmin/utils");
+const { isNullOrUnDef } = require("@pureadmin/utils");
 const myAPI = "http://localhost:5002/swagger/All%20Groups/swagger.json";
 
 const pathResolve = dir => {
@@ -49,7 +49,8 @@ const createTemplateData = (tag, api) => {
   const keys = Object.keys(api.paths);
   const data = {
     componentName: tag,
-    formItems: []
+    formItems: [],
+    columnItems: []
   };
   keys.forEach(t => {
     const methods = Object.keys(api.paths[t]);
@@ -73,7 +74,31 @@ const createTemplateData = (tag, api) => {
           const propertyKeys = Object.keys(properties);
           propertyKeys.forEach(tt => {
             if (
-              !isNullAndUnDef(properties[tt].type) &&
+              !isNullOrUnDef(properties[tt].type) &&
+              (properties[tt].type !== "array" ||
+                properties[tt].type !== "object")
+            ) {
+              data.columnItems.push({
+                description: properties[tt].description,
+                type: properties[tt].type,
+                name: tt
+              });
+            }
+          });
+        }
+        if (lowerCase.endsWith(tag.toLowerCase() + "put")) {
+          data.updateApi = value.operationId;
+          const refV =
+            value.requestBody.content["application/json"].schema[
+              "$ref"
+            ].toString();
+          const schemaKey = refV.substring(refV.lastIndexOf("/") + 1);
+          const properties = api.components.schemas[schemaKey].properties;
+          const required = isNullOrUnDef(api.components.schemas[schemaKey].required) ? [] : api.components.schemas[schemaKey].required;
+          const propertyKeys = Object.keys(properties);
+          propertyKeys.forEach(tt => {
+            if (
+              !isNullOrUnDef(properties[tt].type) &&
               (properties[tt].type !== "array" ||
                 properties[tt].type !== "object")
             ) {
@@ -81,13 +106,11 @@ const createTemplateData = (tag, api) => {
                 description: properties[tt].description,
                 type: properties[tt].type,
                 name: tt,
-                nullable: properties[tt].nullable
+                required: required.includes(tt)
               });
             }
           });
-        }
-        if (lowerCase.endsWith(tag.toLowerCase() + "put")) {
-          data.updateApi = value.operationId;
+          console.log(data.formItems);
         }
         if (lowerCase.endsWith(tag.toLowerCase() + "get")) {
           data.detailApi = value.operationId;

@@ -1,7 +1,7 @@
 <% const {config} = data; -%>
 export function useColumns() {
   const columns: TableColumnList = [
-  <% config.formItems.forEach(t=>{ -%>
+  <% config.columnItems.forEach(t=>{ -%>
   {
       label: "<%= t.description %>",
       prop: "<%= t.name %>",
