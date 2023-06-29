@@ -1,5 +1,5 @@
 import { message } from "@/utils/message";
-import { reactive, ref, onMounted, h } from "vue";
+import {reactive, ref, onMounted, h, computed} from "vue";
 import { http } from "@/utils/http";
 import { PaginationProps } from "@pureadmin/table";
 import { addDialog } from "@/components/ReDialog/index";
@@ -88,6 +88,16 @@ export function useHook() {
     }, 500);
   }
 
+  const buttonClass = computed(() => {
+    return [
+      "!h-[20px]",
+      "reset-margin",
+      "!text-gray-500",
+      "dark:!text-white",
+      "dark:hover:!text-primary"
+    ];
+  });
+
   function handleSelectionChange(val) {
     console.log("handleSelectionChange", val);
   }
@@ -132,6 +142,7 @@ export function useHook() {
     loading,
     dataList,
     pagination,
-    openDialog
+    openDialog,
+    buttonClass
   };
 }

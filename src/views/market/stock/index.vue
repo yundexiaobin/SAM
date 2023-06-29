@@ -13,6 +13,9 @@ import AddFill from "@iconify-icons/ri/add-circle-line";
 import { ElFormItem } from "element-plus";
 import { useColumns } from "./utils/columns";
 import { useHook } from "./utils/hook";
+import More from "@iconify-icons/ep/more-filled";
+import Password from "@iconify-icons/ri/lock-password-line";
+import Role from "@iconify-icons/ri/admin-line";
 
 defineOptions({
   name: "Stock"
@@ -30,7 +33,8 @@ const {
   dataList,
   pagination,
   loading,
-  openDialog
+  openDialog,
+  buttonClass
 } = useHook();
 const { columns } = useColumns();
 </script>
@@ -67,7 +71,7 @@ const { columns } = useColumns();
     <PureTableBar title="数据列表" :columns="columns" @refresh="onSearch">
       <template #buttons>
         <el-button type="primary" :icon="useRenderIcon(AddFill)">
-          新增
+          加入自選
         </el-button>
       </template>
       <template v-slot="{ size, dynamicColumns }">
@@ -100,24 +104,42 @@ const { columns } = useColumns();
               :icon="useRenderIcon(EditPen)"
               @click="openDialog('修改', row)"
             >
-              修改
+              加入自選
             </el-button>
-            <el-popconfirm
-              :title="`是否确认删除角色名称为${row.name}的这条数据`"
-              @confirm="handleDelete(row)"
+            <el-button
+              class="reset-margin"
+              link
+              type="primary"
+              :size="size"
+              :icon="useRenderIcon(EditPen)"
+              @click="openDialog('修改', row)"
             >
-              <template #reference>
-                <el-button
-                  class="reset-margin"
-                  link
-                  type="primary"
-                  :size="size"
-                  :icon="useRenderIcon(Delete)"
-                >
-                  删除
-                </el-button>
+              詳情
+            </el-button>
+            <el-dropdown>
+              <el-button
+                class="ml-3 mt-[2px]"
+                link
+                type="primary"
+                :size="size"
+                :icon="useRenderIcon(More)"
+              />
+              <template #dropdown>
+                <el-dropdown-menu>
+                  <el-dropdown-item>
+                    <el-button
+                      :class="buttonClass"
+                      link
+                      type="primary"
+                      :size="size"
+                      :icon="useRenderIcon(Password)"
+                    >
+                      回測
+                    </el-button>
+                  </el-dropdown-item>
+                </el-dropdown-menu>
               </template>
-            </el-popconfirm>
+            </el-dropdown>
           </template>
         </pure-table>
       </template>
