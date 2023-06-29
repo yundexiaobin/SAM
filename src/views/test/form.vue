@@ -28,24 +28,18 @@ defineExpose({ getRef });
     :rules="formRules"
     label-width="82px"
   >
-    <el-form-item label="" prop="name">
+    <el-form-item label="名称" prop="name">
       <el-input v-model="newFormInline.name" clearable />
     </el-form-item>
-
-    <el-form-item label="" prop="code">
+    <el-form-item label="编码" prop="code">
       <el-input v-model="newFormInline.code" clearable />
     </el-form-item>
 
-    <el-form-item label="" prop="order">
+    <el-form-item label="排序" prop="order">
       <el-input-number v-model="newFormInline.order" :min="0" />
     </el-form-item>
-
-    <el-form-item label="" prop="remark">
+    <el-form-item label="备注" prop="remark">
       <el-input v-model="newFormInline.remark" clearable />
-    </el-form-item>
-
-    <el-form-item label="" prop="id">
-      <el-input-number v-model="newFormInline.id" :min="0" />
     </el-form-item>
   </el-form>
 </template>

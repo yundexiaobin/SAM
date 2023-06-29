@@ -30,16 +30,16 @@ defineExpose({ getRef });
     label-width="82px"
   >
 <% config.formItems.forEach(t=>{ -%>
-  <% if(t.type === "string") { %>
-    <el-form-item label="<%= t.description %>" prop="<%= t.name %>">
+  <% if(t.type === "string") { _%>
+  <el-form-item label="<%= t.description %>" prop="<%= t.name %>">
       <el-input v-model="newFormInline.<%= t.name %>" clearable />
     </el-form-item>
   <% } -%>
-  <% if(t.type === "integer") { %>
+  <% if(t.type === "integer" && t.name !== "id") { %>
     <el-form-item label="<%= t.description %>" prop="<%= t.name %>">
       <el-input-number v-model="newFormInline.<%= t.name %>" :min="0" />
     </el-form-item>
   <% } -%>
-<% }) -%>
+<% }) _%>
 </el-form>
 </template>

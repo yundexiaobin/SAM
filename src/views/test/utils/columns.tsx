@@ -1,17 +1,17 @@
 export function useColumns() {
   const columns: TableColumnList = [
     {
-      label: "",
+      label: "名称",
       prop: "name",
       minWidth: 100
     },
     {
-      label: "",
+      label: "编码",
       prop: "code",
       minWidth: 100
     },
     {
-      label: "",
+      label: "排序",
       prop: "order",
       minWidth: 100
     },
@@ -21,7 +21,7 @@ export function useColumns() {
       minWidth: 100
     },
     {
-      label: "",
+      label: "备注",
       prop: "remark",
       minWidth: 100
     },
@@ -36,7 +36,7 @@ export function useColumns() {
       minWidth: 100
     },
     {
-      label: "",
+      label: "菜單id",
       prop: "menus",
       minWidth: 100
     },
