@@ -101,6 +101,18 @@ export interface AdminResultICollectionMenuResponse {
   time?: string;
 }
 
+export interface AdminResultICollectionSearchConfigResponse {
+  /** @format int32 */
+  code?: number;
+  success?: boolean;
+  type?: string | null;
+  message?: string | null;
+  data?: SearchConfigResponse[] | null;
+  extras?: any;
+  /** @format date-time */
+  time?: string;
+}
+
 export interface AdminResultListSurgedDeclineInfoDto {
   /** @format int32 */
   code?: number;
@@ -240,18 +252,6 @@ export interface AdminResultPageResultResponseSysUserResponse {
   type?: string | null;
   message?: string | null;
   data?: PageResultResponseSysUserResponse;
-  extras?: any;
-  /** @format date-time */
-  time?: string;
-}
-
-export interface AdminResultSearchConfigResponse {
-  /** @format int32 */
-  code?: number;
-  success?: boolean;
-  type?: string | null;
-  message?: string | null;
-  data?: SearchConfigResponse;
   extras?: any;
   /** @format date-time */
   time?: string;

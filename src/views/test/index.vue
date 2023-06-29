@@ -2,9 +2,6 @@
 import { ref } from "vue";
 import { PureTableBar } from "@/components/RePureTableBar";
 import { useRenderIcon } from "@/components/ReIcon/src/hooks";
-
-// import Database from "@iconify-icons/ri/database-2-line";
-// import More from "@iconify-icons/ep/more-filled";
 import Delete from "@iconify-icons/ep/delete";
 import EditPen from "@iconify-icons/ep/edit-pen";
 import Search from "@iconify-icons/ep/search";
@@ -15,7 +12,7 @@ import { useColumns } from "./utils/columns";
 import { useHook } from "./utils/hook";
 
 defineOptions({
-  name: "Stock"
+  name: "sysRole"
 });
 
 const formRef = ref();
@@ -30,7 +27,7 @@ const {
   dataList,
   pagination,
   loading,
-  openDialog
+  openForm
 } = useHook();
 const { columns } = useColumns();
 </script>
@@ -66,7 +63,11 @@ const { columns } = useColumns();
     </el-form>
     <PureTableBar title="数据列表" :columns="columns" @refresh="onSearch">
       <template #buttons>
-        <el-button type="primary" :icon="useRenderIcon(AddFill)">
+        <el-button
+          type="primary"
+          :icon="useRenderIcon(AddFill)"
+          @click="openForm('修改')"
+        >
           新增
         </el-button>
       </template>
@@ -98,12 +99,12 @@ const { columns } = useColumns();
               type="primary"
               :size="size"
               :icon="useRenderIcon(EditPen)"
-              @click="openDialog('修改', row)"
+              @click="openForm('修改', row)"
             >
               修改
             </el-button>
             <el-popconfirm
-              :title="`是否确认删除角色名称为${row.name}的这条数据`"
+              :title="`是否确认删除这条数据`"
               @confirm="handleDelete(row)"
             >
               <template #reference>

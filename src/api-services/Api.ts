@@ -17,6 +17,7 @@ import {
   AdminResultCaptchaDto,
   AdminResultFileResult,
   AdminResultICollectionMenuResponse,
+  AdminResultICollectionSearchConfigResponse,
   AdminResultListSurgedDeclineInfoDto,
   AdminResultListTodayAttentionDto,
   AdminResultLoginOutput,
@@ -29,7 +30,6 @@ import {
   AdminResultPageResultResponseSysMenuResponse,
   AdminResultPageResultResponseSysRoleResponse,
   AdminResultPageResultResponseSysUserResponse,
-  AdminResultSearchConfigResponse,
   AdminResultStockResponse,
   AdminResultString,
   AdminResultSysMenuResponse,
@@ -45,7 +45,9 @@ import {
 } from "./data-contracts";
 import { ContentType, HttpClient, RequestParams } from "./http-client";
 
-export class Api<SecurityDataType = unknown> extends HttpClient<SecurityDataType> {
+export class Api<
+  SecurityDataType = unknown
+> extends HttpClient<SecurityDataType> {
   /**
    * No description
    *
@@ -91,7 +93,10 @@ export class Api<SecurityDataType = unknown> extends HttpClient<SecurityDataType
    * @secure
    * @response `200` `AdminResultString` Success
    */
-  apiSysAuthRefreshTokenGet = (accessToken: string, params: RequestParams = {}) =>
+  apiSysAuthRefreshTokenGet = (
+    accessToken: string,
+    params: RequestParams = {}
+  ) =>
     this.request<AdminResultString, any>({
       path: `/api/sysAuth/refreshToken/${accessToken}`,
       method: "GET",
@@ -158,7 +163,10 @@ export class Api<SecurityDataType = unknown> extends HttpClient<SecurityDataType
    * @secure
    * @response `200` `AdminResultBoolean` Success
    */
-  apiSysAuthValidateCaptchaPost = (data: ValidateCaptchaInput, params: RequestParams = {}) =>
+  apiSysAuthValidateCaptchaPost = (
+    data: ValidateCaptchaInput,
+    params: RequestParams = {}
+  ) =>
     this.request<AdminResultBoolean, any>({
       path: `/api/sysAuth/validateCaptcha`,
       method: "POST",
@@ -238,7 +246,11 @@ export class Api<SecurityDataType = unknown> extends HttpClient<SecurityDataType
    * @secure
    * @response `200` `AdminResultBoolean` Success
    */
-  apiSysUserPut = (id: number, data: UpdateSysUserRequest, params: RequestParams = {}) =>
+  apiSysUserPut = (
+    id: number,
+    data: UpdateSysUserRequest,
+    params: RequestParams = {}
+  ) =>
     this.request<AdminResultBoolean, any>({
       path: `/api/sysUser/${id}`,
       method: "PUT",
@@ -289,10 +301,10 @@ export class Api<SecurityDataType = unknown> extends HttpClient<SecurityDataType
    * @name ApiSysUserSearchConfigGet
    * @request GET:/api/sysUser/searchConfig
    * @secure
-   * @response `200` `AdminResultSearchConfigResponse` Success
+   * @response `200` `AdminResultICollectionSearchConfigResponse` Success
    */
   apiSysUserSearchConfigGet = (params: RequestParams = {}) =>
-    this.request<AdminResultSearchConfigResponse, any>({
+    this.request<AdminResultICollectionSearchConfigResponse, any>({
       path: `/api/sysUser/searchConfig`,
       method: "GET",
       secure: true,
@@ -372,7 +384,11 @@ export class Api<SecurityDataType = unknown> extends HttpClient<SecurityDataType
    * @secure
    * @response `200` `AdminResultBoolean` Success
    */
-  apiSysRolePut = (id: number, data: UpdateSysRoleRequest, params: RequestParams = {}) =>
+  apiSysRolePut = (
+    id: number,
+    data: UpdateSysRoleRequest,
+    params: RequestParams = {}
+  ) =>
     this.request<AdminResultBoolean, any>({
       path: `/api/sysRole/${id}`,
       method: "PUT",
@@ -423,10 +439,10 @@ export class Api<SecurityDataType = unknown> extends HttpClient<SecurityDataType
    * @name ApiSysRoleSearchConfigGet
    * @request GET:/api/sysRole/searchConfig
    * @secure
-   * @response `200` `AdminResultSearchConfigResponse` Success
+   * @response `200` `AdminResultICollectionSearchConfigResponse` Success
    */
   apiSysRoleSearchConfigGet = (params: RequestParams = {}) =>
-    this.request<AdminResultSearchConfigResponse, any>({
+    this.request<AdminResultICollectionSearchConfigResponse, any>({
       path: `/api/sysRole/searchConfig`,
       method: "GET",
       secure: true,
@@ -523,7 +539,11 @@ export class Api<SecurityDataType = unknown> extends HttpClient<SecurityDataType
    * @secure
    * @response `200` `AdminResultBoolean` Success
    */
-  apiSysMenuPut = (id: number, data: UpdateSysMenuRequest, params: RequestParams = {}) =>
+  apiSysMenuPut = (
+    id: number,
+    data: UpdateSysMenuRequest,
+    params: RequestParams = {}
+  ) =>
     this.request<AdminResultBoolean, any>({
       path: `/api/sysMenu/${id}`,
       method: "PUT",
@@ -574,10 +594,10 @@ export class Api<SecurityDataType = unknown> extends HttpClient<SecurityDataType
    * @name ApiSysMenuSearchConfigGet
    * @request GET:/api/sysMenu/searchConfig
    * @secure
-   * @response `200` `AdminResultSearchConfigResponse` Success
+   * @response `200` `AdminResultICollectionSearchConfigResponse` Success
    */
   apiSysMenuSearchConfigGet = (params: RequestParams = {}) =>
-    this.request<AdminResultSearchConfigResponse, any>({
+    this.request<AdminResultICollectionSearchConfigResponse, any>({
       path: `/api/sysMenu/searchConfig`,
       method: "GET",
       secure: true,
@@ -686,10 +706,31 @@ export class Api<SecurityDataType = unknown> extends HttpClient<SecurityDataType
    * @secure
    * @response `200` `AdminResultString` Success
    */
-  apiQuantTradyTestPost = (symbol: string, begin: string, params: RequestParams = {}) =>
+  apiQuantTradyTestPost = (
+    symbol: string,
+    begin: string,
+    params: RequestParams = {}
+  ) =>
     this.request<AdminResultString, any>({
       path: `/api/quant/tradyTest/${symbol}/${begin}`,
       method: "POST",
+      secure: true,
+      format: "json",
+      ...params
+    });
+  /**
+   * No description
+   *
+   * @tags stock
+   * @name ApiStockSearchConfigGet
+   * @request GET:/api/stock/searchConfig
+   * @secure
+   * @response `200` `AdminResultICollectionSearchConfigResponse` Success
+   */
+  apiStockSearchConfigGet = (params: RequestParams = {}) =>
+    this.request<AdminResultICollectionSearchConfigResponse, any>({
+      path: `/api/stock/searchConfig`,
+      method: "GET",
       secure: true,
       format: "json",
       ...params
@@ -787,7 +828,10 @@ export class Api<SecurityDataType = unknown> extends HttpClient<SecurityDataType
    * @secure
    * @response `200` `AdminResultBoolean` Success
    */
-  apiStockWritePerceptionPost = (data: StockPerceptionRequestDto, params: RequestParams = {}) =>
+  apiStockWritePerceptionPost = (
+    data: StockPerceptionRequestDto,
+    params: RequestParams = {}
+  ) =>
     this.request<AdminResultBoolean, any>({
       path: `/api/stock/writePerception`,
       method: "POST",
@@ -864,23 +908,6 @@ export class Api<SecurityDataType = unknown> extends HttpClient<SecurityDataType
   apiStockTodayHotStockGet = (params: RequestParams = {}) =>
     this.request<AdminResultListTodayAttentionDto, any>({
       path: `/api/stock/todayHotStock`,
-      method: "GET",
-      secure: true,
-      format: "json",
-      ...params
-    });
-  /**
-   * No description
-   *
-   * @tags stock
-   * @name ApiStockSearchConfigGet
-   * @request GET:/api/stock/searchConfig
-   * @secure
-   * @response `200` `AdminResultSearchConfigResponse` Success
-   */
-  apiStockSearchConfigGet = (params: RequestParams = {}) =>
-    this.request<AdminResultSearchConfigResponse, any>({
-      path: `/api/stock/searchConfig`,
       method: "GET",
       secure: true,
       format: "json",

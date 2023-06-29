@@ -1,0 +1,21 @@
+<% const {config} = data; -%>
+export function useColumns() {
+  const columns: TableColumnList = [
+  <% config.formItems.forEach(t=>{ -%>
+  {
+      label: "<%= t.description %>",
+      prop: "<%= t.name %>",
+      minWidth: 100
+    },
+<% }) -%>
+    {
+      label: "操作",
+      fixed: "right",
+      width: 240,
+      slot: "operation"
+    }
+  ];
+  return {
+    columns
+  };
+}

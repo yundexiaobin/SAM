@@ -1,0 +1,45 @@
+<% const {config} = data; -%>
+<script setup lang="ts">
+import { ref } from "vue";
+import { formRules } from "./utils/rule";
+import { <%= config.responseName %> } from "@/api-services/data-contracts";
+
+interface FormProps {
+  formInline: <%= config.responseName %>;
+}
+
+const props = withDefaults(defineProps<FormProps>(), {
+  formInline: () => ({})
+});
+
+const ruleFormRef = ref();
+const newFormInline = ref(props.formInline);
+
+function getRef() {
+  return ruleFormRef.value;
+}
+
+defineExpose({ getRef });
+</script>
+
+<template>
+  <el-form
+    ref="ruleFormRef"
+    :model="newFormInline"
+    :rules="formRules"
+    label-width="82px"
+  >
+<% config.formItems.forEach(t=>{ -%>
+  <% if(t.type === "string") { %>
+    <el-form-item label="<%= t.description %>" prop="<%= t.name %>">
+      <el-input v-model="newFormInline.<%= t.name %>" clearable />
+    </el-form-item>
+  <% } -%>
+  <% if(t.type === "integer") { %>
+    <el-form-item label="<%= t.description %>" prop="<%= t.name %>">
+      <el-input-number v-model="newFormInline.<%= t.name %>" :min="0" />
+    </el-form-item>
+  <% } -%>
+<% }) -%>
+</el-form>
+</template>

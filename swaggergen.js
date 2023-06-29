@@ -18,24 +18,24 @@ const pathResolve = dir => {
 //   extractEnums: true
 // });
 
-generateApi({
-  name: "SamApi.ts",
-  url: "https://localhost:5001/swagger/All%20Groups/swagger.json",
-  output: pathResolve("./src/api-services"),
-  modular: true,
-  templates: pathResolve("./src/api-services/templates"),
-  httpClientType: "axios",
-  generateClient: true,
-  generateResponses: true,
-  generateUnionEnums: true,
-  unwrapResponseData: true,
-  enumNamesAsValues: true,
-  extractEnums: true
-})
-  .then(() => {
-    console.log("生成完成");
-    setTimeout(() => {
-      process.exit(0);
+const generate = () => {
+  setTimeout(async () => {
+    await generateApi({
+      name: "SamApi.ts",
+      url: "http://localhost:5002/swagger/All%20Groups/swagger.json",
+      output: pathResolve("./src/api-services"),
+      modular: true,
+      templates: pathResolve("./src/api-services/templates"),
+      httpClientType: "axios",
+      generateClient: true,
+      generateResponses: true,
+      generateUnionEnums: true,
+      unwrapResponseData: true,
+      enumNamesAsValues: true,
+      extractEnums: true
     });
-  })
-  .catch(e => console.error(e));
+    console.log("生成完成");
+    process.exit(0);
+  }, 500);
+};
+generate();
