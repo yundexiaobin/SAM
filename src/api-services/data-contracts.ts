@@ -15,6 +15,19 @@
  */
 export type AccountTypeEnum = 0 | 1 | 4 | 999;
 
+export interface AddStockItemRequest {
+  /** 股票代码，不带交易所号码 */
+  symbol?: string | null;
+  /** 股票代码，带交易所 */
+  tsCode?: string | null;
+  /** 股票名称 */
+  name?: string | null;
+  /** <br />&nbsp;其他 Other = 0<br />&nbsp;主板 MainBoard = 1<br />&nbsp;中小板 SmeBoard = 2<br /> */
+  market?: StockMarket;
+  /** 是否是指数 */
+  isExponent?: boolean;
+}
+
 export interface AddStockOptionalRequest {
   /**
    * 股票號碼
@@ -33,6 +46,22 @@ export interface AddStockOptionalRequest {
   joinDate?: string;
   /** 是否移除 */
   removed?: boolean;
+}
+
+export interface AddStockPerceptionRequest {
+  /**
+   * 文本內容
+   * @minLength 1
+   * @maxLength 2000
+   */
+  content: string;
+  /** <br />&nbsp;启用 Enable = 1<br />&nbsp;停用 Disable = 2<br /> */
+  status?: StatusEnum;
+  /**
+   * 输入时间
+   * @format date-time
+   */
+  inputDate?: string | null;
 }
 
 export interface AddSysMenuRequest {
@@ -404,6 +433,29 @@ export interface AdminResultPageResultResponseStockPerceptionDto {
 }
 
 /** 全局返回结果 */
+export interface AdminResultPageResultResponseStockPerceptionResponse {
+  /**
+   * 状态码
+   * @format int32
+   */
+  code?: number;
+  /** 是否成功 */
+  success?: boolean;
+  /** 类型success、warning、error */
+  type?: string | null;
+  /** 错误信息 */
+  message?: string | null;
+  data?: PageResultResponseStockPerceptionResponse;
+  /** 附加数据 */
+  extras?: any;
+  /**
+   * 时间
+   * @format date-time
+   */
+  time?: string;
+}
+
+/** 全局返回结果 */
 export interface AdminResultPageResultResponseStockResponse {
   /**
    * 状态码
@@ -509,6 +561,29 @@ export interface AdminResultStockOptionalResponse {
   /** 错误信息 */
   message?: string | null;
   data?: StockOptionalResponse;
+  /** 附加数据 */
+  extras?: any;
+  /**
+   * 时间
+   * @format date-time
+   */
+  time?: string;
+}
+
+/** 全局返回结果 */
+export interface AdminResultStockPerceptionResponse {
+  /**
+   * 状态码
+   * @format int32
+   */
+  code?: number;
+  /** 是否成功 */
+  success?: boolean;
+  /** 类型success、warning、error */
+  type?: string | null;
+  /** 错误信息 */
+  message?: string | null;
+  data?: StockPerceptionResponse;
   /** 附加数据 */
   extras?: any;
   /**
@@ -853,6 +928,16 @@ export interface PageResultResponseStockPerceptionDto {
   items?: StockPerceptionDto[] | null;
 }
 
+export interface PageResultResponseStockPerceptionResponse {
+  /** @format int64 */
+  total?: number;
+  /** @format int32 */
+  pageNumber?: number;
+  /** @format int32 */
+  pageTotal?: number;
+  items?: StockPerceptionResponse[] | null;
+}
+
 export interface PageResultResponseStockResponse {
   /** @format int64 */
   total?: number;
@@ -986,6 +1071,27 @@ export interface StockPerceptionDto {
 export interface StockPerceptionRequestDto {
   /** @minLength 1 */
   content: string;
+}
+
+export interface StockPerceptionResponse {
+  /**
+   * 文本內容
+   * @minLength 1
+   * @maxLength 2000
+   */
+  content: string;
+  /** <br />&nbsp;启用 Enable = 1<br />&nbsp;停用 Disable = 2<br /> */
+  status?: StatusEnum;
+  /**
+   * 输入时间
+   * @format date-time
+   */
+  inputDate?: string | null;
+  /**
+   * Id
+   * @format int32
+   */
+  id?: number;
 }
 
 export interface StockResponse {
@@ -1197,6 +1303,19 @@ export interface TodayAttentionDto {
   boxHigh?: number;
 }
 
+export interface UpdateStockItemRequest {
+  /** 股票代码，不带交易所号码 */
+  symbol?: string | null;
+  /** 股票代码，带交易所 */
+  tsCode?: string | null;
+  /** 股票名称 */
+  name?: string | null;
+  /** <br />&nbsp;其他 Other = 0<br />&nbsp;主板 MainBoard = 1<br />&nbsp;中小板 SmeBoard = 2<br /> */
+  market?: StockMarket;
+  /** 是否是指数 */
+  isExponent?: boolean;
+}
+
 export interface UpdateStockOptionalRequest {
   /**
    * 股票號碼
@@ -1215,6 +1334,22 @@ export interface UpdateStockOptionalRequest {
   joinDate?: string;
   /** 是否移除 */
   removed?: boolean;
+}
+
+export interface UpdateStockPerceptionRequest {
+  /**
+   * 文本內容
+   * @minLength 1
+   * @maxLength 2000
+   */
+  content: string;
+  /** <br />&nbsp;启用 Enable = 1<br />&nbsp;停用 Disable = 2<br /> */
+  status?: StatusEnum;
+  /**
+   * 输入时间
+   * @format date-time
+   */
+  inputDate?: string | null;
 }
 
 export interface UpdateSysMenuRequest {

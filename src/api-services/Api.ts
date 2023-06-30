@@ -10,7 +10,9 @@
  */
 
 import {
+  AddStockItemRequest,
   AddStockOptionalRequest,
+  AddStockPerceptionRequest,
   AddSysMenuRequest,
   AddSysRoleRequest,
   AddSysUserRequest,
@@ -27,11 +29,13 @@ import {
   AdminResultPageResultResponseStockDto,
   AdminResultPageResultResponseStockOptionalResponse,
   AdminResultPageResultResponseStockPerceptionDto,
+  AdminResultPageResultResponseStockPerceptionResponse,
   AdminResultPageResultResponseStockResponse,
   AdminResultPageResultResponseSysMenuResponse,
   AdminResultPageResultResponseSysRoleResponse,
   AdminResultPageResultResponseSysUserResponse,
   AdminResultStockOptionalResponse,
+  AdminResultStockPerceptionResponse,
   AdminResultStockResponse,
   AdminResultString,
   AdminResultSysMenuResponse,
@@ -40,7 +44,9 @@ import {
   LoginInput,
   SearchRequest,
   StockPerceptionRequestDto,
+  UpdateStockItemRequest,
   UpdateStockOptionalRequest,
+  UpdateStockPerceptionRequest,
   UpdateSysMenuRequest,
   UpdateSysRoleRequest,
   UpdateSysUserRequest,
@@ -1046,6 +1052,82 @@ export class Api<SecurityDataType = unknown> extends HttpClient<SecurityDataType
    * No description
    *
    * @tags stock
+   * @name ApiStockPost
+   * @summary 创建
+   * @request POST:/api/stock
+   * @secure
+   * @response `200` `AdminResultBoolean` Success
+   */
+  apiStockPost = (data: AddStockItemRequest, params: RequestParams = {}) =>
+    this.request<AdminResultBoolean, any>({
+      path: `/api/stock`,
+      method: "POST",
+      body: data,
+      secure: true,
+      type: ContentType.Json,
+      format: "json",
+      ...params
+    });
+  /**
+   * No description
+   *
+   * @tags stock
+   * @name ApiStockPut
+   * @summary 修改
+   * @request PUT:/api/stock/{id}
+   * @secure
+   * @response `200` `AdminResultBoolean` Success
+   */
+  apiStockPut = (id: number, data: UpdateStockItemRequest, params: RequestParams = {}) =>
+    this.request<AdminResultBoolean, any>({
+      path: `/api/stock/${id}`,
+      method: "PUT",
+      body: data,
+      secure: true,
+      type: ContentType.Json,
+      format: "json",
+      ...params
+    });
+  /**
+   * No description
+   *
+   * @tags stock
+   * @name ApiStockDelete
+   * @summary 删除
+   * @request DELETE:/api/stock/{id}
+   * @secure
+   * @response `200` `AdminResultBoolean` Success
+   */
+  apiStockDelete = (id: number, params: RequestParams = {}) =>
+    this.request<AdminResultBoolean, any>({
+      path: `/api/stock/${id}`,
+      method: "DELETE",
+      secure: true,
+      format: "json",
+      ...params
+    });
+  /**
+   * No description
+   *
+   * @tags stock
+   * @name ApiStockGet
+   * @summary 數據詳情
+   * @request GET:/api/stock/{id}
+   * @secure
+   * @response `200` `AdminResultStockResponse` Success
+   */
+  apiStockGet = (id: number, params: RequestParams = {}) =>
+    this.request<AdminResultStockResponse, any>({
+      path: `/api/stock/${id}`,
+      method: "GET",
+      secure: true,
+      format: "json",
+      ...params
+    });
+  /**
+   * No description
+   *
+   * @tags stock
    * @name ApiStockSearchPost
    * @summary 搜索
    * @request POST:/api/stock/search
@@ -1098,17 +1180,182 @@ export class Api<SecurityDataType = unknown> extends HttpClient<SecurityDataType
   /**
    * No description
    *
-   * @tags stock
-   * @name ApiStockGet
-   * @summary 數據詳情
-   * @request GET:/api/stock/{id}
+   * @tags stockPerception
+   * @name ApiStockPerceptionPost
+   * @summary 创建
+   * @request POST:/api/stockPerception
    * @secure
-   * @response `200` `AdminResultStockResponse` Success
+   * @response `200` `AdminResultBoolean` Success
    */
-  apiStockGet = (id: number, params: RequestParams = {}) =>
-    this.request<AdminResultStockResponse, any>({
-      path: `/api/stock/${id}`,
+  apiStockPerceptionPost = (data: AddStockPerceptionRequest, params: RequestParams = {}) =>
+    this.request<AdminResultBoolean, any>({
+      path: `/api/stockPerception`,
+      method: "POST",
+      body: data,
+      secure: true,
+      type: ContentType.Json,
+      format: "json",
+      ...params
+    });
+  /**
+   * No description
+   *
+   * @tags stockPerception
+   * @name ApiStockPerceptionPut
+   * @summary 修改
+   * @request PUT:/api/stockPerception/{id}
+   * @secure
+   * @response `200` `AdminResultBoolean` Success
+   */
+  apiStockPerceptionPut = (id: number, data: UpdateStockPerceptionRequest, params: RequestParams = {}) =>
+    this.request<AdminResultBoolean, any>({
+      path: `/api/stockPerception/${id}`,
+      method: "PUT",
+      body: data,
+      secure: true,
+      type: ContentType.Json,
+      format: "json",
+      ...params
+    });
+  /**
+   * No description
+   *
+   * @tags stockPerception
+   * @name ApiStockPerceptionDelete
+   * @summary 删除
+   * @request DELETE:/api/stockPerception/{id}
+   * @secure
+   * @response `200` `AdminResultBoolean` Success
+   */
+  apiStockPerceptionDelete = (id: number, params: RequestParams = {}) =>
+    this.request<AdminResultBoolean, any>({
+      path: `/api/stockPerception/${id}`,
+      method: "DELETE",
+      secure: true,
+      format: "json",
+      ...params
+    });
+  /**
+   * No description
+   *
+   * @tags stockPerception
+   * @name ApiStockPerceptionGet2
+   * @summary 數據詳情
+   * @request GET:/api/stockPerception/{id}
+   * @originalName apiStockPerceptionGet
+   * @duplicate
+   * @secure
+   * @response `200` `AdminResultStockPerceptionResponse` Success
+   */
+  apiStockPerceptionGet2 = (id: number, params: RequestParams = {}) =>
+    this.request<AdminResultStockPerceptionResponse, any>({
+      path: `/api/stockPerception/${id}`,
       method: "GET",
+      secure: true,
+      format: "json",
+      ...params
+    });
+  /**
+   * No description
+   *
+   * @tags stockPerception
+   * @name ApiStockPerceptionSearchConfigGet
+   * @summary 获取搜索查询配置
+   * @request GET:/api/stockPerception/searchConfig
+   * @secure
+   * @response `200` `AdminResultICollectionSearchConfigResponse` Success
+   */
+  apiStockPerceptionSearchConfigGet = (params: RequestParams = {}) =>
+    this.request<AdminResultICollectionSearchConfigResponse, any>({
+      path: `/api/stockPerception/searchConfig`,
+      method: "GET",
+      secure: true,
+      format: "json",
+      ...params
+    });
+  /**
+   * No description
+   *
+   * @tags stockPerception
+   * @name ApiStockPerceptionSearchPost
+   * @summary 搜索
+   * @request POST:/api/stockPerception/search
+   * @secure
+   * @response `200` `AdminResultPageResultResponseStockPerceptionResponse` Success
+   */
+  apiStockPerceptionSearchPost = (data: SearchRequest, params: RequestParams = {}) =>
+    this.request<AdminResultPageResultResponseStockPerceptionResponse, any>({
+      path: `/api/stockPerception/search`,
+      method: "POST",
+      body: data,
+      secure: true,
+      type: ContentType.Json,
+      format: "json",
+      ...params
+    });
+  /**
+   * No description
+   *
+   * @tags stockPerception
+   * @name ApiStockPerceptionListGet
+   * @summary 數據列表
+   * @request GET:/api/stockPerception/list
+   * @secure
+   * @response `200` `AdminResultPageResultResponseStockPerceptionResponse` Success
+   */
+  apiStockPerceptionListGet = (
+    query?: {
+      /**
+       * 页码
+       * @format int32
+       */
+      PageNumber?: number;
+      /**
+       * 页面大小
+       * @format int32
+       */
+      PageSize?: number;
+    },
+    params: RequestParams = {}
+  ) =>
+    this.request<AdminResultPageResultResponseStockPerceptionResponse, any>({
+      path: `/api/stockPerception/list`,
+      method: "GET",
+      query: query,
+      secure: true,
+      format: "json",
+      ...params
+    });
+  /**
+   * No description
+   *
+   * @tags debug
+   * @name ApiDebugExecuteMarketCloseJobPost
+   * @request POST:/api/debug/executeMarketCloseJob
+   * @secure
+   * @response `200` `AdminResultBoolean` Success
+   */
+  apiDebugExecuteMarketCloseJobPost = (params: RequestParams = {}) =>
+    this.request<AdminResultBoolean, any>({
+      path: `/api/debug/executeMarketCloseJob`,
+      method: "POST",
+      secure: true,
+      format: "json",
+      ...params
+    });
+  /**
+   * No description
+   *
+   * @tags debug
+   * @name ApiDebugSendMessagePost
+   * @request POST:/api/debug/sendMessage
+   * @secure
+   * @response `200` `AdminResultBoolean` Success
+   */
+  apiDebugSendMessagePost = (params: RequestParams = {}) =>
+    this.request<AdminResultBoolean, any>({
+      path: `/api/debug/sendMessage`,
+      method: "POST",
       secure: true,
       format: "json",
       ...params

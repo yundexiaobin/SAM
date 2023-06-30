@@ -1,53 +1,21 @@
 <script setup lang="ts">
-import dayjs from "dayjs";
-import { http } from "@/utils/http";
 import MdEditor from "md-editor-v3";
 import Pie from "./components/Pie.vue";
 import TypeIt from "@/components/ReTypeit";
 import { useWindowSize } from "@vueuse/core";
-import { ref, computed, markRaw } from "vue";
-import { randomColor } from "@pureadmin/utils";
-import { useRenderFlicker } from "@/components/ReFlicker";
-import HoldStock from "@/views/welcome/components/HoldStock.vue";
+import { computed } from "vue";
 import SurgedLimitLine from "@/views/welcome/components/SurgedLimitLine.vue";
+import { useHook } from "./utils/hook";
 
 defineOptions({
   name: "Welcome"
 });
 
-const list = ref();
-const loading = ref<boolean>(true);
 const titleClass = computed(() => {
   return ["text-base", "font-medium"];
 });
+const { perceptionData, loading } = useHook();
 const { height } = useWindowSize();
-setTimeout(() => {
-  loading.value = !loading.value;
-}, 800);
-
-export type PerceptionItem = {
-  /** 用户名 */
-  content: number;
-  /** 当前登陆用户的角色 */
-  createdAt: string;
-};
-
-http.services.apiStockPerceptionGet({}).then(res => {
-  if (res.status === 200 && res.data.code === 200) {
-    const items = res.data.result.items;
-    list.value = items.map(v => {
-      return {
-        content: v.content,
-        timestamp: dayjs(v.writeTime).format("YYYY/MM/DD hh:mm:ss A"),
-        icon: markRaw(
-          useRenderFlicker({
-            background: randomColor({ type: "hex" }) as string
-          })
-        )
-      };
-    });
-  }
-});
 </script>
 
 <template>
@@ -90,9 +58,9 @@ http.services.apiStockPerceptionGet({}).then(res => {
           <el-skeleton animated :rows="7" :loading="loading">
             <template #default>
               <el-scrollbar style="min-height: 300px">
-                <el-timeline v-show="list?.length > 0">
+                <el-timeline v-show="perceptionData?.length > 0">
                   <el-timeline-item
-                    v-for="(item, index) in list"
+                    v-for="(item, index) in perceptionData"
                     :key="index"
                     :icon="item.icon"
                     :timestamp="item.timestamp"
@@ -100,7 +68,7 @@ http.services.apiStockPerceptionGet({}).then(res => {
                     <md-editor v-model="item.content" preview-only />
                   </el-timeline-item>
                 </el-timeline>
-                <el-empty v-show="list?.length === 0" />
+                <el-empty v-show="perceptionData?.length === 0" />
               </el-scrollbar>
             </template>
           </el-skeleton>
@@ -254,29 +222,7 @@ http.services.apiStockPerceptionGet({}).then(res => {
             delay: 200
           }
         }"
-      >
-        <el-card shadow="never">
-          <template #header>
-            <a
-              :class="titleClass"
-              href="https://github.com/xiaoxian521"
-              target="_black"
-            >
-              <TypeIt
-                :className="'type-it1'"
-                :values="['今日关注']"
-                :cursor="false"
-                :speed="120"
-              />
-            </a>
-          </template>
-          <el-skeleton animated :rows="7" :loading="loading">
-            <template #default>
-              <HoldStock />
-            </template>
-          </el-skeleton>
-        </el-card>
-      </el-col>
+      />
     </el-row>
   </div>
 </template>
