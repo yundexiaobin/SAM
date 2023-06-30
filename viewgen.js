@@ -94,23 +94,28 @@ const createTemplateData = (tag, api) => {
             ].toString();
           const schemaKey = refV.substring(refV.lastIndexOf("/") + 1);
           const properties = api.components.schemas[schemaKey].properties;
-          const required = isNullOrUnDef(api.components.schemas[schemaKey].required) ? [] : api.components.schemas[schemaKey].required;
-          const propertyKeys = Object.keys(properties);
-          propertyKeys.forEach(tt => {
-            if (
-              !isNullOrUnDef(properties[tt].type) &&
-              (properties[tt].type !== "array" ||
-                properties[tt].type !== "object")
-            ) {
-              data.formItems.push({
-                description: properties[tt].description,
-                type: properties[tt].type,
-                name: tt,
-                required: required.includes(tt)
-              });
-            }
-          });
-          console.log(data.formItems);
+          if (!isNullOrUnDef(properties)) {
+            const required = isNullOrUnDef(
+              api.components.schemas[schemaKey].required
+            )
+              ? []
+              : api.components.schemas[schemaKey].required;
+            const propertyKeys = Object.keys(properties);
+            propertyKeys.forEach(tt => {
+              if (
+                !isNullOrUnDef(properties[tt].type) &&
+                (properties[tt].type !== "array" ||
+                  properties[tt].type !== "object")
+              ) {
+                data.formItems.push({
+                  description: properties[tt].description,
+                  type: properties[tt].type,
+                  name: tt,
+                  required: required.includes(tt)
+                });
+              }
+            });
+          }
         }
         if (lowerCase.endsWith(tag.toLowerCase() + "get")) {
           data.detailApi = value.operationId;
