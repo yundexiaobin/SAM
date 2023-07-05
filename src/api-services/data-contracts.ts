@@ -410,29 +410,6 @@ export interface AdminResultPageResultResponseStockOptionalResponse {
 }
 
 /** 全局返回结果 */
-export interface AdminResultPageResultResponseStockPerceptionDto {
-  /**
-   * 状态码
-   * @format int32
-   */
-  code?: number;
-  /** 是否成功 */
-  success?: boolean;
-  /** 类型success、warning、error */
-  type?: string | null;
-  /** 错误信息 */
-  message?: string | null;
-  data?: PageResultResponseStockPerceptionDto;
-  /** 附加数据 */
-  extras?: any;
-  /**
-   * 时间
-   * @format date-time
-   */
-  time?: string;
-}
-
-/** 全局返回结果 */
 export interface AdminResultPageResultResponseStockPerceptionResponse {
   /**
    * 状态码
@@ -918,16 +895,6 @@ export interface PageResultResponseStockOptionalResponse {
   items?: StockOptionalResponse[] | null;
 }
 
-export interface PageResultResponseStockPerceptionDto {
-  /** @format int64 */
-  total?: number;
-  /** @format int32 */
-  pageNumber?: number;
-  /** @format int32 */
-  pageTotal?: number;
-  items?: StockPerceptionDto[] | null;
-}
-
 export interface PageResultResponseStockPerceptionResponse {
   /** @format int64 */
   total?: number;
@@ -1062,12 +1029,6 @@ export interface StockOptionalResponse {
   id: number;
 }
 
-export interface StockPerceptionDto {
-  content?: string | null;
-  /** @format date-time */
-  writeTime?: string;
-}
-
 export interface StockPerceptionRequestDto {
   /** @minLength 1 */
   content: string;
@@ -1133,6 +1094,10 @@ export interface SurgedDeclineInfoDto {
   surgedCount?: number;
   /** @format int32 */
   declineCount?: number;
+}
+
+export interface SyncDailyRequest {
+  ids?: number[] | null;
 }
 
 export interface SysMenuResponse {

@@ -35,7 +35,8 @@ const {
   loading,
   openDialog,
   buttonClass,
-  joinStockOption
+  joinStockOption,
+  syncDaily
 } = useHook();
 const { columns } = useColumns();
 </script>
@@ -71,8 +72,8 @@ const { columns } = useColumns();
     </el-form>
     <PureTableBar title="数据列表" :columns="columns" @refresh="onSearch">
       <template #buttons>
-        <el-button type="primary" :icon="useRenderIcon(AddFill)">
-          加入自選
+        <el-button type="primary" :icon="useRenderIcon(AddFill)" @click="syncDaily">
+          同步日线
         </el-button>
       </template>
       <template v-slot="{ size, dynamicColumns }">
@@ -137,6 +138,14 @@ const { columns } = useColumns();
                       :icon="useRenderIcon(Password)"
                     >
                       回測
+                    </el-button>
+                    <el-button
+                      :class="buttonClass"
+                      :size="size"
+                      :icon="useRenderIcon(Password)"
+                      @click="syncDaily(row.id)"
+                    >
+                      同步
                     </el-button>
                   </el-dropdown-item>
                 </el-dropdown-menu>

@@ -3,6 +3,10 @@ import dayjs from "dayjs";
 export function useColumns() {
   const columns: TableColumnList = [
     {
+      type: "selection",
+      align: "left"
+    },
+    {
       label: "编号",
       prop: "id",
       minWidth: 100

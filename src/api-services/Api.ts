@@ -28,7 +28,6 @@ import {
   AdminResultObject,
   AdminResultPageResultResponseStockDto,
   AdminResultPageResultResponseStockOptionalResponse,
-  AdminResultPageResultResponseStockPerceptionDto,
   AdminResultPageResultResponseStockPerceptionResponse,
   AdminResultPageResultResponseStockResponse,
   AdminResultPageResultResponseSysMenuResponse,
@@ -44,6 +43,7 @@ import {
   LoginInput,
   SearchRequest,
   StockPerceptionRequestDto,
+  SyncDailyRequest,
   UpdateStockItemRequest,
   UpdateStockOptionalRequest,
   UpdateStockPerceptionRequest,
@@ -902,16 +902,19 @@ export class Api<SecurityDataType = unknown> extends HttpClient<SecurityDataType
    * No description
    *
    * @tags stock
-   * @name ApiStockSearchConfigGet
-   * @request GET:/api/stock/searchConfig
+   * @name ApiStockSyncDailyPut
+   * @summary 同步日线
+   * @request PUT:/api/stock/syncDaily
    * @secure
-   * @response `200` `AdminResultICollectionSearchConfigResponse` Success
+   * @response `200` `AdminResultBoolean` Success
    */
-  apiStockSearchConfigGet = (params: RequestParams = {}) =>
-    this.request<AdminResultICollectionSearchConfigResponse, any>({
-      path: `/api/stock/searchConfig`,
-      method: "GET",
+  apiStockSyncDailyPut = (data: SyncDailyRequest, params: RequestParams = {}) =>
+    this.request<AdminResultBoolean, any>({
+      path: `/api/stock/syncDaily`,
+      method: "PUT",
+      body: data,
       secure: true,
+      type: ContentType.Json,
       format: "json",
       ...params
     });
@@ -994,39 +997,6 @@ export class Api<SecurityDataType = unknown> extends HttpClient<SecurityDataType
       body: data,
       secure: true,
       type: ContentType.Json,
-      format: "json",
-      ...params
-    });
-  /**
-   * No description
-   *
-   * @tags stock
-   * @name ApiStockPerceptionGet
-   * @summary 獲取交易心得
-   * @request GET:/api/stock/perception
-   * @secure
-   * @response `200` `AdminResultPageResultResponseStockPerceptionDto` Success
-   */
-  apiStockPerceptionGet = (
-    query?: {
-      /**
-       * 页码
-       * @format int32
-       */
-      PageNumber?: number;
-      /**
-       * 页面大小
-       * @format int32
-       */
-      PageSize?: number;
-    },
-    params: RequestParams = {}
-  ) =>
-    this.request<AdminResultPageResultResponseStockPerceptionDto, any>({
-      path: `/api/stock/perception`,
-      method: "GET",
-      query: query,
-      secure: true,
       format: "json",
       ...params
     });
@@ -1119,6 +1089,24 @@ export class Api<SecurityDataType = unknown> extends HttpClient<SecurityDataType
   apiStockGet = (id: number, params: RequestParams = {}) =>
     this.request<AdminResultStockResponse, any>({
       path: `/api/stock/${id}`,
+      method: "GET",
+      secure: true,
+      format: "json",
+      ...params
+    });
+  /**
+   * No description
+   *
+   * @tags stock
+   * @name ApiStockSearchConfigGet
+   * @summary 获取搜索查询配置
+   * @request GET:/api/stock/searchConfig
+   * @secure
+   * @response `200` `AdminResultICollectionSearchConfigResponse` Success
+   */
+  apiStockSearchConfigGet = (params: RequestParams = {}) =>
+    this.request<AdminResultICollectionSearchConfigResponse, any>({
+      path: `/api/stock/searchConfig`,
       method: "GET",
       secure: true,
       format: "json",
@@ -1239,15 +1227,13 @@ export class Api<SecurityDataType = unknown> extends HttpClient<SecurityDataType
    * No description
    *
    * @tags stockPerception
-   * @name ApiStockPerceptionGet2
+   * @name ApiStockPerceptionGet
    * @summary 數據詳情
    * @request GET:/api/stockPerception/{id}
-   * @originalName apiStockPerceptionGet
-   * @duplicate
    * @secure
    * @response `200` `AdminResultStockPerceptionResponse` Success
    */
-  apiStockPerceptionGet2 = (id: number, params: RequestParams = {}) =>
+  apiStockPerceptionGet = (id: number, params: RequestParams = {}) =>
     this.request<AdminResultStockPerceptionResponse, any>({
       path: `/api/stockPerception/${id}`,
       method: "GET",

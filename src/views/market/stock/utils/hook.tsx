@@ -5,7 +5,7 @@ import { PaginationProps } from "@pureadmin/table";
 import { addDialog } from "@/components/ReDialog/index";
 import editForm from "../form.vue";
 import optionalForm from "../../optional/form.vue";
-import { cloneDeep } from "@pureadmin/utils";
+import {cloneDeep, isArray, isNumber} from "@pureadmin/utils";
 
 const dataList = ref([]);
 const loading = ref(true);
@@ -19,6 +19,12 @@ const pagination = reactive<PaginationProps>({
 export function useHook() {
   const searchConfigs = ref<any[]>([]);
   const formRef = ref();
+  const multipleSelection = ref([]);
+
+  const handleSelectionChange = val => {
+    const selectedIds = val.map(({ id }) => id);
+    multipleSelection.value = selectedIds;
+  };
 
   function initSearchConfig() {
     setTimeout(async () => {
@@ -98,11 +104,6 @@ export function useHook() {
       "dark:hover:!text-primary"
     ];
   });
-
-  function handleSelectionChange(val) {
-    console.log("handleSelectionChange", val);
-  }
-
   function joinStockOption(tsCode: string) {
     const optionalFormRef = ref();
     addDialog({
@@ -133,6 +134,15 @@ export function useHook() {
     });
   }
 
+  function syncDaily(id?: number) {
+    const ids = isNumber(id) ? [id] : multipleSelection.value;
+    setTimeout(async () => {
+      await http.services.apiStockSyncDailyPut({
+        ids: ids
+      });
+    }, 500);
+  }
+
   function openDialog(title: string, row?: any) {
     const data = cloneDeep(row);
     addDialog({
@@ -147,7 +157,6 @@ export function useHook() {
       contentRenderer: () => h(editForm, { ref: formRef }),
       beforeSure: (done, { options }) => {
         const FormRef = formRef.value.getRef();
-        console.log(options.props);
         const curData = options.props.formInline;
         FormRef.validate(valid => {
           if (valid) {
@@ -176,6 +185,7 @@ export function useHook() {
     pagination,
     openDialog,
     buttonClass,
-    joinStockOption
+    joinStockOption,
+    syncDaily
   };
 }
