@@ -39,6 +39,10 @@ const {
   syncDaily
 } = useHook();
 const { columns } = useColumns();
+function handXueQiu(code: string) {
+  const number = code.split(".");
+  return number[1] + number[0];
+}
 </script>
 
 <template>
@@ -72,7 +76,11 @@ const { columns } = useColumns();
     </el-form>
     <PureTableBar title="数据列表" :columns="columns" @refresh="onSearch">
       <template #buttons>
-        <el-button type="primary" :icon="useRenderIcon(AddFill)" @click="syncDaily">
+        <el-button
+          type="primary"
+          :icon="useRenderIcon(AddFill)"
+          @click="syncDaily"
+        >
           同步日线
         </el-button>
       </template>
@@ -109,15 +117,12 @@ const { columns } = useColumns();
             >
               加入自選
             </el-button>
-            <el-button
-              class="reset-margin"
-              link
-              type="primary"
-              :size="size"
-              :icon="useRenderIcon(EditPen)"
-              @click="openDialog('修改', row)"
-            >
-              詳情
+            <el-button class="reset-margin" link type="primary" :size="size">
+              <el-link
+                type="success"
+                :href="'/market/detail/index?code=' + handXueQiu(row.tsCode)"
+                >詳情</el-link
+              >
             </el-button>
             <el-dropdown>
               <el-button
