@@ -21,7 +21,6 @@ defineOptions({
 
 const formRef = ref();
 const {
-  handleDelete,
   handleSizeChange,
   handleCurrentChange,
   handleSelectionChange,
@@ -85,7 +84,7 @@ function handXueQiu(code: string) {
         <el-button
           type="primary"
           :icon="useRenderIcon(AddFill)"
-          @click="syncDaily"
+          @click="syncDaily(null)"
         >
           同步日线
         </el-button>

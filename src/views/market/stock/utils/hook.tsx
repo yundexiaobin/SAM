@@ -143,6 +143,12 @@ export function useHook() {
     }, 500);
   }
 
+  function syncStock() {
+    setTimeout(async () => {
+      await http.services.apiStockSyncStockPut();
+    }, 500);
+  }
+
   function openDialog(title: string, row?: any) {
     const data = cloneDeep(row);
     addDialog({
@@ -186,6 +192,7 @@ export function useHook() {
     openDialog,
     buttonClass,
     joinStockOption,
-    syncDaily
+    syncDaily,
+    syncStock
   };
 }
