@@ -119,8 +119,9 @@ function handXueQiu(code: string) {
             </el-button>
             <el-button class="reset-margin" link type="primary" :size="size">
               <el-link
-                type="success"
-                :href="'/market/detail/index?code=' + handXueQiu(row.tsCode)"
+                type="info"
+                target="_blank"
+                :href="'https://xueqiu.com/S/' + handXueQiu(row.tsCode)"
                 >詳情</el-link
               >
             </el-button>
