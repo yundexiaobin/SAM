@@ -5,7 +5,6 @@ import { useRenderIcon } from "@/components/ReIcon/src/hooks";
 
 // import Database from "@iconify-icons/ri/database-2-line";
 // import More from "@iconify-icons/ep/more-filled";
-import Delete from "@iconify-icons/ep/delete";
 import EditPen from "@iconify-icons/ep/edit-pen";
 import Search from "@iconify-icons/ep/search";
 import Refresh from "@iconify-icons/ep/refresh";
@@ -15,7 +14,6 @@ import { useColumns } from "./utils/columns";
 import { useHook } from "./utils/hook";
 import More from "@iconify-icons/ep/more-filled";
 import Password from "@iconify-icons/ri/lock-password-line";
-import Role from "@iconify-icons/ri/admin-line";
 
 defineOptions({
   name: "Stock"
