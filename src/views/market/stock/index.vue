@@ -80,7 +80,7 @@ function handXueQiu(code: string) {
         <el-button
           type="primary"
           :icon="useRenderIcon(AddFill)"
-          @click="openDialog"
+          @click="openDialog('新增')"
         >
           新增
         </el-button>
