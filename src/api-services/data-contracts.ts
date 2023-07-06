@@ -90,6 +90,8 @@ export interface AddSysMenuRequest {
   /**
    * 排序位置
    * @format int32
+   * @min 1
+   * @max 2147483647
    */
   order?: number;
   /** <br />&nbsp;启用 Enable = 1<br />&nbsp;停用 Disable = 2<br /> */
@@ -1126,6 +1128,8 @@ export interface SysMenuResponse {
   /**
    * 排序位置
    * @format int32
+   * @min 1
+   * @max 2147483647
    */
   order?: number;
   /** <br />&nbsp;启用 Enable = 1<br />&nbsp;停用 Disable = 2<br /> */
@@ -1343,6 +1347,8 @@ export interface UpdateSysMenuRequest {
   /**
    * 排序位置
    * @format int32
+   * @min 1
+   * @max 2147483647
    */
   order?: number;
   /** <br />&nbsp;启用 Enable = 1<br />&nbsp;停用 Disable = 2<br /> */

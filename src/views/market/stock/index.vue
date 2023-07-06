@@ -36,7 +36,8 @@ const {
   openDialog,
   buttonClass,
   joinStockOption,
-  syncDaily
+  syncDaily,
+  syncStock
 } = useHook();
 const { columns } = useColumns();
 function handXueQiu(code: string) {
@@ -79,9 +80,23 @@ function handXueQiu(code: string) {
         <el-button
           type="primary"
           :icon="useRenderIcon(AddFill)"
+          @click="openDialog"
+        >
+          新增
+        </el-button>
+        <el-button
+          type="primary"
+          :icon="useRenderIcon(AddFill)"
           @click="syncDaily"
         >
           同步日线
+        </el-button>
+        <el-button
+          type="success"
+          :icon="useRenderIcon(AddFill)"
+          @click="syncStock"
+        >
+          同步股票
         </el-button>
       </template>
       <template v-slot="{ size, dynamicColumns }">

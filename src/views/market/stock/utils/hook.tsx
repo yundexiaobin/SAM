@@ -5,7 +5,7 @@ import { PaginationProps } from "@pureadmin/table";
 import { addDialog } from "@/components/ReDialog/index";
 import editForm from "../form.vue";
 import optionalForm from "../../optional/form.vue";
-import {cloneDeep, isArray, isNumber} from "@pureadmin/utils";
+import { cloneDeep, isArray, isNumber } from "@pureadmin/utils";
 
 const dataList = ref([]);
 const loading = ref(true);

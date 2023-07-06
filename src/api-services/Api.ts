@@ -922,6 +922,24 @@ export class Api<SecurityDataType = unknown> extends HttpClient<SecurityDataType
    * No description
    *
    * @tags stock
+   * @name ApiStockSyncStockPut
+   * @summary 同步股票列表
+   * @request PUT:/api/stock/syncStock
+   * @secure
+   * @response `200` `AdminResultBoolean` Success
+   */
+  apiStockSyncStockPut = (params: RequestParams = {}) =>
+    this.request<AdminResultBoolean, any>({
+      path: `/api/stock/syncStock`,
+      method: "PUT",
+      secure: true,
+      format: "json",
+      ...params
+    });
+  /**
+   * No description
+   *
+   * @tags stock
    * @name ApiStockSurgedLimitStockGet
    * @summary 查询指定日期涨停数据
    * @request GET:/api/stock/surgedLimitStock
