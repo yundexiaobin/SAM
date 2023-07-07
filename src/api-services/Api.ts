@@ -13,6 +13,7 @@ import {
   AddStockItemRequest,
   AddStockOptionalRequest,
   AddStockPerceptionRequest,
+  AddSurgedLimitGroupRequest,
   AddSysMenuRequest,
   AddSysRoleRequest,
   AddSysUserRequest,
@@ -30,6 +31,7 @@ import {
   AdminResultPageResultResponseStockOptionalResponse,
   AdminResultPageResultResponseStockPerceptionResponse,
   AdminResultPageResultResponseStockResponse,
+  AdminResultPageResultResponseSurgedLimitGroupResponse,
   AdminResultPageResultResponseSysMenuResponse,
   AdminResultPageResultResponseSysRoleResponse,
   AdminResultPageResultResponseSysUserResponse,
@@ -37,6 +39,7 @@ import {
   AdminResultStockPerceptionResponse,
   AdminResultStockResponse,
   AdminResultString,
+  AdminResultSurgedLimitGroupResponse,
   AdminResultSysMenuResponse,
   AdminResultSysRoleResponse,
   AdminResultSysUserResponse,
@@ -47,6 +50,7 @@ import {
   UpdateStockItemRequest,
   UpdateStockOptionalRequest,
   UpdateStockPerceptionRequest,
+  UpdateSurgedLimitGroupRequest,
   UpdateSysMenuRequest,
   UpdateSysRoleRequest,
   UpdateSysUserRequest,
@@ -754,153 +758,6 @@ export class Api<SecurityDataType = unknown> extends HttpClient<SecurityDataType
   /**
    * No description
    *
-   * @tags stockOptional
-   * @name ApiStockOptionalPost
-   * @summary 创建
-   * @request POST:/api/stockOptional
-   * @secure
-   * @response `200` `AdminResultBoolean` Success
-   */
-  apiStockOptionalPost = (data: AddStockOptionalRequest, params: RequestParams = {}) =>
-    this.request<AdminResultBoolean, any>({
-      path: `/api/stockOptional`,
-      method: "POST",
-      body: data,
-      secure: true,
-      type: ContentType.Json,
-      format: "json",
-      ...params
-    });
-  /**
-   * No description
-   *
-   * @tags stockOptional
-   * @name ApiStockOptionalPut
-   * @summary 修改
-   * @request PUT:/api/stockOptional/{id}
-   * @secure
-   * @response `200` `AdminResultBoolean` Success
-   */
-  apiStockOptionalPut = (id: number, data: UpdateStockOptionalRequest, params: RequestParams = {}) =>
-    this.request<AdminResultBoolean, any>({
-      path: `/api/stockOptional/${id}`,
-      method: "PUT",
-      body: data,
-      secure: true,
-      type: ContentType.Json,
-      format: "json",
-      ...params
-    });
-  /**
-   * No description
-   *
-   * @tags stockOptional
-   * @name ApiStockOptionalDelete
-   * @summary 删除
-   * @request DELETE:/api/stockOptional/{id}
-   * @secure
-   * @response `200` `AdminResultBoolean` Success
-   */
-  apiStockOptionalDelete = (id: number, params: RequestParams = {}) =>
-    this.request<AdminResultBoolean, any>({
-      path: `/api/stockOptional/${id}`,
-      method: "DELETE",
-      secure: true,
-      format: "json",
-      ...params
-    });
-  /**
-   * No description
-   *
-   * @tags stockOptional
-   * @name ApiStockOptionalGet
-   * @summary 數據詳情
-   * @request GET:/api/stockOptional/{id}
-   * @secure
-   * @response `200` `AdminResultStockOptionalResponse` Success
-   */
-  apiStockOptionalGet = (id: number, params: RequestParams = {}) =>
-    this.request<AdminResultStockOptionalResponse, any>({
-      path: `/api/stockOptional/${id}`,
-      method: "GET",
-      secure: true,
-      format: "json",
-      ...params
-    });
-  /**
-   * No description
-   *
-   * @tags stockOptional
-   * @name ApiStockOptionalSearchConfigGet
-   * @summary 获取搜索查询配置
-   * @request GET:/api/stockOptional/searchConfig
-   * @secure
-   * @response `200` `AdminResultICollectionSearchConfigResponse` Success
-   */
-  apiStockOptionalSearchConfigGet = (params: RequestParams = {}) =>
-    this.request<AdminResultICollectionSearchConfigResponse, any>({
-      path: `/api/stockOptional/searchConfig`,
-      method: "GET",
-      secure: true,
-      format: "json",
-      ...params
-    });
-  /**
-   * No description
-   *
-   * @tags stockOptional
-   * @name ApiStockOptionalSearchPost
-   * @summary 搜索
-   * @request POST:/api/stockOptional/search
-   * @secure
-   * @response `200` `AdminResultPageResultResponseStockOptionalResponse` Success
-   */
-  apiStockOptionalSearchPost = (data: SearchRequest, params: RequestParams = {}) =>
-    this.request<AdminResultPageResultResponseStockOptionalResponse, any>({
-      path: `/api/stockOptional/search`,
-      method: "POST",
-      body: data,
-      secure: true,
-      type: ContentType.Json,
-      format: "json",
-      ...params
-    });
-  /**
-   * No description
-   *
-   * @tags stockOptional
-   * @name ApiStockOptionalListGet
-   * @summary 數據列表
-   * @request GET:/api/stockOptional/list
-   * @secure
-   * @response `200` `AdminResultPageResultResponseStockOptionalResponse` Success
-   */
-  apiStockOptionalListGet = (
-    query?: {
-      /**
-       * 页码
-       * @format int32
-       */
-      PageNumber?: number;
-      /**
-       * 页面大小
-       * @format int32
-       */
-      PageSize?: number;
-    },
-    params: RequestParams = {}
-  ) =>
-    this.request<AdminResultPageResultResponseStockOptionalResponse, any>({
-      path: `/api/stockOptional/list`,
-      method: "GET",
-      query: query,
-      secure: true,
-      format: "json",
-      ...params
-    });
-  /**
-   * No description
-   *
    * @tags stock
    * @name ApiStockSyncDailyPut
    * @summary 同步日线
@@ -985,7 +842,7 @@ export class Api<SecurityDataType = unknown> extends HttpClient<SecurityDataType
    *
    * @tags stock
    * @name ApiStockSurgedDeclineInfoGet
-   * @summary 获取涨停统计信息
+   * @summary 获取漲跌停统计信息
    * @request GET:/api/stock/surgedDeclineInfo
    * @secure
    * @response `200` `AdminResultListSurgedDeclineInfoDto` Success
@@ -1186,6 +1043,152 @@ export class Api<SecurityDataType = unknown> extends HttpClient<SecurityDataType
   /**
    * No description
    *
+   * @tags surgedLimitGroup
+   * @name ApiSurgedLimitGroupPost
+   * @request POST:/api/surgedLimitGroup
+   * @secure
+   * @response `200` `AdminResultBoolean` Success
+   */
+  apiSurgedLimitGroupPost = (data: AddSurgedLimitGroupRequest, params: RequestParams = {}) =>
+    this.request<AdminResultBoolean, any>({
+      path: `/api/surgedLimitGroup`,
+      method: "POST",
+      body: data,
+      secure: true,
+      type: ContentType.Json,
+      format: "json",
+      ...params
+    });
+  /**
+   * No description
+   *
+   * @tags surgedLimitGroup
+   * @name ApiSurgedLimitGroupPut
+   * @summary 修改
+   * @request PUT:/api/surgedLimitGroup/{id}
+   * @secure
+   * @response `200` `AdminResultBoolean` Success
+   */
+  apiSurgedLimitGroupPut = (id: number, data: UpdateSurgedLimitGroupRequest, params: RequestParams = {}) =>
+    this.request<AdminResultBoolean, any>({
+      path: `/api/surgedLimitGroup/${id}`,
+      method: "PUT",
+      body: data,
+      secure: true,
+      type: ContentType.Json,
+      format: "json",
+      ...params
+    });
+  /**
+   * No description
+   *
+   * @tags surgedLimitGroup
+   * @name ApiSurgedLimitGroupDelete
+   * @summary 删除
+   * @request DELETE:/api/surgedLimitGroup/{id}
+   * @secure
+   * @response `200` `AdminResultBoolean` Success
+   */
+  apiSurgedLimitGroupDelete = (id: number, params: RequestParams = {}) =>
+    this.request<AdminResultBoolean, any>({
+      path: `/api/surgedLimitGroup/${id}`,
+      method: "DELETE",
+      secure: true,
+      format: "json",
+      ...params
+    });
+  /**
+   * No description
+   *
+   * @tags surgedLimitGroup
+   * @name ApiSurgedLimitGroupGet
+   * @summary 數據詳情
+   * @request GET:/api/surgedLimitGroup/{id}
+   * @secure
+   * @response `200` `AdminResultSurgedLimitGroupResponse` Success
+   */
+  apiSurgedLimitGroupGet = (id: number, params: RequestParams = {}) =>
+    this.request<AdminResultSurgedLimitGroupResponse, any>({
+      path: `/api/surgedLimitGroup/${id}`,
+      method: "GET",
+      secure: true,
+      format: "json",
+      ...params
+    });
+  /**
+   * No description
+   *
+   * @tags surgedLimitGroup
+   * @name ApiSurgedLimitGroupSearchConfigGet
+   * @summary 获取搜索查询配置
+   * @request GET:/api/surgedLimitGroup/searchConfig
+   * @secure
+   * @response `200` `AdminResultICollectionSearchConfigResponse` Success
+   */
+  apiSurgedLimitGroupSearchConfigGet = (params: RequestParams = {}) =>
+    this.request<AdminResultICollectionSearchConfigResponse, any>({
+      path: `/api/surgedLimitGroup/searchConfig`,
+      method: "GET",
+      secure: true,
+      format: "json",
+      ...params
+    });
+  /**
+   * No description
+   *
+   * @tags surgedLimitGroup
+   * @name ApiSurgedLimitGroupSearchPost
+   * @summary 搜索
+   * @request POST:/api/surgedLimitGroup/search
+   * @secure
+   * @response `200` `AdminResultPageResultResponseSurgedLimitGroupResponse` Success
+   */
+  apiSurgedLimitGroupSearchPost = (data: SearchRequest, params: RequestParams = {}) =>
+    this.request<AdminResultPageResultResponseSurgedLimitGroupResponse, any>({
+      path: `/api/surgedLimitGroup/search`,
+      method: "POST",
+      body: data,
+      secure: true,
+      type: ContentType.Json,
+      format: "json",
+      ...params
+    });
+  /**
+   * No description
+   *
+   * @tags surgedLimitGroup
+   * @name ApiSurgedLimitGroupListGet
+   * @summary 數據列表
+   * @request GET:/api/surgedLimitGroup/list
+   * @secure
+   * @response `200` `AdminResultPageResultResponseSurgedLimitGroupResponse` Success
+   */
+  apiSurgedLimitGroupListGet = (
+    query?: {
+      /**
+       * 页码
+       * @format int32
+       */
+      PageNumber?: number;
+      /**
+       * 页面大小
+       * @format int32
+       */
+      PageSize?: number;
+    },
+    params: RequestParams = {}
+  ) =>
+    this.request<AdminResultPageResultResponseSurgedLimitGroupResponse, any>({
+      path: `/api/surgedLimitGroup/list`,
+      method: "GET",
+      query: query,
+      secure: true,
+      format: "json",
+      ...params
+    });
+  /**
+   * No description
+   *
    * @tags stockPerception
    * @name ApiStockPerceptionPost
    * @summary 创建
@@ -1333,6 +1336,153 @@ export class Api<SecurityDataType = unknown> extends HttpClient<SecurityDataType
   /**
    * No description
    *
+   * @tags stockOptional
+   * @name ApiStockOptionalPost
+   * @summary 创建
+   * @request POST:/api/stockOptional
+   * @secure
+   * @response `200` `AdminResultBoolean` Success
+   */
+  apiStockOptionalPost = (data: AddStockOptionalRequest, params: RequestParams = {}) =>
+    this.request<AdminResultBoolean, any>({
+      path: `/api/stockOptional`,
+      method: "POST",
+      body: data,
+      secure: true,
+      type: ContentType.Json,
+      format: "json",
+      ...params
+    });
+  /**
+   * No description
+   *
+   * @tags stockOptional
+   * @name ApiStockOptionalPut
+   * @summary 修改
+   * @request PUT:/api/stockOptional/{id}
+   * @secure
+   * @response `200` `AdminResultBoolean` Success
+   */
+  apiStockOptionalPut = (id: number, data: UpdateStockOptionalRequest, params: RequestParams = {}) =>
+    this.request<AdminResultBoolean, any>({
+      path: `/api/stockOptional/${id}`,
+      method: "PUT",
+      body: data,
+      secure: true,
+      type: ContentType.Json,
+      format: "json",
+      ...params
+    });
+  /**
+   * No description
+   *
+   * @tags stockOptional
+   * @name ApiStockOptionalDelete
+   * @summary 删除
+   * @request DELETE:/api/stockOptional/{id}
+   * @secure
+   * @response `200` `AdminResultBoolean` Success
+   */
+  apiStockOptionalDelete = (id: number, params: RequestParams = {}) =>
+    this.request<AdminResultBoolean, any>({
+      path: `/api/stockOptional/${id}`,
+      method: "DELETE",
+      secure: true,
+      format: "json",
+      ...params
+    });
+  /**
+   * No description
+   *
+   * @tags stockOptional
+   * @name ApiStockOptionalGet
+   * @summary 數據詳情
+   * @request GET:/api/stockOptional/{id}
+   * @secure
+   * @response `200` `AdminResultStockOptionalResponse` Success
+   */
+  apiStockOptionalGet = (id: number, params: RequestParams = {}) =>
+    this.request<AdminResultStockOptionalResponse, any>({
+      path: `/api/stockOptional/${id}`,
+      method: "GET",
+      secure: true,
+      format: "json",
+      ...params
+    });
+  /**
+   * No description
+   *
+   * @tags stockOptional
+   * @name ApiStockOptionalSearchConfigGet
+   * @summary 获取搜索查询配置
+   * @request GET:/api/stockOptional/searchConfig
+   * @secure
+   * @response `200` `AdminResultICollectionSearchConfigResponse` Success
+   */
+  apiStockOptionalSearchConfigGet = (params: RequestParams = {}) =>
+    this.request<AdminResultICollectionSearchConfigResponse, any>({
+      path: `/api/stockOptional/searchConfig`,
+      method: "GET",
+      secure: true,
+      format: "json",
+      ...params
+    });
+  /**
+   * No description
+   *
+   * @tags stockOptional
+   * @name ApiStockOptionalSearchPost
+   * @summary 搜索
+   * @request POST:/api/stockOptional/search
+   * @secure
+   * @response `200` `AdminResultPageResultResponseStockOptionalResponse` Success
+   */
+  apiStockOptionalSearchPost = (data: SearchRequest, params: RequestParams = {}) =>
+    this.request<AdminResultPageResultResponseStockOptionalResponse, any>({
+      path: `/api/stockOptional/search`,
+      method: "POST",
+      body: data,
+      secure: true,
+      type: ContentType.Json,
+      format: "json",
+      ...params
+    });
+  /**
+   * No description
+   *
+   * @tags stockOptional
+   * @name ApiStockOptionalListGet
+   * @summary 數據列表
+   * @request GET:/api/stockOptional/list
+   * @secure
+   * @response `200` `AdminResultPageResultResponseStockOptionalResponse` Success
+   */
+  apiStockOptionalListGet = (
+    query?: {
+      /**
+       * 页码
+       * @format int32
+       */
+      PageNumber?: number;
+      /**
+       * 页面大小
+       * @format int32
+       */
+      PageSize?: number;
+    },
+    params: RequestParams = {}
+  ) =>
+    this.request<AdminResultPageResultResponseStockOptionalResponse, any>({
+      path: `/api/stockOptional/list`,
+      method: "GET",
+      query: query,
+      secure: true,
+      format: "json",
+      ...params
+    });
+  /**
+   * No description
+   *
    * @tags debug
    * @name ApiDebugExecuteMarketCloseJobPost
    * @request POST:/api/debug/executeMarketCloseJob
@@ -1360,6 +1510,23 @@ export class Api<SecurityDataType = unknown> extends HttpClient<SecurityDataType
     this.request<AdminResultBoolean, any>({
       path: `/api/debug/sendMessage`,
       method: "POST",
+      secure: true,
+      format: "json",
+      ...params
+    });
+  /**
+   * No description
+   *
+   * @tags debug
+   * @name ApiDebugRequestInfoGet
+   * @request GET:/api/debug/requestInfo
+   * @secure
+   * @response `200` `AdminResultObject` Success
+   */
+  apiDebugRequestInfoGet = (params: RequestParams = {}) =>
+    this.request<AdminResultObject, any>({
+      path: `/api/debug/requestInfo`,
+      method: "GET",
       secure: true,
       format: "json",
       ...params

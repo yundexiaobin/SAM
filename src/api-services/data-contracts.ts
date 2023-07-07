@@ -64,6 +64,11 @@ export interface AddStockPerceptionRequest {
   inputDate?: string | null;
 }
 
+export interface AddSurgedLimitGroupRequest {
+  /** @format date-time */
+  tradeDay?: string | null;
+}
+
 export interface AddSysMenuRequest {
   /** @format int64 */
   parentId?: number | null;
@@ -458,6 +463,29 @@ export interface AdminResultPageResultResponseStockResponse {
 }
 
 /** 全局返回结果 */
+export interface AdminResultPageResultResponseSurgedLimitGroupResponse {
+  /**
+   * 状态码
+   * @format int32
+   */
+  code?: number;
+  /** 是否成功 */
+  success?: boolean;
+  /** 类型success、warning、error */
+  type?: string | null;
+  /** 错误信息 */
+  message?: string | null;
+  data?: PageResultResponseSurgedLimitGroupResponse;
+  /** 附加数据 */
+  extras?: any;
+  /**
+   * 时间
+   * @format date-time
+   */
+  time?: string;
+}
+
+/** 全局返回结果 */
 export interface AdminResultPageResultResponseSysMenuResponse {
   /**
    * 状态码
@@ -610,6 +638,29 @@ export interface AdminResultString {
   message?: string | null;
   /** 数据 */
   data?: string | null;
+  /** 附加数据 */
+  extras?: any;
+  /**
+   * 时间
+   * @format date-time
+   */
+  time?: string;
+}
+
+/** 全局返回结果 */
+export interface AdminResultSurgedLimitGroupResponse {
+  /**
+   * 状态码
+   * @format int32
+   */
+  code?: number;
+  /** 是否成功 */
+  success?: boolean;
+  /** 类型success、warning、error */
+  type?: string | null;
+  /** 错误信息 */
+  message?: string | null;
+  data?: SurgedLimitGroupResponse;
   /** 附加数据 */
   extras?: any;
   /**
@@ -917,6 +968,16 @@ export interface PageResultResponseStockResponse {
   items?: StockResponse[] | null;
 }
 
+export interface PageResultResponseSurgedLimitGroupResponse {
+  /** @format int64 */
+  total?: number;
+  /** @format int32 */
+  pageNumber?: number;
+  /** @format int32 */
+  pageTotal?: number;
+  items?: SurgedLimitGroupResponse[] | null;
+}
+
 export interface PageResultResponseSysMenuResponse {
   /** @format int64 */
   total?: number;
@@ -1096,6 +1157,115 @@ export interface SurgedDeclineInfoDto {
   surgedCount?: number;
   /** @format int32 */
   declineCount?: number;
+}
+
+export interface SurgedLimitGroupResponse {
+  /**
+   * Id
+   * @format int64
+   */
+  id?: number;
+  /** 代码 */
+  tsCode?: string | null;
+  /** 名称 */
+  name?: string | null;
+  /**
+   * 交易日
+   * @format date-time
+   */
+  tradeDay?: string;
+  /**
+   * 最高价
+   * @format double
+   */
+  high?: number;
+  /**
+   * 最低价
+   * @format double
+   */
+  low?: number;
+  /** 题材 */
+  remark?: string | null;
+  /**
+   * 涨幅1
+   * @format double
+   */
+  pctChg1?: number;
+  /**
+   * 大单数量1
+   * @format int32
+   */
+  largeOrderQuantity1?: number | null;
+  /**
+   * 封单额1
+   * @format double
+   */
+  amount1?: number | null;
+  /**
+   * 涨幅2
+   * @format double
+   */
+  pctChg2?: number | null;
+  /**
+   * 大单数量2
+   * @format int32
+   */
+  largeOrderQuantity2?: number | null;
+  /**
+   * 封单额2
+   * @format double
+   */
+  amount2?: number | null;
+  /**
+   * 涨幅3
+   * @format double
+   */
+  pctChg3?: number | null;
+  /**
+   * 大单数量3
+   * @format int32
+   */
+  largeOrderQuantity3?: number | null;
+  /**
+   * 封单额3
+   * @format double
+   */
+  amount3?: number | null;
+  /**
+   * 涨幅4
+   * @format double
+   */
+  pctChg4?: number | null;
+  /**
+   * 大单数量4
+   * @format int32
+   */
+  largeOrderQuantity4?: number | null;
+  /**
+   * 封单额4
+   * @format double
+   */
+  amount4?: number | null;
+  /**
+   * 涨幅5
+   * @format double
+   */
+  pctChg5?: number | null;
+  /**
+   * 大单数量5
+   * @format int32
+   */
+  largeOrderQuantity5?: number | null;
+  /**
+   * 封单额5
+   * @format double
+   */
+  amount5?: number | null;
+  /**
+   * 总涨幅
+   * @format double
+   */
+  pctChg?: number | null;
 }
 
 export interface SyncDailyRequest {
@@ -1319,6 +1489,61 @@ export interface UpdateStockPerceptionRequest {
    * @format date-time
    */
   inputDate?: string | null;
+}
+
+export interface UpdateSurgedLimitGroupRequest {
+  /** 题材 */
+  remark?: string | null;
+  /**
+   * 大单数量
+   * @format int32
+   */
+  largeOrderQuantity1?: number | null;
+  /**
+   * 收盘封单额
+   * @format double
+   */
+  amount1?: number | null;
+  /**
+   * 大单数量
+   * @format int32
+   */
+  largeOrderQuantity2?: number | null;
+  /**
+   * 收盘封单额
+   * @format double
+   */
+  amount2?: number | null;
+  /**
+   * 大单数量
+   * @format int32
+   */
+  largeOrderQuantity3?: number | null;
+  /**
+   * 收盘封单额
+   * @format double
+   */
+  amount3?: number | null;
+  /**
+   * 大单数量
+   * @format int32
+   */
+  largeOrderQuantity4?: number | null;
+  /**
+   * 收盘封单额
+   * @format double
+   */
+  amount4?: number | null;
+  /**
+   * 大单数量
+   * @format int32
+   */
+  largeOrderQuantity5?: number | null;
+  /**
+   * 收盘封单额
+   * @format double
+   */
+  amount5?: number | null;
 }
 
 export interface UpdateSysMenuRequest {
