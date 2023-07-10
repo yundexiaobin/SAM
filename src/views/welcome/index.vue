@@ -24,60 +24,6 @@ const { height } = useWindowSize();
       <el-col
         :xs="24"
         :sm="24"
-        :md="24"
-        :lg="24"
-        :xl="24"
-        class="mb-[18px]"
-        v-motion
-        :initial="{
-          opacity: 0,
-          y: 100
-        }"
-        :enter="{
-          opacity: 1,
-          y: 0,
-          transition: {
-            delay: 200
-          }
-        }"
-      >
-        <el-card
-          shadow="never"
-          :style="{ height: `calc(${height}px - 35vh - 250px)` }"
-        >
-          <template #header>
-            <a :class="titleClass" href="#" target="_black">
-              <TypeIt
-                :className="'type-it2'"
-                :values="['交易心得']"
-                :cursor="false"
-                :speed="60"
-              />
-            </a>
-          </template>
-          <el-skeleton animated :rows="7" :loading="loading">
-            <template #default>
-              <el-scrollbar style="min-height: 300px">
-                <el-timeline v-show="perceptionData?.length > 0">
-                  <el-timeline-item
-                    v-for="(item, index) in perceptionData"
-                    :key="index"
-                    :icon="item.icon"
-                    :timestamp="item.timestamp"
-                  >
-                    <md-editor v-model="item.content" preview-only />
-                  </el-timeline-item>
-                </el-timeline>
-                <el-empty v-show="perceptionData?.length === 0" />
-              </el-scrollbar>
-            </template>
-          </el-skeleton>
-        </el-card>
-      </el-col>
-
-      <el-col
-        :xs="24"
-        :sm="24"
         :md="12"
         :lg="12"
         :xl="12"
@@ -223,6 +169,59 @@ const { height } = useWindowSize();
           }
         }"
       />
+
+      <el-col
+        :xs="24"
+        :sm="24"
+        :md="24"
+        :lg="24"
+        :xl="24"
+        class="mb-[18px]"
+        v-motion
+        :initial="{
+          opacity: 0,
+          y: 100
+        }"
+        :enter="{
+          opacity: 1,
+          y: 0,
+          transition: {
+            delay: 200
+          }
+        }"
+      >
+        <el-card
+          shadow="never"
+        >
+          <template #header>
+            <a :class="titleClass" href="#" target="_black">
+              <TypeIt
+                :className="'type-it2'"
+                :values="['交易心得']"
+                :cursor="false"
+                :speed="60"
+              />
+            </a>
+          </template>
+          <el-skeleton animated :rows="7" :loading="loading">
+            <template #default>
+              <el-scrollbar style="min-height: 300px">
+                <el-timeline v-show="perceptionData?.length > 0">
+                  <el-timeline-item
+                    v-for="(item, index) in perceptionData"
+                    :key="index"
+                    :icon="item.icon"
+                    :timestamp="item.timestamp"
+                  >
+                    <md-editor v-model="item.content" preview-only />
+                  </el-timeline-item>
+                </el-timeline>
+                <el-empty v-show="perceptionData?.length === 0" />
+              </el-scrollbar>
+            </template>
+          </el-skeleton>
+        </el-card>
+      </el-col>
     </el-row>
   </div>
 </template>

@@ -1,3 +1,5 @@
+import dayjs from "dayjs";
+
 export function useColumns() {
   const columns: TableColumnList = [
     {
@@ -15,7 +17,8 @@ export function useColumns() {
     },
     {
       label: "交易日",
-      prop: "tradeDay"
+      prop: "tradeDay",
+      formatter: ({ tradeDay }) => dayjs(tradeDay).format("YYYY-MM-DD")
     },
     {
       label: "最高价",
@@ -32,7 +35,14 @@ export function useColumns() {
     },
     {
       label: "涨幅1",
-      prop: "pctChg1"
+      prop: "pctChg1",
+      cellRenderer: ({ row }) => {
+        if (row.pctChg1 > 0) {
+          return <span class="text-rose-500">{row.pctChg1}</span>;
+        } else {
+          return <span class="text-green-500">{row.pctChg1}</span>;
+        }
+      }
     },
     {
       label: "大单数量1",
@@ -44,7 +54,14 @@ export function useColumns() {
     },
     {
       label: "涨幅2",
-      prop: "pctChg2"
+      prop: "pctChg2",
+      cellRenderer: ({ row }) => {
+        if (row.pctChg2 > 0) {
+          return <span class="text-rose-500">{row.pctChg2}</span>;
+        } else {
+          return <span class="text-green-500">{row.pctChg2}</span>;
+        }
+      }
     },
     {
       label: "大单数量2",
@@ -56,7 +73,14 @@ export function useColumns() {
     },
     {
       label: "涨幅3",
-      prop: "pctChg3"
+      prop: "pctChg3",
+      cellRenderer: ({ row }) => {
+        if (row.pctChg3 > 0) {
+          return <span class="text-rose-500">{row.pctChg3}</span>;
+        } else {
+          return <span class="text-green-500">{row.pctChg3}</span>;
+        }
+      }
     },
     {
       label: "大单数量3",
@@ -68,7 +92,14 @@ export function useColumns() {
     },
     {
       label: "涨幅4",
-      prop: "pctChg4"
+      prop: "pctChg4",
+      cellRenderer: ({ row }) => {
+        if (row.pctChg4 > 0) {
+          return <span class="text-rose-500">{row.pctChg4}</span>;
+        } else {
+          return <span class="text-green-500">{row.pctChg4}</span>;
+        }
+      }
     },
     {
       label: "大单数量4",
@@ -80,7 +111,14 @@ export function useColumns() {
     },
     {
       label: "涨幅5",
-      prop: "pctChg5"
+      prop: "pctChg5",
+      cellRenderer: ({ row }) => {
+        if (row.pctChg5 > 0) {
+          return <span class="text-rose-500">{row.pctChg5}</span>;
+        } else {
+          return <span class="text-green-500">{row.pctChg5}</span>;
+        }
+      }
     },
     {
       label: "大单数量5",
@@ -92,7 +130,14 @@ export function useColumns() {
     },
     {
       label: "总涨幅",
-      prop: "pctChg"
+      prop: "pctChg",
+      cellRenderer: ({ row }) => {
+        if (row.pctChg > 0) {
+          return <span class="text-rose-500">{row.pctChg}</span>;
+        } else {
+          return <span class="text-green-500">{row.pctChg}</span>;
+        }
+      }
     },
     {
       label: "操作",
