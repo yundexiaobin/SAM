@@ -1,40 +1,33 @@
 import dayjs from "dayjs";
+import { deviceDetection } from "@pureadmin/utils";
 
 export function useColumns() {
   const columns: TableColumnList = [
     {
       type: "selection",
-      align: "left"
+      align: "left",
+      hide: () => {
+        const d = deviceDetection();
+        return d;
+      }
     },
     {
       label: "编号",
       prop: "id",
-      minWidth: 100
+      hide: true
     },
     {
       label: "名称",
-      prop: "name",
-      minWidth: 120
+      prop: "name"
     },
     {
       label: "代码",
-      prop: "tsCode",
-      minWidth: 150
-    },
-    {
-      label: "状态",
-      minWidth: 130
-    },
-    {
-      label: "上市时间",
-      prop: "listDate",
-      minWidth: 180,
-      formatter: ({ listDate }) => dayjs(listDate).format("YYYY-MM-DD")
+      prop: "tsCode"
     },
     {
       label: "操作",
       fixed: "right",
-      width: 240,
+      width: 100,
       slot: "operation"
     }
   ];

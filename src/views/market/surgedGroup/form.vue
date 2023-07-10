@@ -29,27 +29,52 @@ defineExpose({ getRef });
     label-width="82px"
   >
     <el-form-item label="题材" prop="remark">
-      <el-input v-model="newFormInline.remark" clearable />
+      <el-input v-model="newFormInline.remark" clearable type="textarea" />
     </el-form-item>
-        
-    <el-form-item label="大单数量" prop="largeOrderQuantity1">
-      <el-input-number v-model="newFormInline.largeOrderQuantity1" :min="0" />
+
+    <el-form-item label="大单数量1" prop="largeOrderQuantity1">
+      <el-input-number
+        v-model="newFormInline.largeOrderQuantity1"
+        :precision="3"
+        :min="0"
+        size="large"
+      />
     </el-form-item>
-          
-    <el-form-item label="大单数量" prop="largeOrderQuantity2">
-      <el-input-number v-model="newFormInline.largeOrderQuantity2" :min="0" />
+
+    <el-form-item label="大单数量2" prop="largeOrderQuantity2">
+      <el-input-number
+        v-model="newFormInline.largeOrderQuantity2"
+        :precision="3"
+        :min="0"
+        size="large"
+      />
     </el-form-item>
-          
-    <el-form-item label="大单数量" prop="largeOrderQuantity3">
-      <el-input-number v-model="newFormInline.largeOrderQuantity3" :min="0" />
+
+    <el-form-item label="大单数量3" prop="largeOrderQuantity3">
+      <el-input-number
+        v-model="newFormInline.largeOrderQuantity3"
+        :precision="3"
+        :min="0"
+        size="large"
+      />
     </el-form-item>
-          
-    <el-form-item label="大单数量" prop="largeOrderQuantity4">
-      <el-input-number v-model="newFormInline.largeOrderQuantity4" :min="0" />
+
+    <el-form-item label="大单数量4" prop="largeOrderQuantity4">
+      <el-input-number
+        v-model="newFormInline.largeOrderQuantity4"
+        :precision="3"
+        :min="0"
+        size="large"
+      />
     </el-form-item>
-          
-    <el-form-item label="大单数量" prop="largeOrderQuantity5">
-      <el-input-number v-model="newFormInline.largeOrderQuantity5" :min="0" />
+
+    <el-form-item label="大单数量5" prop="largeOrderQuantity5">
+      <el-input-number
+        v-model="newFormInline.largeOrderQuantity5"
+        :precision="3"
+        :min="0"
+        size="large"
+      />
     </el-form-item>
-      </el-form>
+  </el-form>
 </template>

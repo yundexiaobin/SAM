@@ -5,20 +5,20 @@ export function useColumns() {
       prop: "content",
       minWidth: 100
     },
-  {
+    {
       label: "输入时间",
       prop: "inputDate",
       minWidth: 100
     },
-  {
+    {
       label: "Id",
       prop: "id",
-      minWidth: 100
+      hide: true
     },
     {
       label: "操作",
       fixed: "right",
-      width: 240,
+      width: 80,
       slot: "operation"
     }
   ];

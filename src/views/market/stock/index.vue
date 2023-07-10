@@ -63,11 +63,16 @@ function handXueQiu(code: string) {
           type="primary"
           :icon="useRenderIcon(Search)"
           :loading="loading"
+          size="small"
           @click="onSearch"
         >
           搜索
         </el-button>
-        <el-button :icon="useRenderIcon(Refresh)" @click="resetSearch">
+        <el-button
+          size="small"
+          :icon="useRenderIcon(Refresh)"
+          @click="resetSearch"
+        >
           重置
         </el-button>
       </el-form-item>
@@ -75,6 +80,7 @@ function handXueQiu(code: string) {
     <PureTableBar title="数据列表" :columns="columns" @refresh="onSearch">
       <template #buttons>
         <el-button
+          size="small"
           type="primary"
           :icon="useRenderIcon(AddFill)"
           @click="openDialog('新增')"
@@ -83,12 +89,14 @@ function handXueQiu(code: string) {
         </el-button>
         <el-button
           type="primary"
+          size="small"
           :icon="useRenderIcon(AddFill)"
           @click="syncDaily(null)"
         >
           同步日线
         </el-button>
         <el-button
+          size="small"
           type="success"
           :icon="useRenderIcon(AddFill)"
           @click="syncStock"
@@ -118,20 +126,9 @@ function handXueQiu(code: string) {
           @page-current-change="handleCurrentChange"
         >
           <template #operation="{ row }">
-            <el-button
-              v-if="row.isJoinOptional === false"
-              class="reset-margin"
-              link
-              type="primary"
-              :size="size"
-              :icon="useRenderIcon(EditPen)"
-              @click="joinStockOption(row.tsCode)"
-            >
-              加入自選
-            </el-button>
             <el-button class="reset-margin" link type="primary" :size="size">
               <el-link
-                type="info"
+                type="primary"
                 target="_blank"
                 :href="'https://xueqiu.com/S/' + handXueQiu(row.tsCode)"
                 >詳情</el-link
@@ -150,20 +147,34 @@ function handXueQiu(code: string) {
                   <el-dropdown-item>
                     <el-button
                       :class="buttonClass"
-                      link
                       type="primary"
                       :size="size"
-                      :icon="useRenderIcon(Password)"
+                      :icon="useRenderIcon(EditPen)"
                     >
                       回測
                     </el-button>
+                  </el-dropdown-item>
+                  <el-dropdown-item>
                     <el-button
                       :class="buttonClass"
                       :size="size"
-                      :icon="useRenderIcon(Password)"
+                      :icon="useRenderIcon(EditPen)"
                       @click="syncDaily(row.id)"
                     >
                       同步
+                    </el-button>
+                  </el-dropdown-item>
+                  <el-dropdown-item>
+                    <el-button
+                      v-if="row.isJoinOptional === false"
+                      :class="buttonClass"
+                      link
+                      type="primary"
+                      :size="size"
+                      :icon="useRenderIcon(EditPen)"
+                      @click="joinStockOption(row.tsCode)"
+                    >
+                      加入自選
                     </el-button>
                   </el-dropdown-item>
                 </el-dropdown-menu>

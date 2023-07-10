@@ -6,6 +6,8 @@ import { addDialog } from "@/components/ReDialog/index";
 import editForm from "../form.vue";
 
 import dateForm from "../dateSync.vue";
+import { deviceDetection } from "@pureadmin/utils"
+
 
 const dataList = ref([]);
 const loading = ref(true);
@@ -100,12 +102,14 @@ export function useHook() {
   }
 
   function openDialog(title: string, row?: any) {
+    const d = deviceDetection;
+    const width = d ? "100%" : "40%";
     addDialog({
       title: `${title}`,
       props: {
         formInline: row
       },
-      width: "40%",
+      width: width,
       draggable: true,
       fullscreenIcon: true,
       closeOnClickModal: false,
@@ -134,6 +138,8 @@ export function useHook() {
   }
 
   function openDate() {
+    const d = deviceDetection;
+    const width = d ? "100%" : "40%";
     addDialog({
       title: `同步涨停数据`,
       props: {
@@ -141,7 +147,7 @@ export function useHook() {
           tradeDay: ""
         }
       },
-      width: "40%",
+      width: width,
       draggable: true,
       fullscreenIcon: true,
       closeOnClickModal: false,
