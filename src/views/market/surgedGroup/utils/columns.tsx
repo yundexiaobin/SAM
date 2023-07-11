@@ -18,18 +18,21 @@ export function useColumns() {
       minWidth: 120
     },
     {
+      label: "漲幅",
+      prop: "currentPctChg",
+      cellRenderer: ({ row }) => {
+        if (row.currentPctChg > 0) {
+          return <span class="text-rose-500">{row.currentPctChg}</span>;
+        } else {
+          return <span class="text-green-500">{row.currentPctChg}</span>;
+        }
+      }
+    },
+    {
       label: "交易日",
       prop: "tradeDay",
       minWidth: 120,
       formatter: ({ tradeDay }) => dayjs(tradeDay).format("YYYY-MM-DD")
-    },
-    {
-      label: "最高价",
-      prop: "high"
-    },
-    {
-      label: "最低价",
-      prop: "low"
     },
     {
       label: "题材",

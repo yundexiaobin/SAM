@@ -1113,7 +1113,7 @@ export interface StockPerceptionResponse {
   inputDate?: string | null;
   /**
    * Id
-   * @format int32
+   * @format int64
    */
   id?: number;
 }
@@ -1174,6 +1174,11 @@ export interface SurgedLimitGroupResponse {
    * @format date-time
    */
   tradeDay?: string;
+  /**
+   * 漲幅
+   * @format double
+   */
+  currentPctChg?: number | null;
   /**
    * 最高价
    * @format double
