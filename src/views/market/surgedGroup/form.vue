@@ -28,6 +28,12 @@ defineExpose({ getRef });
     :rules="formRules"
     label-width="82px"
   >
+    <el-form-item label="代碼" prop="remark">
+      <el-input v-model="newFormInline.tsCode" readonly />
+    </el-form-item>
+    <el-form-item label="名稱" prop="remark">
+      <el-input v-model="newFormInline.name" readonly />
+    </el-form-item>
     <el-form-item label="题材" prop="remark">
       <el-input v-model="newFormInline.remark" clearable type="textarea" />
     </el-form-item>

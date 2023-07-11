@@ -16,6 +16,11 @@ defineOptions({
   name: "surgedLimitGroup"
 });
 
+function handXueQiu(code: string) {
+  const number = code.split(".");
+  return number[1] + number[0];
+}
+
 const formRef = ref();
 const {
   handleDelete,
@@ -125,6 +130,16 @@ const { columns } = useColumns();
               />
               <template #dropdown>
                 <el-dropdown-menu>
+                  <el-dropdown-item>
+                    <el-button class="reset-margin" link type="primary" :size="size">
+                      <el-link
+                        type="primary"
+                        target="_blank"
+                        :href="'https://xueqiu.com/S/' + handXueQiu(row.tsCode)"
+                      >詳情</el-link
+                      >
+                    </el-button>
+                  </el-dropdown-item>
                   <el-dropdown-item>
                     <el-button
                       class="reset-margin"

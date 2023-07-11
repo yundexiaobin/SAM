@@ -9,15 +9,18 @@ export function useColumns() {
     },
     {
       label: "代码",
-      prop: "tsCode"
+      prop: "tsCode",
+      minWidth: 120
     },
     {
       label: "名称",
-      prop: "name"
+      prop: "name",
+      minWidth: 120
     },
     {
       label: "交易日",
       prop: "tradeDay",
+      minWidth: 120,
       formatter: ({ tradeDay }) => dayjs(tradeDay).format("YYYY-MM-DD")
     },
     {
