@@ -43,10 +43,12 @@ import {
   AdminResultSysMenuResponse,
   AdminResultSysRoleResponse,
   AdminResultSysUserResponse,
+  AdminResultTradyBackTestResponse,
   LoginInput,
   SearchRequest,
   StockPerceptionRequestDto,
   SyncDailyRequest,
+  TradyBackTestRequest,
   UpdateStockItemRequest,
   UpdateStockOptionalRequest,
   UpdateStockPerceptionRequest,
@@ -741,23 +743,6 @@ export class Api<SecurityDataType = unknown> extends HttpClient<SecurityDataType
   /**
    * No description
    *
-   * @tags quant
-   * @name ApiQuantTradyTestPost
-   * @request POST:/api/quant/tradyTest/{symbol}/{begin}
-   * @secure
-   * @response `200` `AdminResultString` Success
-   */
-  apiQuantTradyTestPost = (symbol: string, begin: string, params: RequestParams = {}) =>
-    this.request<AdminResultString, any>({
-      path: `/api/quant/tradyTest/${symbol}/${begin}`,
-      method: "POST",
-      secure: true,
-      format: "json",
-      ...params
-    });
-  /**
-   * No description
-   *
    * @tags stock
    * @name ApiStockSyncDailyPut
    * @summary 同步日线
@@ -852,6 +837,26 @@ export class Api<SecurityDataType = unknown> extends HttpClient<SecurityDataType
       path: `/api/stock/surgedDeclineInfo`,
       method: "GET",
       secure: true,
+      format: "json",
+      ...params
+    });
+  /**
+   * No description
+   *
+   * @tags stock
+   * @name ApiStockTradyBackTestPost
+   * @summary 回测
+   * @request POST:/api/stock/tradyBackTest
+   * @secure
+   * @response `200` `AdminResultTradyBackTestResponse` Success
+   */
+  apiStockTradyBackTestPost = (data: TradyBackTestRequest, params: RequestParams = {}) =>
+    this.request<AdminResultTradyBackTestResponse, any>({
+      path: `/api/stock/tradyBackTest`,
+      method: "POST",
+      body: data,
+      secure: true,
+      type: ContentType.Json,
       format: "json",
       ...params
     });

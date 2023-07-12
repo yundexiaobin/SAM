@@ -34,7 +34,8 @@ const {
   pagination,
   loading,
   openForm,
-  openDate
+  openDate,
+  openBackTestDialog
 } = useHook();
 const { columns } = useColumns();
 </script>
@@ -131,20 +132,31 @@ const { columns } = useColumns();
               <template #dropdown>
                 <el-dropdown-menu>
                   <el-dropdown-item>
-                    <el-button class="reset-margin" link type="primary" :size="size">
+                    <el-button
+                      class="reset-margin"
+                      :size="size"
+                      :icon="useRenderIcon(EditPen)"
+                    >
                       <el-link
                         type="primary"
                         target="_blank"
                         :href="'https://xueqiu.com/S/' + handXueQiu(row.tsCode)"
-                      >詳情</el-link
+                        >詳情</el-link
                       >
                     </el-button>
                   </el-dropdown-item>
                   <el-dropdown-item>
                     <el-button
+                      :size="size"
+                      :icon="useRenderIcon(EditPen)"
+                      @click="openBackTestDialog(row.tsCode)"
+                    >
+                      回測
+                    </el-button>
+                  </el-dropdown-item>
+                  <el-dropdown-item>
+                    <el-button
                       class="reset-margin"
-                      link
-                      type="primary"
                       :size="size"
                       :icon="useRenderIcon(EditPen)"
                       @click="openForm('修改', row)"
@@ -160,8 +172,6 @@ const { columns } = useColumns();
                       <template #reference>
                         <el-button
                           class="reset-margin"
-                          link
-                          type="primary"
                           :size="size"
                           :icon="useRenderIcon(Delete)"
                         >

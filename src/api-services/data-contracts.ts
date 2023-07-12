@@ -739,6 +739,29 @@ export interface AdminResultSysUserResponse {
   time?: string;
 }
 
+/** 全局返回结果 */
+export interface AdminResultTradyBackTestResponse {
+  /**
+   * 状态码
+   * @format int32
+   */
+  code?: number;
+  /** 是否成功 */
+  success?: boolean;
+  /** 类型success、warning、error */
+  type?: string | null;
+  /** 错误信息 */
+  message?: string | null;
+  data?: TradyBackTestResponse;
+  /** 附加数据 */
+  extras?: any;
+  /**
+   * 时间
+   * @format date-time
+   */
+  time?: string;
+}
+
 /**
  * <br />&nbsp; Gregorian = 1<br />&nbsp; Lunar = 2<br />
  * @format int32
@@ -1446,6 +1469,61 @@ export interface TodayAttentionDto {
    */
   boxHigh?: number;
 }
+
+export interface TradyBackTestRequest {
+  tsCode?: string | null;
+  /** @format date-time */
+  begin?: string;
+  /** @format date-time */
+  end?: string | null;
+}
+
+export interface TradyBackTestResponse {
+  /**
+   * 交易总数
+   * @format int32
+   */
+  totalTransactionCount?: number;
+  /** P/L 比率: */
+  totalCorrectedProfitLossRatio?: string | null;
+  /**
+   * 本金
+   * @format double
+   */
+  totalPrincipal?: number;
+  /**
+   * 余额
+   * @format double
+   */
+  totalCorrectedBalance?: number;
+  /**
+   * 盈亏
+   * @format double
+   */
+  totalCorrectedProfitLoss?: number;
+  message?: string | null;
+  transactions?: TransactionDto[] | null;
+}
+
+export interface TransactionDto {
+  /** @format date-time */
+  dateTime?: string;
+  /** @format int32 */
+  index?: number;
+  /** <br />&nbsp; Buy = 0<br />&nbsp; Sell = 1<br /> */
+  type?: TransactionType;
+  /** @format int32 */
+  quantity?: number;
+  price?: string | null;
+  absoluteCashFlow?: string | null;
+  cost?: string | null;
+}
+
+/**
+ * <br />&nbsp; Buy = 0<br />&nbsp; Sell = 1<br />
+ * @format int32
+ */
+export type TransactionType = 0 | 1;
 
 export interface UpdateStockItemRequest {
   /** 股票代码，不带交易所号码 */

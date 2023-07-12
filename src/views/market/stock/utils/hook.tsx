@@ -4,8 +4,9 @@ import { http } from "@/utils/http";
 import { PaginationProps } from "@pureadmin/table";
 import { addDialog } from "@/components/ReDialog/index";
 import editForm from "../form.vue";
+import backTestForm from "../../../components/backTest/index.vue";
 import optionalForm from "../../optional/form.vue";
-import { cloneDeep, isArray, isNumber } from "@pureadmin/utils";
+import { cloneDeep, deviceDetection, isNumber } from "@pureadmin/utils";
 
 const dataList = ref([]);
 const loading = ref(true);
@@ -174,6 +175,24 @@ export function useHook() {
     });
   }
 
+  function openBackTestDialog(tsCode: string) {
+    const d = deviceDetection;
+    const width = d ? "90%" : "60%";
+    addDialog({
+      title: `回测`,
+      props: {
+        formInline: {
+          tsCode: tsCode
+        }
+      },
+      width: width,
+      draggable: true,
+      fullscreenIcon: true,
+      closeOnClickModal: false,
+      contentRenderer: () => h(backTestForm, { ref: formRef })
+    });
+  }
+
   onMounted(() => {
     onSearch();
     initSearchConfig();
@@ -193,6 +212,7 @@ export function useHook() {
     buttonClass,
     joinStockOption,
     syncDaily,
-    syncStock
+    syncStock,
+    openBackTestDialog
   };
 }

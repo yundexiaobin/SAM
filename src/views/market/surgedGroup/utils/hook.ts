@@ -6,7 +6,8 @@ import { addDialog } from "@/components/ReDialog/index";
 import editForm from "../form.vue";
 
 import dateForm from "../dateSync.vue";
-import { deviceDetection } from "@pureadmin/utils"
+import { deviceDetection } from "@pureadmin/utils";
+import backTestForm from "../../../components/backTest/index.vue";
 
 
 const dataList = ref([]);
@@ -127,6 +128,24 @@ export function useHook() {
     });
   }
 
+  function openBackTestDialog(tsCode: string) {
+    const d = deviceDetection;
+    const width = d ? "90%" : "60%";
+    addDialog({
+      title: `回测`,
+      props: {
+        formInline: {
+          tsCode: tsCode
+        }
+      },
+      width: width,
+      draggable: true,
+      fullscreenIcon: true,
+      closeOnClickModal: false,
+      contentRenderer: () => h(backTestForm, { ref: formRef })
+    });
+  }
+
   function openForm(title: string, row?: any) {
     if (row != null) {
       getDetailAsync(row.id).then(t => {
@@ -179,6 +198,7 @@ export function useHook() {
     dataList,
     pagination,
     openForm,
-    openDate
+    openDate,
+    openBackTestDialog
   };
 }

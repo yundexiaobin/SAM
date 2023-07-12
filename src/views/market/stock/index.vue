@@ -13,7 +13,6 @@ import { ElFormItem } from "element-plus";
 import { useColumns } from "./utils/columns";
 import { useHook } from "./utils/hook";
 import More from "@iconify-icons/ep/more-filled";
-import Password from "@iconify-icons/ri/lock-password-line";
 
 defineOptions({
   name: "Stock"
@@ -34,7 +33,8 @@ const {
   buttonClass,
   joinStockOption,
   syncDaily,
-  syncStock
+  syncStock,
+  openBackTestDialog
 } = useHook();
 const { columns } = useColumns();
 function handXueQiu(code: string) {
@@ -126,14 +126,6 @@ function handXueQiu(code: string) {
           @page-current-change="handleCurrentChange"
         >
           <template #operation="{ row }">
-            <el-button class="reset-margin" link type="primary" :size="size">
-              <el-link
-                type="primary"
-                target="_blank"
-                :href="'https://xueqiu.com/S/' + handXueQiu(row.tsCode)"
-                >詳情</el-link
-              >
-            </el-button>
             <el-dropdown>
               <el-button
                 class="ml-3 mt-[2px]"
@@ -146,10 +138,25 @@ function handXueQiu(code: string) {
                 <el-dropdown-menu>
                   <el-dropdown-item>
                     <el-button
+                      class="reset-margin"
+                      :size="size"
+                      :icon="useRenderIcon(EditPen)"
+                    >
+                      <el-link
+                        type="primary"
+                        target="_blank"
+                        :href="'https://xueqiu.com/S/' + handXueQiu(row.tsCode)"
+                      >詳情</el-link
+                      >
+                    </el-button>
+                  </el-dropdown-item>
+                  <el-dropdown-item>
+                    <el-button
                       :class="buttonClass"
                       type="primary"
                       :size="size"
                       :icon="useRenderIcon(EditPen)"
+                      @click="openBackTestDialog(row.tsCode)"
                     >
                       回測
                     </el-button>
