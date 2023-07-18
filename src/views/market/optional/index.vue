@@ -151,8 +151,7 @@ const { columns } = useColumns();
                       :icon="useRenderIcon(EditPen)"
                     >
                       <el-link
-                        target="_blank"
-                        :href="'/market/backTest/index?tsCode' + row.tsCode"
+                        :href="'/market/backTest/index?tsCode=' + row.tsCode"
                       >
                         回測</el-link
                       >
