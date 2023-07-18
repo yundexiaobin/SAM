@@ -1024,6 +1024,7 @@ export class Api<SecurityDataType = unknown> extends HttpClient<SecurityDataType
    */
   apiStockListGet = (
     query?: {
+      Keywords?: string;
       /**
        * 页码
        * @format int32

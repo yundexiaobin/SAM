@@ -27,6 +27,8 @@ const app = createApp(App);
 
 // 自定义指令
 import * as directives from "@/directives";
+import * as echarts from "echarts";
+app.config.globalProperties.$echarts = echarts;
 Object.keys(directives).forEach(key => {
   app.directive(key, (directives as { [key: string]: Directive })[key]);
 });

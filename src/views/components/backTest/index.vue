@@ -1,15 +1,17 @@
-<script setup lang="ts">
+<script setup lang="tsx">
 import { formRules } from "@/views/market/stock/utils/rule";
+import { useRoute } from "vue-router";
+const route = useRoute();
 import {
   TradyBackTestRequest,
   TradyBackTestResponse
 } from "@/api-services/data-contracts";
-import { ref } from "vue";
 import { http } from "@/utils/http";
 import { useColumns } from "./utils/columns";
-import Card from "@/views/list/card/components/Card.vue";
 import { useResizeObserver } from "@vueuse/core";
-import { deviceDetection, isNullOrUnDef } from "@pureadmin/utils";
+import { deviceDetection, isEmpty, isString } from "@pureadmin/utils";
+import KLineBar from "@/views/components/backTest/KLineBar.vue";
+import { ref } from "vue";
 
 defineOptions({
   name: "backTestForm"
@@ -18,14 +20,30 @@ defineOptions({
 interface FormProps {
   formInline: TradyBackTestRequest;
 }
-const responseRef = ref<TradyBackTestResponse>({});
+
+interface SelectOptions {
+  label: string;
+  value: string;
+}
+
+const responseRef = ref<TradyBackTestResponse>({
+  bars: [[]]
+});
 const props = withDefaults(defineProps<FormProps>(), {
   formInline: () => ({})
 });
 
 const ruleFormRef = ref();
 const newFormInline = ref(props.formInline);
-
+const parameter = isEmpty(route.params) ? route.query : route.params;
+Object.keys(parameter).forEach(param => {
+  if (isString(parameter[param])) {
+    if (param === "tsCode") {
+      newFormInline.value.tsCode = parameter[param].toString();
+      console.log(newFormInline.value);
+    }
+  }
+});
 const classRef = ref("text-green-500");
 const { columns } = useColumns();
 function submitForm() {
@@ -40,10 +58,37 @@ function submitForm() {
 }
 
 const device = ref();
-
+const loading = ref(false);
+const stockRef = ref<SelectOptions[]>([]);
 useResizeObserver(document.body, () => {
   device.value = deviceDetection();
 });
+
+const remoteMethod = (query: string) => {
+  if (query) {
+    loading.value = true;
+    setTimeout(() => {
+      http.services
+        .apiStockListGet({
+          PageNumber: 0,
+          PageSize: 0,
+          Keywords: query
+        })
+        .then(t => {
+          stockRef.value.length = 0;
+          t.data.items.map(d =>
+            stockRef.value.push({
+              label: d.name + " (" + d.tsCode + ")",
+              value: d.tsCode
+            })
+          );
+          loading.value = false;
+        });
+    }, 200);
+  } else {
+    stockRef.value.length = 0;
+  }
+};
 </script>
 
 <template>
@@ -56,12 +101,23 @@ useResizeObserver(document.body, () => {
         label-width="82px"
       >
         <el-form-item label="代碼" prop="code">
-          <el-input
-            v-model="newFormInline.tsCode"
-            readonly
-            clearable
+          <el-select
             class="!w-[200px]"
-          />
+            v-model="newFormInline.tsCode"
+            filterable
+            remote
+            placeholder="選擇回測的股票"
+            size="large"
+            :remote-method="remoteMethod"
+            :loading="loading"
+          >
+            <el-option
+              v-for="item in stockRef"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value"
+            />
+          </el-select>
         </el-form-item>
         <el-form-item label="开始" prop="begin" required>
           <el-date-picker
@@ -140,7 +196,8 @@ useResizeObserver(document.body, () => {
       </el-card>
       <el-row :gutter="16" v-if="device">
         <el-col
-          v-for="(responseRef, index) in responseRef.transactions"
+          class="mt-2"
+          v-for="(res, index) in responseRef.transactions"
           :key="index"
           :xs="24"
           :sm="12"
@@ -151,32 +208,35 @@ useResizeObserver(document.body, () => {
           <el-card>
             <div class="text item">
               <span class="text-lg inline-flex w-24">交易时间</span
-              ><span>{{ responseRef.dateTime }}</span>
+              ><span>{{ res.dateTime }}</span>
             </div>
             <div class="text item">
               <span class="text-lg inline-flex w-24">操作类型</span>
-              <span v-if="responseRef.type > 0" class="text-green-500">卖</span>
-              <span v-if="responseRef.type <= 0" class="text-rose-500"
-                >买</span
-              >
+              <span v-if="res.type > 0" class="text-green-500">卖</span>
+              <span v-if="res.type <= 0" class="text-rose-500">买</span>
             </div>
             <div class="text item">
               <span class="text-lg inline-flex w-24">数量</span
-              ><span>{{ responseRef.quantity }}</span>
+              ><span>{{ res.quantity }}</span>
             </div>
             <div class="text item">
               <span class="text-lg inline-flex w-24">价格</span
-              ><span>{{ responseRef.price }}</span>
+              ><span>{{ res.price }}</span>
             </div>
             <div class="text item">
               <span class="text-lg inline-flex w-24">操作費用</span
-              ><span>{{ responseRef.absoluteCashFlow }}</span>
+              ><span>{{ res.absoluteCashFlow }}</span>
             </div>
             <div class="text item">
               <span class="text-lg inline-flex w-24">手续费</span
-              ><span>{{ responseRef.cost }}</span>
+              ><span>{{ res.cost }}</span>
             </div>
           </el-card>
+        </el-col>
+      </el-row>
+      <el-row>
+        <el-col :span="24" class="mt-2">
+          <KLineBar :data="responseRef" />
         </el-col>
       </el-row>
     </el-col>

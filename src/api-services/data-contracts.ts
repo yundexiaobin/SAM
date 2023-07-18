@@ -1503,6 +1503,7 @@ export interface TradyBackTestResponse {
   totalCorrectedProfitLoss?: number;
   message?: string | null;
   transactions?: TransactionDto[] | null;
+  bars?: any[][] | null;
 }
 
 export interface TransactionDto {
