@@ -15,7 +15,10 @@ import More from "@iconify-icons/ep/more-filled";
 defineOptions({
   name: "StockOptional"
 });
-
+function handXueQiu(code: string) {
+  const number = code.split(".");
+  return number[1] + number[0];
+}
 const formRef = ref();
 const {
   handleDelete,
@@ -107,9 +110,6 @@ const { columns } = useColumns();
                   <el-dropdown-item>
                     <el-button
                       class="reset-margin"
-                      link
-                      type="primary"
-                      :size="size"
                       :icon="useRenderIcon(EditPen)"
                       @click="openForm('修改', row)"
                     >
@@ -124,15 +124,39 @@ const { columns } = useColumns();
                       <template #reference>
                         <el-button
                           class="reset-margin"
-                          link
-                          type="primary"
-                          :size="size"
                           :icon="useRenderIcon(Delete)"
                         >
                           删除
                         </el-button>
                       </template>
                     </el-popconfirm>
+                  </el-dropdown-item>
+                  <el-dropdown-item>
+                    <el-button
+                      class="reset-margin"
+                      :size="size"
+                      :icon="useRenderIcon(EditPen)"
+                    >
+                      <el-link
+                        target="_blank"
+                        :href="'https://xueqiu.com/S/' + handXueQiu(row.tsCode)"
+                        >詳情</el-link
+                      >
+                    </el-button>
+                  </el-dropdown-item>
+                  <el-dropdown-item>
+                    <el-button
+                      class="reset-margin"
+                      :size="size"
+                      :icon="useRenderIcon(EditPen)"
+                    >
+                      <el-link
+                        target="_blank"
+                        :href="'/market/backTest/index?tsCode' + row.tsCode"
+                      >
+                        回測</el-link
+                      >
+                    </el-button>
                   </el-dropdown-item>
                 </el-dropdown-menu>
               </template>
