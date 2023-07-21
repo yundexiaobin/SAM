@@ -1,14 +1,18 @@
-<script setup lang="tsx">
+<script setup lang="ts">
 import { ref, computed, watch, type Ref } from "vue";
 import { useAppStoreHook } from "@/store/modules/app";
 import {
   delay,
   useDark,
   useECharts,
-  type EchartOptions
+  type EchartOptions,
+  UtilsEChartsOption
 } from "@pureadmin/utils";
 
-import { TradyBackTestResponse } from "@/api-services/data-contracts";
+import {
+  TradyBackTestResponse,
+  TransactionDto
+} from "@/api-services/data-contracts";
 interface FormProps {
   data: TradyBackTestResponse;
 }
@@ -23,17 +27,35 @@ const upBorderColor = "#8A0000";
 const downColor = "#00da3c";
 const downBorderColor = "#008F28";
 const { isDark } = useDark();
-
+const responseRef = ref(props.data);
 const theme: EchartOptions["theme"] = computed(() => {
   return isDark.value ? "dark" : "light";
 });
+
+function markData(d: TransactionDto[]) {
+  const categoryData = [];
+  d.forEach(t => {
+    const value = t.type == 0 ? "B" : "S";
+    categoryData.push({
+      name: value,
+      xAxis: t.dateTime,
+      yAxis: t.price,
+      value: t.price,
+      itemStyle: {
+        color: "rgb(41,60,85)"
+      }
+    });
+  });
+  return categoryData;
+}
 
 const dataRef = ref({
   categoryData: [],
   values: []
 });
-
-function splitData(rawData: any) {
+const nameRef = ref("K线");
+function splitData(rawData: TradyBackTestResponse) {
+  responseRef.value = rawData;
   const categoryData = [];
   const values = [];
   const bars = rawData.bars;
@@ -43,6 +65,7 @@ function splitData(rawData: any) {
   }
   dataRef.value.categoryData = categoryData;
   dataRef.value.values = values;
+  nameRef.value = rawData.name + "(" + rawData.tsCode + ")";
 }
 
 function calculateMA(dayCount: number) {
@@ -66,11 +89,10 @@ const barChartRef = ref<HTMLDivElement | null>(null);
 const { setOptions, resize } = useECharts(barChartRef as Ref<HTMLDivElement>, {
   theme
 });
-const createOptions = () => {
+const createOptions = (): UtilsEChartsOption => {
   return {
     title: {
-      text: "K线",
-      left: 0
+      show: false
     },
     tooltip: {
       trigger: "axis",
@@ -132,82 +154,12 @@ const createOptions = () => {
               return param != null ? Math.round(param.value) + "" : "";
             }
           },
-          data: [
-            {
-              name: "Mark",
-              coord: ["2013/5/31", 2300],
-              value: 2300,
-              itemStyle: {
-                color: "rgb(41,60,85)"
-              }
-            },
-            {
-              name: "highest value",
-              type: "max",
-              valueDim: "highest"
-            },
-            {
-              name: "lowest value",
-              type: "min",
-              valueDim: "lowest"
-            },
-            {
-              name: "average value on close",
-              type: "average",
-              valueDim: "close"
-            }
-          ],
+          data: markData(responseRef.value.transactions),
           tooltip: {
             formatter: function (param: any) {
               return param.name + "<br>" + (param.data.coord || "");
             }
           }
-        },
-        markLine: {
-          symbol: ["none", "none"],
-          data: [
-            [
-              {
-                name: "from lowest to highest",
-                type: "min",
-                valueDim: "lowest",
-                symbol: "circle",
-                symbolSize: 10,
-                label: {
-                  show: false
-                },
-                emphasis: {
-                  label: {
-                    show: false
-                  }
-                }
-              },
-              {
-                type: "max",
-                valueDim: "highest",
-                symbol: "circle",
-                symbolSize: 10,
-                label: {
-                  show: false
-                },
-                emphasis: {
-                  label: {
-                    show: false
-                  }
-                }
-              }
-            ],
-            {
-              name: "min line on close",
-              type: "min",
-              valueDim: "close"
-            },
-            {
-              name: "max line on close",
-              type: "max",
-              valueDim: "close"
-            }
-          ]
         }
       },
       {

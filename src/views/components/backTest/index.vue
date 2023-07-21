@@ -1,4 +1,4 @@
-<script setup lang="tsx">
+<script setup lang="ts">
 import { formRules } from "@/views/market/stock/utils/rule";
 import { useRoute } from "vue-router";
 const route = useRoute();
@@ -149,7 +149,7 @@ const remoteMethod = (query: string) => {
       <el-card>
         <template #header>
           <div class="card-header">
-            <span>回测结果</span>
+            <span>{{ responseRef.name }} {{ responseRef.tsCode }}</span>
           </div>
         </template>
         <div class="text item">

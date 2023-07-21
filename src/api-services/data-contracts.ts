@@ -1473,12 +1473,14 @@ export interface TodayAttentionDto {
 export interface TradyBackTestRequest {
   tsCode?: string | null;
   /** @format date-time */
-  begin?: string;
+  begin: string;
   /** @format date-time */
   end?: string | null;
 }
 
 export interface TradyBackTestResponse {
+  name?: string | null;
+  tsCode?: string | null;
   /**
    * 交易总数
    * @format int32
