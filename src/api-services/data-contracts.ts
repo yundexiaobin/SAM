@@ -1509,8 +1509,7 @@ export interface TradyBackTestResponse {
 }
 
 export interface TransactionDto {
-  /** @format date-time */
-  dateTime?: string;
+  dateTime?: string | null;
   /** @format int32 */
   index?: number;
   /** <br />&nbsp; Buy = 0<br />&nbsp; Sell = 1<br /> */

@@ -23,63 +23,42 @@ const props = withDefaults(defineProps<FormProps>(), {
 });
 
 const upColor = "#ec0000";
-const upBorderColor = "#8A0000";
 const downColor = "#00da3c";
-const downBorderColor = "#008F28";
 const { isDark } = useDark();
-const responseRef = ref(props.data);
 const theme: EchartOptions["theme"] = computed(() => {
   return isDark.value ? "dark" : "light";
 });
-
+const markDataRef = ref([]);
 function markData(d: TransactionDto[]) {
   const categoryData = [];
   d.forEach(t => {
-    const value = t.type == 0 ? "B" : "S";
+    const valueStr = t.type == 0 ? "B" : "S";
+    const color = t.type == 0 ? "rgb(255,0,0)" : "rgb(127,255,0)";
     categoryData.push({
-      name: value,
+      name: valueStr,
       xAxis: t.dateTime,
       yAxis: t.price,
       value: t.price,
       itemStyle: {
-        color: "rgb(41,60,85)"
+        color: color
       }
     });
   });
-  return categoryData;
+  markDataRef.value = categoryData;
 }
 
-const dataRef = ref({
-  categoryData: [],
-  values: []
-});
-const nameRef = ref("K线");
-function splitData(rawData: TradyBackTestResponse) {
-  responseRef.value = rawData;
-  const categoryData = [];
-  const values = [];
-  const bars = rawData.bars;
-  for (let i = 0; i < bars.length; i++) {
-    categoryData.push(bars[i].splice(0, 1)[0]);
-    values.push(bars[i].splice(0));
-  }
-  dataRef.value.categoryData = categoryData;
-  dataRef.value.values = values;
-  nameRef.value = rawData.name + "(" + rawData.tsCode + ")";
-}
-
-function calculateMA(dayCount: number) {
+function calculateMA(dayCount: number, data: { values: number[][] }) {
   const result = [];
-  for (let i = 0, len = dataRef.value.values.length; i < len; i++) {
+  for (let i = 0, len = data.values.length; i < len; i++) {
     if (i < dayCount) {
       result.push("-");
       continue;
     }
     let sum = 0;
     for (let j = 0; j < dayCount; j++) {
-      sum += +dataRef.value.values[i - j][1];
+      sum += data.values[i - j][1];
     }
-    result.push((sum / dayCount).toFixed(2));
+    result.push(+(sum / dayCount).toFixed(3));
   }
   return result;
 }
@@ -89,83 +68,193 @@ const barChartRef = ref<HTMLDivElement | null>(null);
 const { setOptions, resize } = useECharts(barChartRef as Ref<HTMLDivElement>, {
   theme
 });
-const createOptions = (): UtilsEChartsOption => {
+const newDataRef = ref({
+  categoryData: [],
+  values: [],
+  volumes: []
+});
+function splitData1(rawData: number[][]) {
+  const categoryData = [];
+  const values = [];
+  const volumes = [];
+  for (let i = 0; i < rawData.length; i++) {
+    categoryData.push(rawData[i].splice(0, 1)[0]);
+    values.push(rawData[i]);
+    volumes.push([i, rawData[i][4], rawData[i][0] > rawData[i][1] ? 1 : -1]);
+  }
+  newDataRef.value = {
+    categoryData: categoryData,
+    values: values,
+    volumes: volumes
+  };
+}
+
+const createO = (): UtilsEChartsOption => {
   return {
-    title: {
-      show: false
+    animation: false,
+    legend: {
+      bottom: 10,
+      left: "center",
+      data: ["Dow-Jones index", "MA5", "MA10", "MA20", "MA30"]
     },
     tooltip: {
       trigger: "axis",
       axisPointer: {
         type: "cross"
+      },
+      borderWidth: 1,
+      borderColor: "#ccc",
+      padding: 10,
+      textStyle: {
+        color: "#000"
+      },
+      position: function (pos, params, el, elRect, size) {
+        const obj: Record<string, number> = {
+          top: 10
+        };
+        obj[["left", "right"][+(pos[0] < size.viewSize[0] / 2)]] = 30;
+        return obj;
+      }
+      // extraCssText: 'width: 170px'
+    },
+    axisPointer: {
+      link: [
+        {
+          xAxisIndex: "all"
+        }
+      ],
+      label: {
+        backgroundColor: "#777"
       }
     },
-    legend: {
-      data: ["日K", "MA5", "MA10", "MA20", "MA30"]
-    },
-    grid: {
-      left: "10%",
-      right: "10%",
-      bottom: "15%"
-    },
-    xAxis: {
-      type: "category",
-      data: dataRef.value.categoryData,
-      boundaryGap: false,
-      axisLine: { onZero: false },
-      splitLine: { show: false },
-      min: "dataMin",
-      max: "dataMax"
-    },
-    yAxis: {
-      scale: true,
-      splitArea: {
-        show: true
+    toolbox: {
+      feature: {
+        dataZoom: {
+          yAxisIndex: false
+        },
+        brush: {
+          type: ["lineX", "clear"]
+        }
       }
     },
+    brush: {
+      xAxisIndex: "all",
+      brushLink: "all",
+      outOfBrush: {
+        colorAlpha: 0.1
+      }
+    },
+    visualMap: {
+      show: false,
+      seriesIndex: 5,
+      dimension: 2,
+      pieces: [
+        {
+          value: 1,
+          color: downColor
+        },
+        {
+          value: -1,
+          color: upColor
+        }
+      ]
+    },
+    grid: [
+      {
+        left: "10%",
+        right: "8%",
+        height: "50%"
+      },
+      {
+        left: "10%",
+        right: "8%",
+        top: "63%",
+        height: "16%"
+      }
+    ],
+    xAxis: [
+      {
+        type: "category",
+        data: newDataRef.value.categoryData,
+        boundaryGap: false,
+        axisLine: { onZero: false },
+        splitLine: { show: false },
+        min: "dataMin",
+        max: "dataMax",
+        axisPointer: {
+          z: 100
+        }
+      },
+      {
+        type: "category",
+        gridIndex: 1,
+        data: newDataRef.value.categoryData,
+        boundaryGap: false,
+        axisLine: { onZero: false },
+        axisTick: { show: false },
+        splitLine: { show: false },
+        axisLabel: { show: false },
+        min: "dataMin",
+        max: "dataMax"
+      }
+    ],
+    yAxis: [
+      {
+        scale: true,
+        splitArea: {
+          show: true
+        }
+      },
+      {
+        scale: true,
+        gridIndex: 1,
+        splitNumber: 2,
+        axisLabel: { show: false },
+        axisLine: { show: false },
+        axisTick: { show: false },
+        splitLine: { show: false }
+      }
+    ],
     dataZoom: [
       {
         type: "inside",
+        xAxisIndex: [0, 1],
         start: 50,
         end: 100
       },
       {
         show: true,
+        xAxisIndex: [0, 1],
         type: "slider",
-        top: "90%",
+        top: "85%",
         start: 50,
         end: 100
       }
     ],
     series: [
       {
-        name: "日K",
+        name: "Dow-Jones index",
         type: "candlestick",
-        data: dataRef.value.values,
+        data: newDataRef.value.values,
         itemStyle: {
           color: upColor,
           color0: downColor,
-          borderColor: upBorderColor,
-          borderColor0: downBorderColor
+          borderColor: undefined,
+          borderColor0: undefined
         },
         markPoint: {
           label: {
             formatter: function (param: any) {
-              return param != null ? Math.round(param.value) + "" : "";
+              return param.name;
             }
           },
-          data: markData(responseRef.value.transactions),
-          tooltip: {
-            formatter: function (param: any) {
-              return param.name + "<br>" + (param.data.coord || "");
-            }
-          }
+          data: markDataRef.value
         }
       },
       {
         name: "MA5",
         type: "line",
-        data: calculateMA(5),
+        data: calculateMA(5, newDataRef.value),
         smooth: true,
         lineStyle: {
           opacity: 0.5
@@ -174,7 +263,7 @@ const createOptions = (): UtilsEChartsOption => {
       {
         name: "MA10",
         type: "line",
-        data: calculateMA(10),
+        data: calculateMA(10, newDataRef.value),
         smooth: true,
         lineStyle: {
           opacity: 0.5
@@ -183,7 +272,7 @@ const createOptions = (): UtilsEChartsOption => {
       {
         name: "MA20",
         type: "line",
-        data: calculateMA(20),
+        data: calculateMA(20, newDataRef.value),
         smooth: true,
         lineStyle: {
           opacity: 0.5
@@ -192,23 +281,28 @@ const createOptions = (): UtilsEChartsOption => {
       {
         name: "MA30",
         type: "line",
-        data: calculateMA(30),
+        data: calculateMA(30, newDataRef.value),
         smooth: true,
         lineStyle: {
           opacity: 0.5
         }
+      },
+      {
+        name: "Volume",
+        type: "bar",
+        xAxisIndex: 1,
+        yAxisIndex: 1,
+        data: newDataRef.value.volumes
       }
-    ],
-    addTooltip: true
+    ]
   };
 };
-setOptions(createOptions(), {
+setOptions(createO(), {
   name: "click",
   callback: params => {
     console.log("click", params);
   }
 });
-
 watch(
   () => useAppStoreHook().getSidebarStatus,
   () => {
@@ -219,8 +313,9 @@ watch(
 watch(
   () => props.data,
   () => {
-    splitData(props.data);
-    setOptions(createOptions(), {
+    splitData1(props.data.bars);
+    markData(props.data.transactions);
+    setOptions(createO(), {
       name: "click",
       callback: params => {
         console.log("click", params);
@@ -231,5 +326,5 @@ watch(
 </script>
 
 <template>
-  <div ref="barChartRef" style="width: 100%; height: 35vh" />
+  <div ref="barChartRef" style="width: 100%; height: 50vh" />
 </template>
