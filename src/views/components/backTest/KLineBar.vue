@@ -16,15 +16,28 @@ import {
 interface FormProps {
   data: TradyBackTestResponse;
 }
+
+interface CurrentData {
+  date: string;
+  open: number;
+  close: number;
+  high: number;
+  low: number;
+  ma5: number;
+  ma10: number;
+  ma20: number;
+  vol: number;
+}
+
 const props = withDefaults(defineProps<FormProps>(), {
   data: () => ({
     bars: [[]]
   })
 });
-
 const upColor = "#ec0000";
 const downColor = "#00da3c";
 const { isDark } = useDark();
+const currentRef = ref<CurrentData>({});
 const theme: EchartOptions["theme"] = computed(() => {
   return isDark.value ? "dark" : "light";
 });
@@ -95,9 +108,10 @@ const createO = (): UtilsEChartsOption => {
     legend: {
       bottom: 10,
       left: "center",
-      data: ["Dow-Jones index", "MA5", "MA10", "MA20", "MA30"]
+      data: ["Dow-Jones index", "MA5", "MA10", "MA20"]
     },
     tooltip: {
+      show: true,
       trigger: "axis",
       axisPointer: {
         type: "cross"
@@ -108,12 +122,20 @@ const createO = (): UtilsEChartsOption => {
       textStyle: {
         color: "#000"
       },
-      position: function (pos, params, el, elRect, size) {
-        const obj: Record<string, number> = {
-          top: 10
+      formatter: params => {
+        console.log(params);
+        const value = params[0] as any;
+        currentRef.value = {
+          date: value.axisValue,
+          open: value.data[1],
+          close: value.data[2],
+          high: value.data[3],
+          low: value.data[4],
+          ma5: params[1].data.toFixed(2),
+          ma10: params[2].data.toFixed(2),
+          ma20: params[3].data.toFixed(2),
+          vol: params[4].data[1]
         };
-        obj[["left", "right"][+(pos[0] < size.viewSize[0] / 2)]] = 30;
-        return obj;
       }
       // extraCssText: 'width: 170px'
     },
@@ -279,15 +301,6 @@ const createO = (): UtilsEChartsOption => {
         }
       },
       {
-        name: "MA30",
-        type: "line",
-        data: calculateMA(30, newDataRef.value),
-        smooth: true,
-        lineStyle: {
-          opacity: 0.5
-        }
-      },
-      {
         name: "Volume",
         type: "bar",
         xAxisIndex: 1,
@@ -326,5 +339,30 @@ watch(
 </script>
 
 <template>
+  <div v-if="currentRef">
+    <el-row>
+      <el-col :span="8" class="text-xs">{{ currentRef.date }}</el-col>
+      <el-col :span="2" class="text-xs">开</el-col>
+      <el-col :span="6" class="text-xs">{{ currentRef.open }}</el-col>
+      <el-col :span="2" class="text-xs">收</el-col>
+      <el-col :span="6" class="text-xs">{{ currentRef.close }}</el-col>
+    </el-row>
+    <el-row>
+      <el-col :span="2" class="text-xs">量</el-col>
+      <el-col :span="6" class="text-xs">{{ currentRef.vol }}</el-col>
+      <el-col :span="2" class="text-xs">高</el-col>
+      <el-col :span="6" class="text-xs">{{ currentRef.high }}</el-col>
+      <el-col :span="2" class="text-xs">低</el-col>
+      <el-col :span="6" class="text-xs">{{ currentRef.low }}</el-col>
+    </el-row>
+    <el-row>
+      <el-col :span="2" class="text-xs">m5</el-col>
+      <el-col :span="6" class="text-xs">{{ currentRef.ma5 }}</el-col>
+      <el-col :span="2" class="text-xs">10</el-col>
+      <el-col :span="6" class="text-xs">{{ currentRef.ma10 }}</el-col>
+      <el-col :span="2" class="text-xs">20</el-col>
+      <el-col :span="6" class="text-xs">{{ currentRef.ma20 }}</el-col>
+    </el-row>
+  </div>
   <div ref="barChartRef" style="width: 100%; height: 50vh" />
 </template>
