@@ -6,7 +6,8 @@ import {
   useDark,
   useECharts,
   type EchartOptions,
-  UtilsEChartsOption
+  UtilsEChartsOption,
+  isNumber
 } from "@pureadmin/utils";
 
 import {
@@ -37,7 +38,7 @@ const props = withDefaults(defineProps<FormProps>(), {
 const upColor = "#ec0000";
 const downColor = "#00da3c";
 const { isDark } = useDark();
-const currentRef = ref<CurrentData>({});
+const currentRef = ref<CurrentData>();
 const theme: EchartOptions["theme"] = computed(() => {
   return isDark.value ? "dark" : "light";
 });
@@ -123,7 +124,6 @@ const createO = (): UtilsEChartsOption => {
         color: "#000"
       },
       formatter: params => {
-        console.log(params);
         const value = params[0] as any;
         currentRef.value = {
           date: value.axisValue,
@@ -131,9 +131,9 @@ const createO = (): UtilsEChartsOption => {
           close: value.data[2],
           high: value.data[3],
           low: value.data[4],
-          ma5: params[1].data.toFixed(2),
-          ma10: params[2].data.toFixed(2),
-          ma20: params[3].data.toFixed(2),
+          ma5: isNumber(params[1].data) ? params[1].data.toFixed(2) : 0,
+          ma10: isNumber(params[2].data) ? params[2].data.toFixed(2) : 0,
+          ma20: isNumber(params[3].data) ? params[3].data.toFixed(2) : 0,
           vol: params[4].data[1]
         };
       }
